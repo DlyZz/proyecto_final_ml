@@ -1,4 +1,4 @@
-# Análisis de la Plataforma Steam — Proyecto de Machine Learning
+# Introducción
 
 ## Contexto
 
