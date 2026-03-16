@@ -1,0 +1,1492 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>Steam Dataset — EDA: friends &#8212; Proyecto Final Machine Learning</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" href="_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'eda_friends';</script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Steam Dataset EDA: games" href="eda_games.html" />
+    <link rel="prev" title="🏆 Steam Dataset — EDA: achievements" href="eda_achievements.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/UN.png" class="logo__image only-light" alt="Proyecto Final Machine Learning - Home"/>
+    <script>document.write(`<img src="_static/UN.png" class="logo__image only-dark" alt="Proyecto Final Machine Learning - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="intro.html">
+                    Análisis de la Plataforma Steam — Proyecto de Machine Learning
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="eda_achievements.html">🏆 Steam Dataset — EDA: <code class="docutils literal notranslate"><span class="pre">achievements</span></code></a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Steam Dataset — EDA: <code class="docutils literal notranslate"><span class="pre">friends</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="eda_games.html">Steam Dataset EDA: <code class="docutils literal notranslate"><span class="pre">games</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="eda_history.html">Steam Dataset — EDA: <code class="docutils literal notranslate"><span class="pre">history</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="eda_players.html">Steam Dataset EDA: <code class="docutils literal notranslate"><span class="pre">players</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="eda_reviews.html">Steam Dataset  EDA: <code class="docutils literal notranslate"><span class="pre">reviews</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="eda_feature_engineering.html">Steam Dataset — Feature Engineering</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/executablebooks/jupyter-book" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/executablebooks/jupyter-book/issues/new?title=Issue%20on%20page%20%2Feda_friends.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/eda_friends.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Steam Dataset — EDA: friends</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#imports-y-configuracion">Imports y configuración</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#carga-parser-manual-para-csv-multi-linea">Carga - Parser manual para CSV multi-línea</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analisis-y-tratamiento-de-valores-faltantes">Análisis y tratamiento de valores faltantes</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#diferencia-clave-vs-purchased-games">Diferencia clave vs <code class="docutils literal notranslate"><span class="pre">purchased_games</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#distribucion-de-amigos-por-usuario">Distribución de Amigos por Usuario</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analisis-de-grafo">Análisis de Grafo</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#outliers-usuarios-con-demasiados-amigos">Outliers: Usuarios con Demasiados Amigos</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exportar-dataset-limpio">Exportar dataset limpio</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#conclusiones">Conclusiones</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#proximos-pasos">Próximos pasos</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="steam-dataset-eda-friends">
+<h1>Steam Dataset — EDA: <code class="docutils literal notranslate"><span class="pre">friends</span></code><a class="headerlink" href="#steam-dataset-eda-friends" title="Permalink to this heading">#</a></h1>
+<p><strong>Descripción:</strong> Lista de amigos de cada usuario en Steam. Cada fila contiene el <code class="docutils literal notranslate"><span class="pre">playerid</span></code> y los IDs de todos sus amigos.</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Columna</p></th>
+<th class="head"><p>Tipo</p></th>
+<th class="head"><p>Descripción</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">playerid</span></code></p></td>
+<td><p>int</p></td>
+<td><p>ID del jugador</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">friends</span></code></p></td>
+<td><p>str (lista serializada)</p></td>
+<td><p>Lista de <code class="docutils literal notranslate"><span class="pre">playerids</span></code> de sus amigos</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<section id="imports-y-configuracion">
+<h2>Imports y configuración<a class="headerlink" href="#imports-y-configuracion" title="Permalink to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">ast</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.patches</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">mpatches</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">seaborn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sns</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">Counter</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
+<span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s1">&#39;ignore&#39;</span><span class="p">)</span>
+
+<span class="n">DARK_BG</span> <span class="o">=</span> <span class="s1">&#39;#0e1117&#39;</span>
+<span class="n">CARD_BG</span> <span class="o">=</span> <span class="s1">&#39;#1a1f2e&#39;</span>
+<span class="n">ACCENT1</span> <span class="o">=</span> <span class="s1">&#39;#4f86f7&#39;</span>
+<span class="n">ACCENT2</span> <span class="o">=</span> <span class="s1">&#39;#7ee8a2&#39;</span>
+<span class="n">ACCENT3</span> <span class="o">=</span> <span class="s1">&#39;#ff6b6b&#39;</span>
+<span class="n">ACCENT4</span> <span class="o">=</span> <span class="s1">&#39;#ffd166&#39;</span>
+<span class="n">ACCENT5</span> <span class="o">=</span> <span class="s1">&#39;#c77dff&#39;</span>
+<span class="n">TEXT</span>    <span class="o">=</span> <span class="s1">&#39;#e0e6f0&#39;</span>
+<span class="n">MUTED</span>   <span class="o">=</span> <span class="s1">&#39;#8892a4&#39;</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="o">.</span><span class="n">update</span><span class="p">({</span>
+    <span class="s1">&#39;figure.facecolor&#39;</span><span class="p">:</span> <span class="n">DARK_BG</span><span class="p">,</span> <span class="s1">&#39;axes.facecolor&#39;</span><span class="p">:</span> <span class="n">CARD_BG</span><span class="p">,</span>
+    <span class="s1">&#39;axes.edgecolor&#39;</span><span class="p">:</span> <span class="n">MUTED</span><span class="p">,</span>     <span class="s1">&#39;axes.labelcolor&#39;</span><span class="p">:</span> <span class="n">TEXT</span><span class="p">,</span>
+    <span class="s1">&#39;xtick.color&#39;</span><span class="p">:</span> <span class="n">MUTED</span><span class="p">,</span>        <span class="s1">&#39;ytick.color&#39;</span><span class="p">:</span> <span class="n">MUTED</span><span class="p">,</span>
+    <span class="s1">&#39;text.color&#39;</span><span class="p">:</span> <span class="n">TEXT</span><span class="p">,</span>          <span class="s1">&#39;grid.color&#39;</span><span class="p">:</span> <span class="s1">&#39;#2d3348&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;grid.alpha&#39;</span><span class="p">:</span> <span class="mf">0.6</span><span class="p">,</span>           <span class="s1">&#39;font.family&#39;</span><span class="p">:</span> <span class="s1">&#39;DejaVu Sans&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;font.size&#39;</span><span class="p">:</span> <span class="mi">11</span><span class="p">,</span>
+<span class="p">})</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">title_ax</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">txt</span><span class="p">,</span> <span class="n">sub</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">txt</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">13</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">&#39;bold&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">TEXT</span><span class="p">,</span> <span class="n">pad</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">sub</span><span class="p">:</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">1.02</span><span class="p">,</span> <span class="n">sub</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">ax</span><span class="o">.</span><span class="n">transAxes</span><span class="p">,</span>
+                <span class="n">ha</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">MUTED</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="carga-parser-manual-para-csv-multi-linea">
+<h2>Carga - Parser manual para CSV multi-línea<a class="headerlink" href="#carga-parser-manual-para-csv-multi-linea" title="Permalink to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df_private</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;Datos/private_steamids.csv&#39;</span><span class="p">)</span>
+<span class="n">private_set</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">df_private</span><span class="p">[</span><span class="s1">&#39;playerid&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;IDs privados cargados: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">private_set</span><span class="p">)</span><span class="si">:</span><span class="s2">,</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>IDs privados cargados: 227,963
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">parse_friends</span><span class="p">(</span><span class="n">filepath</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Parser para CSV con listas de amigos multi-línea.</span>
+<span class="sd">    Retorna records (lista parseada OK) y empty_ids (sin amigos).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">records</span><span class="p">,</span> <span class="n">empty_ids</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[]</span>
+    <span class="n">current_pid</span><span class="p">,</span> <span class="n">current_parts</span><span class="p">,</span> <span class="n">in_multiline</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="p">[],</span> <span class="kc">False</span>
+
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>  
+        <span class="k">for</span> <span class="n">raw_line</span> <span class="ow">in</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">line</span> <span class="o">=</span> <span class="n">raw_line</span><span class="o">.</span><span class="n">rstrip</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\r\n</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">in_multiline</span><span class="p">:</span>
+                <span class="n">comma_idx</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">comma_idx</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span> <span class="k">continue</span>
+                <span class="n">pid_str</span><span class="p">,</span> <span class="n">rest</span> <span class="o">=</span> <span class="n">line</span><span class="p">[:</span><span class="n">comma_idx</span><span class="p">],</span> <span class="n">line</span><span class="p">[</span><span class="n">comma_idx</span><span class="o">+</span><span class="mi">1</span><span class="p">:]</span>
+                <span class="k">if</span> <span class="n">rest</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="s1">&#39;&quot;&quot;&#39;</span><span class="p">,</span> <span class="s1">&#39;[]&#39;</span><span class="p">):</span>
+                    <span class="k">try</span><span class="p">:</span> <span class="n">empty_ids</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">pid_str</span><span class="p">))</span>
+                    <span class="k">except</span><span class="p">:</span> <span class="k">pass</span>
+                    <span class="k">continue</span>
+                <span class="k">if</span> <span class="n">rest</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;&quot;&#39;</span><span class="p">):</span>
+                    <span class="n">rest</span> <span class="o">=</span> <span class="n">rest</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
+                    <span class="k">if</span> <span class="n">rest</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;&quot;&#39;</span><span class="p">):</span>
+                        <span class="k">try</span><span class="p">:</span>
+                            <span class="n">friends</span> <span class="o">=</span> <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">f</span><span class="p">)</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">ast</span><span class="o">.</span><span class="n">literal_eval</span><span class="p">(</span><span class="n">rest</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])]</span>
+                            <span class="n">records</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s1">&#39;playerid&#39;</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">pid_str</span><span class="p">),</span>
+                                            <span class="s1">&#39;friends&#39;</span><span class="p">:</span> <span class="n">friends</span><span class="p">,</span> <span class="s1">&#39;n_friends&#39;</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">friends</span><span class="p">)})</span>
+                        <span class="k">except</span><span class="p">:</span> <span class="n">empty_ids</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">pid_str</span><span class="p">))</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">current_pid</span><span class="p">,</span> <span class="n">current_parts</span><span class="p">,</span> <span class="n">in_multiline</span> <span class="o">=</span> <span class="n">pid_str</span><span class="p">,</span> <span class="p">[</span><span class="n">rest</span><span class="p">],</span> <span class="kc">True</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">try</span><span class="p">:</span>
+                        <span class="n">friends</span> <span class="o">=</span> <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">f</span><span class="p">)</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">ast</span><span class="o">.</span><span class="n">literal_eval</span><span class="p">(</span><span class="n">rest</span><span class="p">)]</span>
+                        <span class="n">records</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s1">&#39;playerid&#39;</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">pid_str</span><span class="p">),</span>
+                                        <span class="s1">&#39;friends&#39;</span><span class="p">:</span> <span class="n">friends</span><span class="p">,</span> <span class="s1">&#39;n_friends&#39;</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">friends</span><span class="p">)})</span>
+                    <span class="k">except</span><span class="p">:</span> <span class="n">empty_ids</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">pid_str</span><span class="p">))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">line</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;&quot;&#39;</span><span class="p">):</span>
+                    <span class="n">current_parts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">line</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+                    <span class="k">try</span><span class="p">:</span>
+                        <span class="n">friends</span> <span class="o">=</span> <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">f</span><span class="p">)</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">ast</span><span class="o">.</span><span class="n">literal_eval</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">current_parts</span><span class="p">))]</span>
+                        <span class="n">records</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s1">&#39;playerid&#39;</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">current_pid</span><span class="p">),</span>
+                                        <span class="s1">&#39;friends&#39;</span><span class="p">:</span> <span class="n">friends</span><span class="p">,</span> <span class="s1">&#39;n_friends&#39;</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">friends</span><span class="p">)})</span>
+                    <span class="k">except</span><span class="p">:</span> <span class="n">empty_ids</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">current_pid</span><span class="p">))</span>
+                    <span class="n">current_pid</span><span class="p">,</span> <span class="n">current_parts</span><span class="p">,</span> <span class="n">in_multiline</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="p">[],</span> <span class="kc">False</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">current_parts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+
+
+    <span class="k">if</span> <span class="n">in_multiline</span> <span class="ow">and</span> <span class="n">current_pid</span> <span class="ow">and</span> <span class="n">current_parts</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">friends</span> <span class="o">=</span> <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">f</span><span class="p">)</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">ast</span><span class="o">.</span><span class="n">literal_eval</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">current_parts</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;]&#39;</span><span class="p">)]</span>
+            <span class="n">records</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s1">&#39;playerid&#39;</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">current_pid</span><span class="p">),</span>
+                            <span class="s1">&#39;friends&#39;</span><span class="p">:</span> <span class="n">friends</span><span class="p">,</span> <span class="s1">&#39;n_friends&#39;</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">friends</span><span class="p">),</span> <span class="s1">&#39;truncated&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">})</span>
+        <span class="k">except</span><span class="p">:</span> <span class="n">empty_ids</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">current_pid</span><span class="p">))</span>
+
+    <span class="k">return</span> <span class="n">records</span><span class="p">,</span> <span class="n">empty_ids</span>
+
+
+<span class="n">FRIENDS_PATH</span> <span class="o">=</span> <span class="s1">&#39;Datos/friends.csv&#39;</span>  
+<span class="n">records</span><span class="p">,</span> <span class="n">empty_ids</span> <span class="o">=</span> <span class="n">parse_friends</span><span class="p">(</span><span class="n">FRIENDS_PATH</span><span class="p">)</span>
+
+<span class="n">total_rows</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">records</span><span class="p">)</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">empty_ids</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Total filas en el archivo   : </span><span class="si">{</span><span class="n">total_rows</span><span class="si">:</span><span class="s2">,</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Con friends (parseados OK)  : </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">records</span><span class="p">)</span><span class="si">:</span><span class="s2">,</span><span class="si">}</span><span class="s2">  (</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">records</span><span class="p">)</span><span class="o">/</span><span class="n">total_rows</span><span class="o">*</span><span class="mi">100</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">%)&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Sin friends (vacíos)        : </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">empty_ids</span><span class="p">)</span><span class="si">:</span><span class="s2">,</span><span class="si">}</span><span class="s2">  (</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">empty_ids</span><span class="p">)</span><span class="o">/</span><span class="n">total_rows</span><span class="o">*</span><span class="mi">100</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">%)&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Total filas en el archivo   : 424,683
+Con friends (parseados OK)  : 339,461  (79.9%)
+Sin friends (vacíos)        : 85,222  (20.1%)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">([{</span><span class="s1">&#39;playerid&#39;</span><span class="p">:</span> <span class="n">r</span><span class="p">[</span><span class="s1">&#39;playerid&#39;</span><span class="p">],</span> <span class="s1">&#39;n_friends&#39;</span><span class="p">:</span> <span class="n">r</span><span class="p">[</span><span class="s1">&#39;n_friends&#39;</span><span class="p">],</span>
+                     <span class="s1">&#39;is_private&#39;</span><span class="p">:</span> <span class="n">r</span><span class="p">[</span><span class="s1">&#39;playerid&#39;</span><span class="p">]</span> <span class="ow">in</span> <span class="n">private_set</span><span class="p">}</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">records</span><span class="p">])</span>
+
+<span class="n">empty_private</span>    <span class="o">=</span> <span class="p">[</span><span class="n">pid</span> <span class="k">for</span> <span class="n">pid</span> <span class="ow">in</span> <span class="n">empty_ids</span> <span class="k">if</span> <span class="n">pid</span>     <span class="ow">in</span> <span class="n">private_set</span><span class="p">]</span>
+<span class="n">empty_not_priv</span>   <span class="o">=</span> <span class="p">[</span><span class="n">pid</span> <span class="k">for</span> <span class="n">pid</span> <span class="ow">in</span> <span class="n">empty_ids</span> <span class="k">if</span> <span class="n">pid</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">private_set</span><span class="p">]</span>
+
+<span class="n">friend_sets</span> <span class="o">=</span> <span class="p">{</span><span class="n">r</span><span class="p">[</span><span class="s1">&#39;playerid&#39;</span><span class="p">]:</span> <span class="nb">set</span><span class="p">(</span><span class="n">r</span><span class="p">[</span><span class="s1">&#39;friends&#39;</span><span class="p">])</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">records</span><span class="p">}</span>
+<span class="n">all_nodes</span>   <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;playerid&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">())</span> <span class="o">|</span> <span class="p">{</span><span class="n">fid</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">records</span> <span class="k">for</span> <span class="n">fid</span> <span class="ow">in</span> <span class="n">r</span><span class="p">[</span><span class="s1">&#39;friends&#39;</span><span class="p">]}</span>
+
+<span class="n">in_degree</span> <span class="o">=</span> <span class="n">Counter</span><span class="p">(</span><span class="n">fid</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">records</span> <span class="k">for</span> <span class="n">fid</span> <span class="ow">in</span> <span class="n">r</span><span class="p">[</span><span class="s1">&#39;friends&#39;</span><span class="p">])</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Usuarios con friends list     : </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">)</span><span class="si">:</span><span class="s2">,</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Nodos únicos en el grafo      : </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">all_nodes</span><span class="p">)</span><span class="si">:</span><span class="s2">,</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Aristas dirigidas totales     : </span><span class="si">{</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;n_friends&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="si">:</span><span class="s2">,</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Usuarios con friends list     : 339,461
+Nodos únicos en el grafo      : 17,531,524
+Aristas dirigidas totales     : 30,903,334
+</pre></div>
+</div>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>playerid</th>
+      <th>n_friends</th>
+      <th>is_private</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>76561198060422271</td>
+      <td>79</td>
+      <td>False</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>76561198113439786</td>
+      <td>104</td>
+      <td>False</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>76561198149851326</td>
+      <td>108</td>
+      <td>False</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="analisis-y-tratamiento-de-valores-faltantes">
+<h2>Análisis y tratamiento de valores faltantes<a class="headerlink" href="#analisis-y-tratamiento-de-valores-faltantes" title="Permalink to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Causa</p></th>
+<th class="head"><p>n</p></th>
+<th class="head"><p>% total</p></th>
+<th class="head"><p>Interpretación</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Sin friends + <strong>privado</strong></p></td>
+<td><p>41,160</p></td>
+<td><p>9.7%</p></td>
+<td><p>Perfil privado — lista de amigos oculta</p></td>
+</tr>
+<tr class="row-odd"><td><p>Sin friends + <strong>público</strong></p></td>
+<td><p>44,062</p></td>
+<td><p>10.4%</p></td>
+<td><p>Usuarios sin amigos o cuentas nuevas/abandonadas</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<section id="diferencia-clave-vs-purchased-games">
+<h3>Diferencia clave vs <code class="docutils literal notranslate"><span class="pre">purchased_games</span></code><a class="headerlink" href="#diferencia-clave-vs-purchased-games" title="Permalink to this heading">#</a></h3>
+<p>En <code class="docutils literal notranslate"><span class="pre">purchased_games</span></code>, la mayoría de faltantes provenía de perfiles privados.<br />
+En cambio, en <code class="docutils literal notranslate"><span class="pre">friends</span></code> los faltantes están más equilibrados: aproximadamente 10% privado y 10% público, lo que confirma que tener cero amigos en Steam es un fenómeno real, no solo un efecto de privacidad.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">n_total</span>      <span class="o">=</span> <span class="n">total_rows</span>
+<span class="n">n_with</span>       <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">records</span><span class="p">)</span>
+<span class="n">n_emp_priv</span>   <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">empty_private</span><span class="p">)</span>
+<span class="n">n_emp_pub</span>    <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">empty_not_priv</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Diagnóstico de faltantes:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  Con friends list              : </span><span class="si">{</span><span class="n">n_with</span><span class="si">:</span><span class="s2">,</span><span class="si">}</span><span class="s2">  (</span><span class="si">{</span><span class="n">n_with</span><span class="o">/</span><span class="n">n_total</span><span class="o">*</span><span class="mi">100</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">%)&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  Sin friends — privado         : </span><span class="si">{</span><span class="n">n_emp_priv</span><span class="si">:</span><span class="s2">,</span><span class="si">}</span><span class="s2">  (</span><span class="si">{</span><span class="n">n_emp_priv</span><span class="o">/</span><span class="n">n_total</span><span class="o">*</span><span class="mi">100</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">%)&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  Sin friends — público (solos) : </span><span class="si">{</span><span class="n">n_emp_pub</span><span class="si">:</span><span class="s2">,</span><span class="si">}</span><span class="s2">  (</span><span class="si">{</span><span class="n">n_emp_pub</span><span class="o">/</span><span class="n">n_total</span><span class="o">*</span><span class="mi">100</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">%)&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  Privados dentro de con-friends: </span><span class="si">{</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;is_private&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="si">:</span><span class="s2">,</span><span class="si">}</span><span class="s2">  (</span><span class="si">{</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;is_private&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">*</span><span class="mi">100</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">%)&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Duplicados de playerid:&quot;</span><span class="p">,</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;playerid&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">duplicated</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Self-loops (en su propia lista):&quot;</span><span class="p">,</span>
+      <span class="nb">sum</span><span class="p">(</span><span class="mi">1</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">records</span> <span class="k">if</span> <span class="n">r</span><span class="p">[</span><span class="s1">&#39;playerid&#39;</span><span class="p">]</span> <span class="ow">in</span> <span class="n">r</span><span class="p">[</span><span class="s1">&#39;friends&#39;</span><span class="p">]))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Amigos duplicados dentro de una misma lista:&quot;</span><span class="p">,</span>
+      <span class="nb">sum</span><span class="p">(</span><span class="mi">1</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">records</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">r</span><span class="p">[</span><span class="s1">&#39;friends&#39;</span><span class="p">])</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">r</span><span class="p">[</span><span class="s1">&#39;friends&#39;</span><span class="p">]))))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Diagnóstico de faltantes:
+  Con friends list              : 339,461  (79.9%)
+  Sin friends — privado         : 41,160  (9.7%)
+  Sin friends — público (solos) : 44,062  (10.4%)
+
+  Privados dentro de con-friends: 186,803  (55.0%)
+
+Duplicados de playerid: 0
+Self-loops (en su propia lista): 0
+Amigos duplicados dentro de una misma lista: 0
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">patch</span><span class="o">.</span><span class="n">set_facecolor</span><span class="p">(</span><span class="n">DARK_BG</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s1">&#39;Diagnóstico de Valores Faltantes — friends&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span>
+             <span class="n">fontweight</span><span class="o">=</span><span class="s1">&#39;bold&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">TEXT</span><span class="p">)</span>
+
+<span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">cats</span>   <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Con friends</span><span class="se">\n</span><span class="s1">+ privado&#39;</span><span class="p">,</span> <span class="s1">&#39;Con friends</span><span class="se">\n</span><span class="s1">+ público&#39;</span><span class="p">,</span>
+          <span class="s1">&#39;Sin friends</span><span class="se">\n</span><span class="s1">+ privado&#39;</span><span class="p">,</span> <span class="s1">&#39;Sin friends</span><span class="se">\n</span><span class="s1">+ público&#39;</span><span class="p">]</span>
+<span class="n">vals</span>   <span class="o">=</span> <span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;is_private&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">(),</span> <span class="p">(</span><span class="o">~</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;is_private&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">sum</span><span class="p">(),</span>
+          <span class="n">n_emp_priv</span><span class="p">,</span> <span class="n">n_emp_pub</span><span class="p">]</span>
+<span class="n">colors</span> <span class="o">=</span> <span class="p">[</span><span class="n">ACCENT5</span><span class="p">,</span> <span class="n">ACCENT2</span><span class="p">,</span> <span class="n">ACCENT3</span><span class="p">,</span> <span class="n">ACCENT4</span><span class="p">]</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">pie</span><span class="p">(</span><span class="n">vals</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="p">[</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">l</span><span class="si">}</span><span class="se">\n</span><span class="s1">(</span><span class="si">{</span><span class="n">v</span><span class="o">/</span><span class="n">n_total</span><span class="o">*</span><span class="mi">100</span><span class="si">:</span><span class="s1">.1f</span><span class="si">}</span><span class="s1">%)&#39;</span> <span class="k">for</span> <span class="n">l</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">cats</span><span class="p">,</span> <span class="n">vals</span><span class="p">)],</span>
+       <span class="n">colors</span><span class="o">=</span><span class="n">colors</span><span class="p">,</span> <span class="n">startangle</span><span class="o">=</span><span class="mi">90</span><span class="p">,</span> <span class="n">textprops</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;color&#39;</span><span class="p">:</span> <span class="n">TEXT</span><span class="p">,</span> <span class="s1">&#39;fontsize&#39;</span><span class="p">:</span> <span class="mi">8</span><span class="p">},</span>
+       <span class="n">autopct</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">%1.1f%%</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="n">title_ax</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="s1">&#39;Composición del Dataset&#39;</span><span class="p">)</span>
+
+<span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">datasets</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;purchased_games&#39;</span><span class="p">,</span> <span class="s1">&#39;friends&#39;</span><span class="p">]</span>
+<span class="n">pct_priv</span>  <span class="o">=</span> <span class="p">[</span><span class="mf">35.0</span><span class="p">,</span> <span class="mf">48.4</span><span class="p">]</span>   
+<span class="n">pct_pub</span>   <span class="o">=</span> <span class="p">[</span><span class="mf">19.2</span><span class="p">,</span> <span class="mf">51.6</span><span class="p">]</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">datasets</span><span class="p">))</span>
+<span class="n">w</span> <span class="o">=</span> <span class="mf">0.35</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="n">w</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">pct_priv</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="n">w</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">ACCENT5</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Privado&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.9</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">x</span> <span class="o">+</span> <span class="n">w</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">pct_pub</span><span class="p">,</span>  <span class="n">width</span><span class="o">=</span><span class="n">w</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">ACCENT4</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Público (sin datos reales)&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.9</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">pv</span><span class="p">,</span> <span class="n">pu</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">pct_priv</span><span class="p">,</span> <span class="n">pct_pub</span><span class="p">)):</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">i</span> <span class="o">-</span> <span class="n">w</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">pv</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">pv</span><span class="si">:</span><span class="s1">.1f</span><span class="si">}</span><span class="s1">%&#39;</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">TEXT</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="n">w</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">pu</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">pu</span><span class="si">:</span><span class="s1">.1f</span><span class="si">}</span><span class="s1">%&#39;</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">TEXT</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">(</span><span class="n">x</span><span class="p">);</span> <span class="n">ax</span><span class="o">.</span><span class="n">set_xticklabels</span><span class="p">(</span><span class="n">datasets</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">% d</span><span class="s1">e filas sin datos&#39;</span><span class="p">);</span> <span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">80</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="n">CARD_BG</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="n">MUTED</span><span class="p">,</span> <span class="n">labelcolor</span><span class="o">=</span><span class="n">TEXT</span><span class="p">)</span>
+<span class="n">title_ax</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="s1">&#39;Causa de Vacíos vs purchased_games&#39;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/c0d1861ee112e0c3ea078427f1324eed39cfb51d4c62daf28606d225504d7db6.png" src="_images/c0d1861ee112e0c3ea078427f1324eed39cfb51d4c62daf28606d225504d7db6.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">rows_all</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">records</span><span class="p">:</span>
+    <span class="n">rows_all</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s1">&#39;playerid&#39;</span><span class="p">:</span> <span class="n">r</span><span class="p">[</span><span class="s1">&#39;playerid&#39;</span><span class="p">],</span> <span class="s1">&#39;n_friends&#39;</span><span class="p">:</span> <span class="n">r</span><span class="p">[</span><span class="s1">&#39;n_friends&#39;</span><span class="p">],</span>
+                     <span class="s1">&#39;has_friends&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+                     <span class="s1">&#39;is_private&#39;</span><span class="p">:</span> <span class="n">r</span><span class="p">[</span><span class="s1">&#39;playerid&#39;</span><span class="p">]</span> <span class="ow">in</span> <span class="n">private_set</span><span class="p">,</span>
+                     <span class="s1">&#39;reason&#39;</span><span class="p">:</span> <span class="s1">&#39;ok_private&#39;</span> <span class="k">if</span> <span class="n">r</span><span class="p">[</span><span class="s1">&#39;playerid&#39;</span><span class="p">]</span> <span class="ow">in</span> <span class="n">private_set</span> <span class="k">else</span> <span class="s1">&#39;ok_public&#39;</span><span class="p">})</span>
+<span class="k">for</span> <span class="n">pid</span> <span class="ow">in</span> <span class="n">empty_private</span><span class="p">:</span>
+    <span class="n">rows_all</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s1">&#39;playerid&#39;</span><span class="p">:</span> <span class="n">pid</span><span class="p">,</span> <span class="s1">&#39;n_friends&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;has_friends&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+                     <span class="s1">&#39;is_private&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> <span class="s1">&#39;reason&#39;</span><span class="p">:</span> <span class="s1">&#39;private_no_data&#39;</span><span class="p">})</span>
+<span class="k">for</span> <span class="n">pid</span> <span class="ow">in</span> <span class="n">empty_not_priv</span><span class="p">:</span>
+    <span class="n">rows_all</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s1">&#39;playerid&#39;</span><span class="p">:</span> <span class="n">pid</span><span class="p">,</span> <span class="s1">&#39;n_friends&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;has_friends&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+                     <span class="s1">&#39;is_private&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span> <span class="s1">&#39;reason&#39;</span><span class="p">:</span> <span class="s1">&#39;no_friends&#39;</span><span class="p">})</span>
+
+<span class="n">df_all</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">rows_all</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Distribución de &#39;reason&#39;:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df_all</span><span class="p">[</span><span class="s1">&#39;reason&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;→ Para ML: usar df (has_friends=True) con flag is_private.&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;→ Usuarios &#39;no_friends&#39; pueden recibir n_friends=0 imputado — son jugadores solitarios.&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Distribución de &#39;reason&#39;:
+reason
+ok_private         186803
+ok_public          152658
+no_friends          44062
+private_no_data     41160
+Name: count, dtype: int64
+
+→ Para ML: usar df (has_friends=True) con flag is_private.
+→ Usuarios &#39;no_friends&#39; pueden recibir n_friends=0 imputado — son jugadores solitarios.
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<hr class="docutils" />
+<section id="distribucion-de-amigos-por-usuario">
+<h2>Distribución de Amigos por Usuario<a class="headerlink" href="#distribucion-de-amigos-por-usuario" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p>La distribución es <strong>moderadamente sesgada a la derecha</strong>: mediana 62 amigos, media 91. Mucho menos extrema que <code class="docutils literal notranslate"><span class="pre">lib_size</span></code>, lo que sugiere que las redes sociales en Steam tienen un techo más natural.</p></li>
+<li><p>El límite oficial de Steam para cuentas gratuitas es 250 amigos. En el dataset, 19,810 usuarios (5.8%) superan ese límite, lo que indica cuentas con Steam Level elevado (el límite puede aumentar hasta 2,000).</p></li>
+<li><p>617 usuarios tienen más de 1,000 amigos, y 16 usuarios alcanzan el máximo posible de 2,000 amigos.</p></li>
+<li><p>El umbral IQR (&gt;262 amigos) identifica 16,988 usuarios (5.0%) como outliers, una proporción moderada que refleja jugadores con redes sociales especialmente grandes.</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Estadísticas de n_friends:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;n_friends&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">describe</span><span class="p">(</span><span class="n">percentiles</span><span class="o">=</span><span class="p">[</span><span class="mf">.1</span><span class="p">,</span> <span class="mf">.25</span><span class="p">,</span> <span class="mf">.5</span><span class="p">,</span> <span class="mf">.75</span><span class="p">,</span> <span class="mf">.90</span><span class="p">,</span> <span class="mf">.95</span><span class="p">,</span> <span class="mf">.99</span><span class="p">]))</span>
+<span class="nb">print</span><span class="p">()</span>
+
+<span class="n">Q1</span>  <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;n_friends&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">quantile</span><span class="p">(</span><span class="mf">0.25</span><span class="p">)</span>
+<span class="n">Q3</span>  <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;n_friends&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">quantile</span><span class="p">(</span><span class="mf">0.75</span><span class="p">)</span>
+<span class="n">IQR</span> <span class="o">=</span> <span class="n">Q3</span> <span class="o">-</span> <span class="n">Q1</span>
+<span class="n">upper_iqr</span> <span class="o">=</span> <span class="n">Q3</span> <span class="o">+</span> <span class="mf">1.5</span> <span class="o">*</span> <span class="n">IQR</span>
+<span class="n">p99</span>       <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;n_friends&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">quantile</span><span class="p">(</span><span class="mf">0.99</span><span class="p">)</span>
+
+<span class="n">STEAM_FREE_LIMIT</span>    <span class="o">=</span> <span class="mi">250</span>
+<span class="n">STEAM_PREMIUM_LIMIT</span> <span class="o">=</span> <span class="mi">2000</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Q1=</span><span class="si">{</span><span class="n">Q1</span><span class="si">:</span><span class="s2">.0f</span><span class="si">}</span><span class="s2">  Q3=</span><span class="si">{</span><span class="n">Q3</span><span class="si">:</span><span class="s2">.0f</span><span class="si">}</span><span class="s2">  IQR=</span><span class="si">{</span><span class="n">IQR</span><span class="si">:</span><span class="s2">.0f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Umbral IQR (Q3 + 1.5×IQR)         : </span><span class="si">{</span><span class="n">upper_iqr</span><span class="si">:</span><span class="s2">.0f</span><span class="si">}</span><span class="s2"> amigos&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Percentil 99                       : </span><span class="si">{</span><span class="n">p99</span><span class="si">:</span><span class="s2">.0f</span><span class="si">}</span><span class="s2"> amigos&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Límite Steam free (250)            : </span><span class="si">{</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;n_friends&#39;</span><span class="p">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">250</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="si">}</span><span class="s2"> en el tope exacto&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Usuarios sobre límite free (&gt;250)  : </span><span class="si">{</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;n_friends&#39;</span><span class="p">]</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">250</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="si">:</span><span class="s2">,</span><span class="si">}</span><span class="s2">  (</span><span class="si">{</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;n_friends&#39;</span><span class="p">]</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">250</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">*</span><span class="mi">100</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">%)&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Usuarios sobre 1000 amigos         : </span><span class="si">{</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;n_friends&#39;</span><span class="p">]</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">1000</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="si">:</span><span class="s2">,</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Usuarios con máximo premium (2000) : </span><span class="si">{</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;n_friends&#39;</span><span class="p">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">2000</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Outliers IQR (&gt;</span><span class="si">{</span><span class="n">upper_iqr</span><span class="si">:</span><span class="s2">.0f</span><span class="si">}</span><span class="s2">)            : </span><span class="si">{</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;n_friends&#39;</span><span class="p">]</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">upper_iqr</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="si">:</span><span class="s2">,</span><span class="si">}</span><span class="s2">  (</span><span class="si">{</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;n_friends&#39;</span><span class="p">]</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">upper_iqr</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">*</span><span class="mi">100</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">%)&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Estadísticas de n_friends:
+count    339461.000000
+mean         91.036478
+std         109.228394
+min           1.000000
+10%          10.000000
+25%          27.000000
+50%          62.000000
+75%         121.000000
+90%         205.000000
+95%         263.000000
+99%         427.000000
+max        2000.000000
+Name: n_friends, dtype: float64
+
+Q1=27  Q3=121  IQR=94
+Umbral IQR (Q3 + 1.5×IQR)         : 262 amigos
+Percentil 99                       : 427 amigos
+
+Límite Steam free (250)            : 240 en el tope exacto
+Usuarios sobre límite free (&gt;250)  : 19,810  (5.8%)
+Usuarios sobre 1000 amigos         : 617
+Usuarios con máximo premium (2000) : 16
+Outliers IQR (&gt;262)            : 16,988  (5.0%)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">22</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">patch</span><span class="o">.</span><span class="n">set_facecolor</span><span class="p">(</span><span class="n">DARK_BG</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s1">&#39;Distribución de Amigos por Usuario&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">&#39;bold&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">TEXT</span><span class="p">)</span>
+
+<span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;n_friends&#39;</span><span class="p">],</span> <span class="n">bins</span><span class="o">=</span><span class="mi">60</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">ACCENT1</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="n">DARK_BG</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;n_friends&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">median</span><span class="p">(),</span> <span class="n">color</span><span class="o">=</span><span class="n">ACCENT4</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span>
+           <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;Mediana: </span><span class="si">{</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;n_friends&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">median</span><span class="p">()</span><span class="si">:</span><span class="s1">.0f</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">upper_iqr</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">ACCENT3</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;:&#39;</span><span class="p">,</span>
+           <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;IQR upper: </span><span class="si">{</span><span class="n">upper_iqr</span><span class="si">:</span><span class="s1">.0f</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">STEAM_FREE_LIMIT</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">ACCENT2</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;-.&#39;</span><span class="p">,</span>
+           <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;Límite free: </span><span class="si">{</span><span class="n">STEAM_FREE_LIMIT</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="n">CARD_BG</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="n">MUTED</span><span class="p">,</span> <span class="n">labelcolor</span><span class="o">=</span><span class="n">TEXT</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Número de amigos&#39;</span><span class="p">);</span> <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Usuarios&#39;</span><span class="p">)</span>
+<span class="n">title_ax</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="s1">&#39;  Distribución Completa de n_friends&#39;</span><span class="p">)</span>
+
+<span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;is_private&#39;</span><span class="p">]</span><span class="o">==</span><span class="kc">False</span><span class="p">][</span><span class="s1">&#39;n_friends&#39;</span><span class="p">],</span> <span class="n">bins</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">ACCENT2</span><span class="p">,</span>
+        <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="n">DARK_BG</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Público&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;is_private&#39;</span><span class="p">]</span><span class="o">==</span><span class="kc">True</span><span class="p">][</span><span class="s1">&#39;n_friends&#39;</span><span class="p">],</span>  <span class="n">bins</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">ACCENT5</span><span class="p">,</span>
+        <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="n">DARK_BG</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Privado&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;is_private&#39;</span><span class="p">]</span><span class="o">==</span><span class="kc">False</span><span class="p">][</span><span class="s1">&#39;n_friends&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">median</span><span class="p">(),</span> <span class="n">color</span><span class="o">=</span><span class="n">ACCENT2</span><span class="p">,</span>
+           <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span>
+           <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;Med. público: </span><span class="si">{</span><span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;is_private&quot;</span><span class="p">]</span><span class="o">==</span><span class="kc">False</span><span class="p">][</span><span class="s2">&quot;n_friends&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">median</span><span class="p">()</span><span class="si">:</span><span class="s1">.0f</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;is_private&#39;</span><span class="p">]</span><span class="o">==</span><span class="kc">True</span><span class="p">][</span><span class="s1">&#39;n_friends&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">median</span><span class="p">(),</span> <span class="n">color</span><span class="o">=</span><span class="n">ACCENT5</span><span class="p">,</span>
+           <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span>
+           <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;Med. privado: </span><span class="si">{</span><span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;is_private&quot;</span><span class="p">]</span><span class="o">==</span><span class="kc">True</span><span class="p">][</span><span class="s2">&quot;n_friends&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">median</span><span class="p">()</span><span class="si">:</span><span class="s1">.0f</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="n">CARD_BG</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="n">MUTED</span><span class="p">,</span> <span class="n">labelcolor</span><span class="o">=</span><span class="n">TEXT</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Número de amigos&#39;</span><span class="p">);</span> <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Usuarios&#39;</span><span class="p">)</span>
+<span class="n">title_ax</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="s1">&#39;  Público vs Privado&#39;</span><span class="p">)</span>
+
+<span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+<span class="n">bins_r</span>   <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">250</span><span class="p">,</span> <span class="mi">500</span><span class="p">,</span> <span class="mi">1000</span><span class="p">,</span> <span class="mi">2001</span><span class="p">]</span>
+<span class="n">labels_r</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;1–5&#39;</span><span class="p">,</span><span class="s1">&#39;6–10&#39;</span><span class="p">,</span><span class="s1">&#39;11–25&#39;</span><span class="p">,</span><span class="s1">&#39;26–50&#39;</span><span class="p">,</span><span class="s1">&#39;51–100&#39;</span><span class="p">,</span><span class="s1">&#39;101–250&#39;</span><span class="p">,</span><span class="s1">&#39;251–500&#39;</span><span class="p">,</span><span class="s1">&#39;501–1k&#39;</span><span class="p">,</span><span class="s1">&#39;1k–2k&#39;</span><span class="p">]</span>
+<span class="n">df</span><span class="p">[</span><span class="s1">&#39;friend_bucket&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">cut</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;n_friends&#39;</span><span class="p">],</span> <span class="n">bins</span><span class="o">=</span><span class="n">bins_r</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="n">labels_r</span><span class="p">)</span>
+<span class="n">bc</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;friend_bucket&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span><span class="o">.</span><span class="n">sort_index</span><span class="p">()</span>
+<span class="n">colors_r</span> <span class="o">=</span> <span class="p">[</span><span class="n">ACCENT2</span> <span class="k">if</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">5</span> <span class="k">else</span> <span class="n">ACCENT4</span> <span class="k">if</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">6</span> <span class="k">else</span> <span class="n">ACCENT3</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">bc</span><span class="p">))]</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">bc</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">),</span> <span class="n">bc</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">colors_r</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">bc</span><span class="o">.</span><span class="n">values</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">v</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">v</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">)</span><span class="o">*</span><span class="mf">0.003</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">v</span><span class="si">:</span><span class="s1">,</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">TEXT</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="mf">5.5</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">ACCENT2</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
+           <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Límite free (250)&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="n">rotation</span><span class="o">=</span><span class="mi">35</span><span class="p">);</span> <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Usuarios&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="n">CARD_BG</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="n">MUTED</span><span class="p">,</span> <span class="n">labelcolor</span><span class="o">=</span><span class="n">TEXT</span><span class="p">)</span>
+<span class="n">title_ax</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="s1">&#39;  Usuarios por Rango de Amigos&#39;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/4c6b7e5352d97b3a3555db5d3102be8b3f066acda818b599c673e6e4e493185a.png" src="_images/4c6b7e5352d97b3a3555db5d3102be8b3f066acda818b599c673e6e4e493185a.png" />
+</div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="analisis-de-grafo">
+<h2>Análisis de Grafo<a class="headerlink" href="#analisis-de-grafo" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p>La red de amigos forma un grafo dirigido masivo con 30.9M aristas. Sin embargo, solo 1.48M aristas (4.8%) conectan usuarios que aparecen como nodos en el dataset; el resto apunta a jugadores fuera de la muestra.</p></li>
+<li><p>Se detectan 1,473,180 aristas recíprocas, equivalentes a 736,590 pares mutuos. Esto representa aproximadamente 4.77% de todas las aristas, lo que refleja reciprocidad limitada dentro del subconjunto observable.</p></li>
+<li><p>El in-degree (cuántas veces un jugador aparece en listas de amigos) tiene mediana 1 y media 1.76, lo que indica que la mayoría de nodos son periféricos dentro del grafo.</p></li>
+<li><p>Sin embargo, existen hubs sociales con in-degree muy alto (máximo 1,123), que probablemente corresponden a usuarios muy activos, comunidades o figuras públicas dentro de Steam.</p></li>
+<li><p>El grafo contienen 17.5M nodos únicos con al menos una referencia, lo que muestra que el dataset captura solo una pequeña fracción del grafo completo de Steam, pero suficiente para observar su estructura de red.</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">players_in_sample</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;playerid&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">())</span>
+
+<span class="n">total_directed</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;n_friends&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+<span class="n">mutual_pairs</span>   <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+<span class="n">reciprocal_edges</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="k">for</span> <span class="n">pid</span><span class="p">,</span> <span class="n">fs</span> <span class="ow">in</span> <span class="n">friend_sets</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="k">for</span> <span class="n">fid</span> <span class="ow">in</span> <span class="n">fs</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">fid</span> <span class="ow">in</span> <span class="n">friend_sets</span> <span class="ow">and</span> <span class="n">pid</span> <span class="ow">in</span> <span class="n">friend_sets</span><span class="p">[</span><span class="n">fid</span><span class="p">]:</span>
+            <span class="n">reciprocal_edges</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="n">mutual_pairs</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="nb">tuple</span><span class="p">(</span><span class="nb">sorted</span><span class="p">([</span><span class="n">pid</span><span class="p">,</span> <span class="n">fid</span><span class="p">])))</span>
+
+<span class="n">edges_within</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="mi">1</span> <span class="k">for</span> <span class="n">pid</span><span class="p">,</span> <span class="n">fs</span> <span class="ow">in</span> <span class="n">friend_sets</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+                   <span class="k">for</span> <span class="n">fid</span> <span class="ow">in</span> <span class="n">fs</span> <span class="k">if</span> <span class="n">fid</span> <span class="ow">in</span> <span class="n">players_in_sample</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Aristas dirigidas totales          : </span><span class="si">{</span><span class="n">total_directed</span><span class="si">:</span><span class="s2">,</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Aristas entre nodos en la muestra  : </span><span class="si">{</span><span class="n">edges_within</span><span class="si">:</span><span class="s2">,</span><span class="si">}</span><span class="s2">  (</span><span class="si">{</span><span class="n">edges_within</span><span class="o">/</span><span class="n">total_directed</span><span class="o">*</span><span class="mi">100</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">%)&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Aristas recíprocas (A→B y B→A)     : </span><span class="si">{</span><span class="n">reciprocal_edges</span><span class="si">:</span><span class="s2">,</span><span class="si">}</span><span class="s2">  (</span><span class="si">{</span><span class="n">reciprocal_edges</span><span class="o">/</span><span class="n">total_directed</span><span class="o">*</span><span class="mi">100</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">%)&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Pares mutuos únicos                : </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">mutual_pairs</span><span class="p">)</span><span class="si">:</span><span class="s2">,</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">()</span>
+
+<span class="n">in_deg_vals</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">in_degree</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+<span class="n">in_deg_s</span>    <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">in_deg_vals</span><span class="p">)</span>
+<span class="n">m</span>           <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">in_deg_s</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Nodos únicos con in-degree &gt; 0     : </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">in_degree</span><span class="p">)</span><span class="si">:</span><span class="s2">,</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;In-degree — median=</span><span class="si">{</span><span class="n">in_deg_s</span><span class="p">[</span><span class="n">m</span><span class="o">//</span><span class="mi">2</span><span class="p">]</span><span class="si">}</span><span class="s2">, mean=</span><span class="si">{</span><span class="nb">sum</span><span class="p">(</span><span class="n">in_deg_vals</span><span class="p">)</span><span class="o">/</span><span class="n">m</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">, max=</span><span class="si">{</span><span class="nb">max</span><span class="p">(</span><span class="n">in_deg_vals</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Top 10 jugadores más referenciados (mayor in-degree):&quot;</span><span class="p">)</span>
+<span class="n">display</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">in_degree</span><span class="o">.</span><span class="n">most_common</span><span class="p">(</span><span class="mi">10</span><span class="p">),</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;playerid&#39;</span><span class="p">,</span> <span class="s1">&#39;in_degree&#39;</span><span class="p">]))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Aristas dirigidas totales          : 30,903,334
+Aristas entre nodos en la muestra  : 1,478,645  (4.8%)
+Aristas recíprocas (A→B y B→A)     : 1,473,180  (4.77%)
+Pares mutuos únicos                : 736,590
+
+Nodos únicos con in-degree &gt; 0     : 17,527,499
+In-degree — median=1, mean=1.76, max=1123
+
+Top 10 jugadores más referenciados (mayor in-degree):
+</pre></div>
+</div>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>playerid</th>
+      <th>in_degree</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>76561198146253210</td>
+      <td>1123</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>76561198842603734</td>
+      <td>994</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>76561198083134207</td>
+      <td>928</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>76561197993777514</td>
+      <td>796</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>76561198117967228</td>
+      <td>693</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>76561198042359209</td>
+      <td>635</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>76561197970417960</td>
+      <td>589</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>76561198194795287</td>
+      <td>536</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>76561198045324497</td>
+      <td>511</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>76561198036629241</td>
+      <td>477</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">22</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">patch</span><span class="o">.</span><span class="n">set_facecolor</span><span class="p">(</span><span class="n">DARK_BG</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s1">&#39;Análisis de Grafo — Reciprocidad e In-degree&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span>
+             <span class="n">fontweight</span><span class="o">=</span><span class="s1">&#39;bold&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">TEXT</span><span class="p">)</span>
+
+<span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">pie</span><span class="p">([</span><span class="n">reciprocal_edges</span><span class="p">,</span> <span class="n">total_directed</span> <span class="o">-</span> <span class="n">reciprocal_edges</span><span class="p">],</span>
+       <span class="n">labels</span><span class="o">=</span><span class="p">[</span><span class="sa">f</span><span class="s1">&#39;Recíproca</span><span class="se">\n</span><span class="s1">(</span><span class="si">{</span><span class="n">reciprocal_edges</span><span class="o">/</span><span class="n">total_directed</span><span class="o">*</span><span class="mi">100</span><span class="si">:</span><span class="s1">.1f</span><span class="si">}</span><span class="s1">%)&#39;</span><span class="p">,</span>
+               <span class="sa">f</span><span class="s1">&#39;Unidireccional</span><span class="se">\n</span><span class="s1">(</span><span class="si">{</span><span class="p">(</span><span class="n">total_directed</span><span class="o">-</span><span class="n">reciprocal_edges</span><span class="p">)</span><span class="o">/</span><span class="n">total_directed</span><span class="o">*</span><span class="mi">100</span><span class="si">:</span><span class="s1">.1f</span><span class="si">}</span><span class="s1">%)&#39;</span><span class="p">],</span>
+       <span class="n">colors</span><span class="o">=</span><span class="p">[</span><span class="n">ACCENT2</span><span class="p">,</span> <span class="n">ACCENT3</span><span class="p">],</span> <span class="n">startangle</span><span class="o">=</span><span class="mi">90</span><span class="p">,</span>
+       <span class="n">textprops</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;color&#39;</span><span class="p">:</span> <span class="n">TEXT</span><span class="p">},</span> <span class="n">autopct</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">%1.1f%%</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="n">title_ax</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="s1">&#39;  Reciprocidad de Aristas&#39;</span><span class="p">)</span>
+
+<span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">in_deg_series</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">in_deg_vals</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">in_deg_series</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">upper</span><span class="o">=</span><span class="mi">30</span><span class="p">),</span> <span class="n">bins</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">ACCENT1</span><span class="p">,</span>
+        <span class="n">edgecolor</span><span class="o">=</span><span class="n">DARK_BG</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">log</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">in_deg_series</span><span class="o">.</span><span class="n">median</span><span class="p">(),</span> <span class="n">color</span><span class="o">=</span><span class="n">ACCENT4</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span>
+           <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;Mediana: </span><span class="si">{</span><span class="n">in_deg_series</span><span class="o">.</span><span class="n">median</span><span class="p">()</span><span class="si">:</span><span class="s1">.0f</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="n">CARD_BG</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="n">MUTED</span><span class="p">,</span> <span class="n">labelcolor</span><span class="o">=</span><span class="n">TEXT</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;In-degree (veces referenciado)&#39;</span><span class="p">);</span> <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Nodos (log)&#39;</span><span class="p">)</span>
+<span class="n">title_ax</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="s1">&#39;  Distribución In-degree (cap. 30)&#39;</span><span class="p">)</span>
+
+<span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+<span class="n">top20_in</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">in_degree</span><span class="o">.</span><span class="n">most_common</span><span class="p">(</span><span class="mi">20</span><span class="p">),</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;playerid&#39;</span><span class="p">,</span> <span class="s1">&#39;in_degree&#39;</span><span class="p">])</span>
+<span class="n">colors_in</span> <span class="o">=</span> <span class="p">[</span><span class="n">ACCENT3</span> <span class="k">if</span> <span class="n">v</span> <span class="o">==</span> <span class="n">top20_in</span><span class="p">[</span><span class="s1">&#39;in_degree&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="k">else</span> <span class="n">ACCENT4</span>
+             <span class="k">if</span> <span class="n">v</span> <span class="o">&gt;</span> <span class="n">top20_in</span><span class="p">[</span><span class="s1">&#39;in_degree&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">quantile</span><span class="p">(</span><span class="mf">0.75</span><span class="p">)</span> <span class="k">else</span> <span class="n">ACCENT1</span>
+             <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">top20_in</span><span class="p">[</span><span class="s1">&#39;in_degree&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">]</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">barh</span><span class="p">(</span><span class="n">top20_in</span><span class="p">[</span><span class="s1">&#39;playerid&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)[::</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span>
+        <span class="n">top20_in</span><span class="p">[</span><span class="s1">&#39;in_degree&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="n">colors_in</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;In-degree&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="n">labelsize</span><span class="o">=</span><span class="mi">7</span><span class="p">)</span>
+<span class="n">title_ax</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="s1">&#39;  Top 20 Nodos por In-degree&#39;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/2edd2f4fe79bf2957524e7618cdeb091af085f337fa16ecbd3affe721ee209fc.png" src="_images/2edd2f4fe79bf2957524e7618cdeb091af085f337fa16ecbd3affe721ee209fc.png" />
+</div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="outliers-usuarios-con-demasiados-amigos">
+<h2>Outliers: Usuarios con Demasiados Amigos<a class="headerlink" href="#outliers-usuarios-con-demasiados-amigos" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Steam tiene dos límites según el nivel de cuenta:</p>
+<ul>
+<li><p><strong>250 amigos</strong> — cuentas gratuitas (Steam Level 0)</p></li>
+<li><p><strong>Hasta 2,000</strong> — cuentas con Steam Level elevado (cada 10 niveles suman 5 slots)</p></li>
+</ul>
+</li>
+<li><p>Los usuarios sobre 250 amigos son plausibles si tienen cuentas premium activas. Sin embargo, el análisis debe tener en cuenta que <code class="docutils literal notranslate"><span class="pre">n_friends</span></code> puede no reflejar amigos activos — muchas de estas relaciones pueden ser inactivas.</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">social_tier</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">upper</span><span class="o">=</span><span class="n">upper_iqr</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">n</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>      <span class="k">return</span> <span class="s1">&#39;solitario&#39;</span>
+    <span class="k">elif</span> <span class="n">n</span> <span class="o">&lt;=</span> <span class="mi">25</span><span class="p">:</span>   <span class="k">return</span> <span class="s1">&#39;casual&#39;</span>
+    <span class="k">elif</span> <span class="n">n</span> <span class="o">&lt;=</span> <span class="mi">250</span><span class="p">:</span>  <span class="k">return</span> <span class="s1">&#39;social&#39;</span>
+    <span class="k">else</span><span class="p">:</span>           <span class="k">return</span> <span class="s1">&#39;hub&#39;</span>
+
+<span class="n">df</span><span class="p">[</span><span class="s1">&#39;social_tier&#39;</span><span class="p">]</span>     <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;n_friends&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">social_tier</span><span class="p">)</span>
+<span class="n">df</span><span class="p">[</span><span class="s1">&#39;n_friends_log&#39;</span><span class="p">]</span>   <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log1p</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;n_friends&#39;</span><span class="p">])</span>
+<span class="n">df</span><span class="p">[</span><span class="s1">&#39;over_free_limit&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;n_friends&#39;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">STEAM_FREE_LIMIT</span>
+
+<span class="n">n_solitarios</span> <span class="o">=</span> <span class="n">n_emp_pub</span>  
+
+<span class="n">tier_counts</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;social_tier&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;social_tier (usuarios con friends list):&quot;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">t</span><span class="p">,</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">tier_counts</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  </span><span class="si">{</span><span class="n">t</span><span class="si">:</span><span class="s2">&lt;12</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">n</span><span class="si">:</span><span class="s2">,</span><span class="si">}</span><span class="s2">  (</span><span class="si">{</span><span class="n">n</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">)</span><span class="o">*</span><span class="mi">100</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">%)&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  </span><span class="si">{</span><span class="s1">&#39;solitario&#39;</span><span class="si">:</span><span class="s2">&lt;12</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">n_solitarios</span><span class="si">:</span><span class="s2">,</span><span class="si">}</span><span class="s2">  (usuarios públicos sin amigos — df_all)&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Usuarios sobre límite free (&gt;250): </span><span class="si">{</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;over_free_limit&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="si">:</span><span class="s2">,</span><span class="si">}</span><span class="s2">  (</span><span class="si">{</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;over_free_limit&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">*</span><span class="mi">100</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">%)&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;n_friends_log stats:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;n_friends_log&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">3</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>social_tier (usuarios con friends list):
+  social      : 238,857  (70.4%)
+  casual      : 80,794  (23.8%)
+  hub         : 19,810  (5.8%)
+  solitario   : 44,062  (usuarios públicos sin amigos — df_all)
+
+Usuarios sobre límite free (&gt;250): 19,810  (5.8%)
+
+n_friends_log stats:
+count    339461.000
+mean          3.982
+std           1.155
+min           0.693
+25%           3.332
+50%           4.143
+75%           4.804
+max           7.601
+Name: n_friends_log, dtype: float64
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">22</span><span class="p">,</span> <span class="mi">12</span><span class="p">))</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">patch</span><span class="o">.</span><span class="n">set_facecolor</span><span class="p">(</span><span class="n">DARK_BG</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s1">&#39;Outliers — Amigos por Usuario&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span>
+             <span class="n">fontweight</span><span class="o">=</span><span class="s1">&#39;bold&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">TEXT</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mf">0.99</span><span class="p">)</span>
+
+<span class="n">tier_order</span>  <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;casual&#39;</span><span class="p">,</span> <span class="s1">&#39;social&#39;</span><span class="p">,</span> <span class="s1">&#39;hub&#39;</span><span class="p">]</span>
+<span class="n">tier_colors</span> <span class="o">=</span> <span class="p">[</span><span class="n">ACCENT2</span><span class="p">,</span> <span class="n">ACCENT1</span><span class="p">,</span> <span class="n">ACCENT3</span><span class="p">]</span>
+
+<span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+<span class="n">bp</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">boxplot</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;n_friends&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">vert</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">patch_artist</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">widths</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
+                <span class="n">boxprops</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">facecolor</span><span class="o">=</span><span class="n">ACCENT1</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">MUTED</span><span class="p">),</span>
+                <span class="n">medianprops</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="n">ACCENT4</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">),</span>
+                <span class="n">whiskerprops</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="n">MUTED</span><span class="p">),</span> <span class="n">capprops</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="n">MUTED</span><span class="p">),</span>
+                <span class="n">flierprops</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">marker</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">ACCENT3</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">3</span><span class="p">))</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="n">upper_iqr</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">ACCENT4</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span>
+           <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;IQR upper (</span><span class="si">{</span><span class="n">upper_iqr</span><span class="si">:</span><span class="s1">.0f</span><span class="si">}</span><span class="s1">)&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="n">STEAM_FREE_LIMIT</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">ACCENT2</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;-.&#39;</span><span class="p">,</span>
+           <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;Límite free (</span><span class="si">{</span><span class="n">STEAM_FREE_LIMIT</span><span class="si">}</span><span class="s1">)&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="n">CARD_BG</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="n">MUTED</span><span class="p">,</span> <span class="n">labelcolor</span><span class="o">=</span><span class="n">TEXT</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Amigos&#39;</span><span class="p">);</span> <span class="n">ax</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">([])</span>
+<span class="n">title_ax</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="s1">&#39;  Boxplot — n_friends&#39;</span><span class="p">)</span>
+
+<span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+<span class="n">all_tiers</span>   <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;solitario&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="n">tier_order</span>
+<span class="n">all_colors</span>  <span class="o">=</span> <span class="p">[</span><span class="n">MUTED</span><span class="p">,</span> <span class="n">ACCENT2</span><span class="p">,</span> <span class="n">ACCENT1</span><span class="p">,</span> <span class="n">ACCENT3</span><span class="p">]</span>
+<span class="n">all_vals</span>    <span class="o">=</span> <span class="p">[</span><span class="n">n_solitarios</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="n">tier_counts</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">tier_order</span><span class="p">]</span>
+<span class="n">bars_t</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">all_tiers</span><span class="p">,</span> <span class="n">all_vals</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">all_colors</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">bar</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">bars_t</span><span class="p">,</span> <span class="n">all_vals</span><span class="p">):</span>
+    <span class="n">tot</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">)</span> <span class="o">+</span> <span class="n">n_solitarios</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">bar</span><span class="o">.</span><span class="n">get_x</span><span class="p">()</span> <span class="o">+</span> <span class="n">bar</span><span class="o">.</span><span class="n">get_width</span><span class="p">()</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">bar</span><span class="o">.</span><span class="n">get_height</span><span class="p">()</span> <span class="o">+</span> <span class="n">tot</span><span class="o">*</span><span class="mf">0.005</span><span class="p">,</span>
+            <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">val</span><span class="si">:</span><span class="s1">,</span><span class="si">}</span><span class="se">\n</span><span class="s1">(</span><span class="si">{</span><span class="n">val</span><span class="o">/</span><span class="n">tot</span><span class="o">*</span><span class="mi">100</span><span class="si">:</span><span class="s1">.1f</span><span class="si">}</span><span class="s1">%)&#39;</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span>
+            <span class="n">color</span><span class="o">=</span><span class="n">TEXT</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">&#39;bold&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Usuarios&#39;</span><span class="p">)</span>
+<span class="n">title_ax</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="s1">&#39; Usuarios por social_tier&#39;</span><span class="p">)</span>
+
+<span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;n_friends&#39;</span><span class="p">],</span>     <span class="n">bins</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">ACCENT3</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.6</span><span class="p">,</span>
+        <span class="n">edgecolor</span><span class="o">=</span><span class="n">DARK_BG</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Raw&#39;</span><span class="p">,</span> <span class="n">density</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">ax2</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">twinx</span><span class="p">()</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;n_friends_log&#39;</span><span class="p">],</span> <span class="n">bins</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">ACCENT2</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.6</span><span class="p">,</span>
+         <span class="n">edgecolor</span><span class="o">=</span><span class="n">DARK_BG</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;log1p&#39;</span><span class="p">,</span> <span class="n">density</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">colors</span><span class="o">=</span><span class="n">MUTED</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;n_friends&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Densidad (raw)&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">ACCENT3</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Densidad (log1p)&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">ACCENT2</span><span class="p">)</span>
+<span class="n">lines1</span><span class="p">,</span> <span class="n">labels1</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">get_legend_handles_labels</span><span class="p">()</span>
+<span class="n">lines2</span><span class="p">,</span> <span class="n">labels2</span> <span class="o">=</span> <span class="n">ax2</span><span class="o">.</span><span class="n">get_legend_handles_labels</span><span class="p">()</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">lines1</span> <span class="o">+</span> <span class="n">lines2</span><span class="p">,</span> <span class="n">labels1</span> <span class="o">+</span> <span class="n">labels2</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span>
+          <span class="n">facecolor</span><span class="o">=</span><span class="n">CARD_BG</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="n">MUTED</span><span class="p">,</span> <span class="n">labelcolor</span><span class="o">=</span><span class="n">TEXT</span><span class="p">)</span>
+<span class="n">title_ax</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="s1">&#39;  Raw vs log1p(n_friends)&#39;</span><span class="p">,</span> <span class="s1">&#39;Log-transform reduce el sesgo&#39;</span><span class="p">)</span>
+
+<span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+<span class="n">data_box</span> <span class="o">=</span> <span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;social_tier&#39;</span><span class="p">]</span><span class="o">==</span><span class="n">t</span><span class="p">][</span><span class="s1">&#39;n_friends&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">tier_order</span><span class="p">]</span>
+<span class="n">bp2</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">boxplot</span><span class="p">(</span><span class="n">data_box</span><span class="p">,</span> <span class="n">vert</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">patch_artist</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">widths</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
+                 <span class="n">medianprops</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="n">ACCENT4</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">),</span>
+                 <span class="n">whiskerprops</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="n">MUTED</span><span class="p">),</span> <span class="n">capprops</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="n">MUTED</span><span class="p">),</span>
+                 <span class="n">flierprops</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">marker</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">2</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">patch</span><span class="p">,</span> <span class="n">color</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">bp2</span><span class="p">[</span><span class="s1">&#39;boxes&#39;</span><span class="p">],</span> <span class="n">tier_colors</span><span class="p">):</span>
+    <span class="n">patch</span><span class="o">.</span><span class="n">set_facecolor</span><span class="p">(</span><span class="n">color</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xticklabels</span><span class="p">(</span><span class="n">tier_order</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="n">STEAM_FREE_LIMIT</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">ACCENT2</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;-.&#39;</span><span class="p">,</span>
+           <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;Límite free (</span><span class="si">{</span><span class="n">STEAM_FREE_LIMIT</span><span class="si">}</span><span class="s1">)&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="n">CARD_BG</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="n">MUTED</span><span class="p">,</span> <span class="n">labelcolor</span><span class="o">=</span><span class="n">TEXT</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Amigos&#39;</span><span class="p">)</span>
+<span class="n">title_ax</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="s1">&#39;  Boxplot por social_tier&#39;</span><span class="p">)</span>
+
+<span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+<span class="n">pub_t</span>  <span class="o">=</span> <span class="p">[</span><span class="n">df</span><span class="p">[(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;is_private&#39;</span><span class="p">]</span><span class="o">==</span><span class="kc">False</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;social_tier&#39;</span><span class="p">]</span><span class="o">==</span><span class="n">t</span><span class="p">)]</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">tier_order</span><span class="p">]</span>
+<span class="n">priv_t</span> <span class="o">=</span> <span class="p">[</span><span class="n">df</span><span class="p">[(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;is_private&#39;</span><span class="p">]</span><span class="o">==</span><span class="kc">True</span> <span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;social_tier&#39;</span><span class="p">]</span><span class="o">==</span><span class="n">t</span><span class="p">)]</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">tier_order</span><span class="p">]</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">tier_order</span><span class="p">))</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">pub_t</span><span class="p">,</span>  <span class="n">color</span><span class="o">=</span><span class="n">ACCENT2</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Público&#39;</span><span class="p">,</span>  <span class="n">alpha</span><span class="o">=</span><span class="mf">0.85</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">priv_t</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">ACCENT5</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Privado&#39;</span><span class="p">,</span>  <span class="n">alpha</span><span class="o">=</span><span class="mf">0.85</span><span class="p">,</span> <span class="n">bottom</span><span class="o">=</span><span class="n">pub_t</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">(</span><span class="n">x</span><span class="p">);</span> <span class="n">ax</span><span class="o">.</span><span class="n">set_xticklabels</span><span class="p">(</span><span class="n">tier_order</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Usuarios&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="n">CARD_BG</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="n">MUTED</span><span class="p">,</span> <span class="n">labelcolor</span><span class="o">=</span><span class="n">TEXT</span><span class="p">)</span>
+<span class="n">title_ax</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="s1">&#39;  social_tier × Privacidad&#39;</span><span class="p">)</span>
+
+<span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
+<span class="n">top15</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">nlargest</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="s1">&#39;n_friends&#39;</span><span class="p">)</span>
+<span class="n">colors_t15</span> <span class="o">=</span> <span class="p">[</span><span class="n">ACCENT5</span> <span class="k">if</span> <span class="n">priv</span> <span class="k">else</span> <span class="n">ACCENT2</span> <span class="k">for</span> <span class="n">priv</span> <span class="ow">in</span> <span class="n">top15</span><span class="p">[</span><span class="s1">&#39;is_private&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">]</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">barh</span><span class="p">(</span><span class="n">top15</span><span class="p">[</span><span class="s1">&#39;playerid&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)[::</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">top15</span><span class="p">[</span><span class="s1">&#39;n_friends&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span>
+        <span class="n">color</span><span class="o">=</span><span class="n">colors_t15</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">STEAM_FREE_LIMIT</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">ACCENT2</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;-.&#39;</span><span class="p">,</span>
+           <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;Límite free (</span><span class="si">{</span><span class="n">STEAM_FREE_LIMIT</span><span class="si">}</span><span class="s1">)&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">upper_iqr</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">ACCENT4</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span>
+           <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;IQR upper (</span><span class="si">{</span><span class="n">upper_iqr</span><span class="si">:</span><span class="s1">.0f</span><span class="si">}</span><span class="s1">)&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="n">CARD_BG</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="n">MUTED</span><span class="p">,</span> <span class="n">labelcolor</span><span class="o">=</span><span class="n">TEXT</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="n">labelsize</span><span class="o">=</span><span class="mi">7</span><span class="p">);</span> <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Amigos&#39;</span><span class="p">)</span>
+<span class="n">legend_els</span> <span class="o">=</span> <span class="p">[</span><span class="n">mpatches</span><span class="o">.</span><span class="n">Patch</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="n">ACCENT2</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Público&#39;</span><span class="p">),</span>
+              <span class="n">mpatches</span><span class="o">.</span><span class="n">Patch</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="n">ACCENT5</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Privado&#39;</span><span class="p">)]</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">handles</span><span class="o">=</span><span class="n">legend_els</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="n">CARD_BG</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="n">MUTED</span><span class="p">,</span> <span class="n">labelcolor</span><span class="o">=</span><span class="n">TEXT</span><span class="p">)</span>
+<span class="n">title_ax</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="s1">&#39;  Top 15 Usuarios con Más Amigos&#39;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">(</span><span class="n">rect</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mf">0.97</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/9221112799b794e35179c7ade24487d22b5cb43dc6d37aa1898adfa4dfc2f8a5.png" src="_images/9221112799b794e35179c7ade24487d22b5cb43dc6d37aa1898adfa4dfc2f8a5.png" />
+</div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="exportar-dataset-limpio">
+<h2>Exportar dataset limpio<a class="headerlink" href="#exportar-dataset-limpio" title="Permalink to this heading">#</a></h2>
+<p><strong>Archivo generado:</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">friends_clean.csv</span></code>  una fila por usuario (incluyendo los sin amigos): <code class="docutils literal notranslate"><span class="pre">playerid</span></code>, <code class="docutils literal notranslate"><span class="pre">n_friends</span></code>, <code class="docutils literal notranslate"><span class="pre">n_friends_log</span></code>, <code class="docutils literal notranslate"><span class="pre">social_tier</span></code>, <code class="docutils literal notranslate"><span class="pre">is_private</span></code>, <code class="docutils literal notranslate"><span class="pre">has_friends</span></code></p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cols_friends</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;playerid&#39;</span><span class="p">,</span><span class="s1">&#39;n_friends&#39;</span><span class="p">,</span><span class="s1">&#39;n_friends_log&#39;</span><span class="p">,</span><span class="s1">&#39;social_tier&#39;</span><span class="p">,</span><span class="s1">&#39;is_private&#39;</span><span class="p">,</span><span class="s1">&#39;has_friends&#39;</span><span class="p">]</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="n">df_all</span><span class="p">[</span><span class="s1">&#39;n_friends_log&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log1p</span><span class="p">(</span><span class="n">df_all</span><span class="p">[</span><span class="s1">&#39;n_friends&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
+<span class="n">df_all</span><span class="p">[</span><span class="s1">&#39;social_tier&#39;</span><span class="p">]</span>   <span class="o">=</span> <span class="n">df_all</span><span class="p">[</span><span class="s1">&#39;n_friends&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">map</span><span class="p">(</span>
+    <span class="k">lambda</span> <span class="n">n</span><span class="p">:</span> <span class="s1">&#39;solitario&#39;</span> <span class="k">if</span> <span class="n">n</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">else</span> <span class="s1">&#39;casual&#39;</span> <span class="k">if</span> <span class="n">n</span> <span class="o">&lt;=</span> <span class="mi">25</span> <span class="k">else</span> <span class="s1">&#39;social&#39;</span> <span class="k">if</span> <span class="n">n</span> <span class="o">&lt;=</span> <span class="mi">250</span> <span class="k">else</span> <span class="s1">&#39;hub&#39;</span>
+<span class="p">)</span>
+
+<span class="n">df_all</span><span class="p">[</span><span class="n">cols_friends</span><span class="p">]</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s1">&#39;Datos/friends_clean.csv&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;friends_clean.csv : </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">df_all</span><span class="p">)</span><span class="si">:</span><span class="s1">,</span><span class="si">}</span><span class="s1"> usuarios, </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">cols_friends</span><span class="p">)</span><span class="si">}</span><span class="s1"> columnas&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;  Con friends list     : </span><span class="si">{</span><span class="n">df_all</span><span class="p">[</span><span class="s2">&quot;has_friends&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="si">:</span><span class="s1">,</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;  Sin friends (solos)  : </span><span class="si">{</span><span class="p">(</span><span class="o">~</span><span class="n">df_all</span><span class="p">[</span><span class="s2">&quot;has_friends&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="si">:</span><span class="s1">,</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="n">df_all</span><span class="p">[</span><span class="n">cols_friends</span><span class="p">]</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>friends_clean.csv : 424,683 usuarios, 6 columnas
+  Con friends list     : 339,461
+  Sin friends (solos)  : 85,222
+</pre></div>
+</div>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>playerid</th>
+      <th>n_friends</th>
+      <th>n_friends_log</th>
+      <th>social_tier</th>
+      <th>is_private</th>
+      <th>has_friends</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>76561198060422271</td>
+      <td>79</td>
+      <td>4.382027</td>
+      <td>social</td>
+      <td>False</td>
+      <td>True</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>76561198113439786</td>
+      <td>104</td>
+      <td>4.653960</td>
+      <td>social</td>
+      <td>False</td>
+      <td>True</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>76561198149851326</td>
+      <td>108</td>
+      <td>4.691348</td>
+      <td>social</td>
+      <td>False</td>
+      <td>True</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="conclusiones">
+<h2>Conclusiones<a class="headerlink" href="#conclusiones" title="Permalink to this heading">#</a></h2>
+<section id="proximos-pasos">
+<h3>Próximos pasos<a class="headerlink" href="#proximos-pasos" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p><strong>Feature para regresión:</strong> usar <code class="docutils literal notranslate"><span class="pre">n_friends_log</span></code> y <code class="docutils literal notranslate"><span class="pre">social_tier</span></code> como features del usuario — proxy de engagement social.</p></li>
+<li><p><strong>Cruzar con <code class="docutils literal notranslate"><span class="pre">history</span></code>:</strong> ¿los usuarios con más amigos desbloquean más logros? ¿Correlación <code class="docutils literal notranslate"><span class="pre">n_friends</span></code> ↔ <code class="docutils literal notranslate"><span class="pre">n_logros_par</span></code>?</p></li>
+<li><p><strong>Cruzar con <code class="docutils literal notranslate"><span class="pre">players</span></code>:</strong> ¿hay correlación <code class="docutils literal notranslate"><span class="pre">country</span></code> ↔ <code class="docutils literal notranslate"><span class="pre">n_friends</span></code>? ¿Ciertos países tienden más a la red social en Steam?</p></li>
+</ul>
+</section>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="eda_achievements.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">🏆 Steam Dataset — EDA: <code class="docutils literal notranslate"><span class="pre">achievements</span></code></p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="eda_games.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Steam Dataset EDA: <code class="docutils literal notranslate"><span class="pre">games</span></code></p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#imports-y-configuracion">Imports y configuración</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#carga-parser-manual-para-csv-multi-linea">Carga - Parser manual para CSV multi-línea</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analisis-y-tratamiento-de-valores-faltantes">Análisis y tratamiento de valores faltantes</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#diferencia-clave-vs-purchased-games">Diferencia clave vs <code class="docutils literal notranslate"><span class="pre">purchased_games</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#distribucion-de-amigos-por-usuario">Distribución de Amigos por Usuario</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analisis-de-grafo">Análisis de Grafo</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#outliers-usuarios-con-demasiados-amigos">Outliers: Usuarios con Demasiados Amigos</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exportar-dataset-limpio">Exportar dataset limpio</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#conclusiones">Conclusiones</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#proximos-pasos">Próximos pasos</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By David Estrada Lora, Alex Terán, Rubén Esguerra
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2022.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

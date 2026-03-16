@@ -1,0 +1,14 @@
+# Table of contents
+# Learn more at https://jupyterbook.org/customize/toc.html
+
+format: jb-book
+root: intro
+chapters:
+- file: eda_achievements.ipynb
+- file: eda_friends.ipynb
+- file: eda_games.ipynb
+- file: eda_history.ipynb
+- file: eda_players.ipynb
+- file: eda_purcahsed_games.ipynb
+- file: eda_reviews.ipynb
+- file: eda_feature_engineering.ipynb
