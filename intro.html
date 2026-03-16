@@ -401,13 +401,13 @@ document.write(`
 <h1>Análisis de la Plataforma Steam — Proyecto de Machine Learning<a class="headerlink" href="#analisis-de-la-plataforma-steam-proyecto-de-machine-learning" title="Permalink to this heading">#</a></h1>
 <section id="contexto">
 <h2>Contexto<a class="headerlink" href="#contexto" title="Permalink to this heading">#</a></h2>
-<p>Steam es la plataforma de distribución de videojuegos PC más grande del mundo. Este proyecto analiza datos reales recolectados de Steam, PlayStation y Xbox, trabajando exclusivamente con el subconjunto de Steam, que comprende nueve archivos con información de ~424k usuarios, ~97k juegos, precios en 5 monedas, historial de logros desbloqueados, reseñas, listas de amigos y bibliotecas de juegos comprados.</p>
+<p>Steam es la plataforma de distribución de videojuegos PC más grande del mundo. Este proyecto analiza datos reales recolectados de esta plataforma, que comprende nueve archivos con información de ~424k usuarios, ~97k juegos, precios en 5 monedas, historial de logros desbloqueados, reseñas, listas de amigos y bibliotecas de juegos comprados.</p>
 <p>El dataset cubre un período de actividad desde 2008 hasta 2024, con snapshots de precios concentrados en noviembre–diciembre 2024.</p>
 </section>
 <hr class="docutils" />
 <section id="estructura-del-proyecto">
 <h2>Estructura del proyecto<a class="headerlink" href="#estructura-del-proyecto" title="Permalink to this heading">#</a></h2>
-<p>El análisis se organiza en tres etapas:</p>
+<p>El análisis se organiza en dos etapas:</p>
 <p><strong>1. Exploración (EDA)</strong> — un notebook por cada archivo fuente, donde se documentan la calidad de los datos, patrones relevantes, decisiones de limpieza y variables derivadas. Cada EDA exporta su dataframe limpio como CSV.</p>
 <p><strong>2. Feature Engineering</strong> — un notebook que carga los CSVs de los EDAs y construye mediante joins las dos tablas maestras que alimentan los modelos.</p>
 </section>
