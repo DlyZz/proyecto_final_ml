@@ -173,7 +173,7 @@ const thebe_selector_output = ".output, .cell_output"
             </li>
         </ul>
         <ul class="current nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="eda_achievements.html">🏆 Steam Dataset — EDA: <code class="docutils literal notranslate"><span class="pre">achievements</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="eda_achievements.html">Steam Dataset — EDA: <code class="docutils literal notranslate"><span class="pre">achievements</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="eda_friends.html">Steam Dataset — EDA: <code class="docutils literal notranslate"><span class="pre">friends</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="eda_games.html">Steam Dataset EDA: <code class="docutils literal notranslate"><span class="pre">games</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="eda_history.html">Steam Dataset — EDA: <code class="docutils literal notranslate"><span class="pre">history</span></code></a></li>
@@ -381,9 +381,9 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tabla-de-features-de-usuario">Tabla de features de usuario</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tabla-de-features-de-juego">Tabla de features de juego</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tabla-maestra-regresion">Tabla maestra — Regresion</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tabla-maestra-clasificacion">6. Tabla maestra — Clasificacion</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exportar">7. Exportar</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#decisiones-y-advertencias">8. Decisiones y advertencias</a><ul class="nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tabla-maestra-clasificacion">Tabla maestra — Clasificacion</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exportar">Exportar</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#decisiones-y-advertencias">Decisiones y advertencias</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#decisiones-tomadas-aqui">Decisiones tomadas aqui</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#advertencias">Advertencias</a></li>
 </ul>
@@ -411,12 +411,6 @@ document.write(`
 <span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s1">&#39;ignore&#39;</span><span class="p">)</span>
 
 <span class="n">DATA</span> <span class="o">=</span> <span class="s1">&#39;Datos/&#39;</span>  
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Imports OK&#39;</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Imports OK
 </pre></div>
 </div>
 </div>
@@ -977,7 +971,7 @@ Name: n_logros_par, dtype: float64
 </section>
 <hr class="docutils" />
 <section id="tabla-maestra-clasificacion">
-<h2>6. Tabla maestra — Clasificacion<a class="headerlink" href="#tabla-maestra-clasificacion" title="Permalink to this heading">#</a></h2>
+<h2>Tabla maestra — Clasificacion<a class="headerlink" href="#tabla-maestra-clasificacion" title="Permalink to this heading">#</a></h2>
 <p><strong>Target:</strong> <code class="docutils literal notranslate"><span class="pre">is_popular</span></code> = top 25% por <code class="docutils literal notranslate"><span class="pre">n_owners_public</span></code></p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1123,7 +1117,7 @@ Faltantes totales: 780,078
 </section>
 <hr class="docutils" />
 <section id="exportar">
-<h2>7. Exportar<a class="headerlink" href="#exportar" title="Permalink to this heading">#</a></h2>
+<h2>Exportar<a class="headerlink" href="#exportar" title="Permalink to this heading">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tabla_regression</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">DATA</span> <span class="o">+</span> <span class="s1">&#39;tabla_regression.csv&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
@@ -1158,7 +1152,7 @@ Columnas tabla_clasificacion:
 </section>
 <hr class="docutils" />
 <section id="decisiones-y-advertencias">
-<h2>8. Decisiones y advertencias<a class="headerlink" href="#decisiones-y-advertencias" title="Permalink to this heading">#</a></h2>
+<h2>Decisiones y advertencias<a class="headerlink" href="#decisiones-y-advertencias" title="Permalink to this heading">#</a></h2>
 <section id="decisiones-tomadas-aqui">
 <h3>Decisiones tomadas aqui<a class="headerlink" href="#decisiones-tomadas-aqui" title="Permalink to this heading">#</a></h3>
 <div class="pst-scrollable-table-container"><table class="table">
@@ -1273,9 +1267,9 @@ Columnas tabla_clasificacion:
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tabla-de-features-de-usuario">Tabla de features de usuario</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tabla-de-features-de-juego">Tabla de features de juego</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tabla-maestra-regresion">Tabla maestra — Regresion</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tabla-maestra-clasificacion">6. Tabla maestra — Clasificacion</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exportar">7. Exportar</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#decisiones-y-advertencias">8. Decisiones y advertencias</a><ul class="nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tabla-maestra-clasificacion">Tabla maestra — Clasificacion</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exportar">Exportar</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#decisiones-y-advertencias">Decisiones y advertencias</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#decisiones-tomadas-aqui">Decisiones tomadas aqui</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#advertencias">Advertencias</a></li>
 </ul>
