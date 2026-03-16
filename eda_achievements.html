@@ -1,0 +1,1963 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>🏆 Steam Dataset — EDA: achievements &#8212; Proyecto Final Machine Learning</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" href="_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'eda_achievements';</script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Steam Dataset — EDA: friends" href="eda_friends.html" />
+    <link rel="prev" title="Análisis de la Plataforma Steam — Proyecto de Machine Learning" href="intro.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/UN.png" class="logo__image only-light" alt="Proyecto Final Machine Learning - Home"/>
+    <script>document.write(`<img src="_static/UN.png" class="logo__image only-dark" alt="Proyecto Final Machine Learning - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="intro.html">
+                    Análisis de la Plataforma Steam — Proyecto de Machine Learning
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">🏆 Steam Dataset — EDA: <code class="docutils literal notranslate"><span class="pre">achievements</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="eda_friends.html">Steam Dataset — EDA: <code class="docutils literal notranslate"><span class="pre">friends</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="eda_games.html">Steam Dataset EDA: <code class="docutils literal notranslate"><span class="pre">games</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="eda_history.html">Steam Dataset — EDA: <code class="docutils literal notranslate"><span class="pre">history</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="eda_players.html">Steam Dataset EDA: <code class="docutils literal notranslate"><span class="pre">players</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="eda_reviews.html">Steam Dataset  EDA: <code class="docutils literal notranslate"><span class="pre">reviews</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="eda_feature_engineering.html">Steam Dataset — Feature Engineering</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/executablebooks/jupyter-book" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/executablebooks/jupyter-book/issues/new?title=Issue%20on%20page%20%2Feda_achievements.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/eda_achievements.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>🏆 Steam Dataset — EDA: achievements</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#imports-y-configuracion">Imports y configuración</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#carga-y-exploracion-inicial">Carga y exploración inicial</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analisis-y-tratamiento-de-valores-faltantes">Análisis y tratamiento de valores faltantes</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#razonamiento">Razonamiento</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#estructura-del-achievementid-y-validacion-de-integridad">Estructura del <code class="docutils literal notranslate"><span class="pre">achievementid</span></code> y validación de integridad</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#distribucion-de-logros-por-juego">Distribución de Logros por Juego</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#hallazgos">Hallazgos</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#outliers-juegos-con-cantidad-extrema-de-logros">Outliers: Juegos con Cantidad Extrema de Logros</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#enfoque-del-analisis">Enfoque del análisis</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analisis-de-texto-titulos-y-descripciones">Análisis de Texto: Títulos y Descripciones</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#deteccion-de-achievement-spam">Detección de Achievement Spam</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dataset-limpio-final">Dataset limpio final</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exportar-dataset-limpio">Exportar dataset limpio</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#conclusiones">Conclusiones</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#proximos-pasos">Próximos pasos</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="steam-dataset-eda-achievements">
+<h1>🏆 Steam Dataset — EDA: <code class="docutils literal notranslate"><span class="pre">achievements</span></code><a class="headerlink" href="#steam-dataset-eda-achievements" title="Permalink to this heading">#</a></h1>
+<p><strong>Descripción:</strong> Logros (achievements) disponibles en cada juego de Steam.</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Columna</p></th>
+<th class="head"><p>Tipo</p></th>
+<th class="head"><p>Descripción</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">achievementid</span></code></p></td>
+<td><p>str</p></td>
+<td><p>ID único: <code class="docutils literal notranslate"><span class="pre">gameID_achievementCode</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">gameid</span></code></p></td>
+<td><p>float</p></td>
+<td><p>ID del juego al que pertenece el logro</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">title</span></code></p></td>
+<td><p>str</p></td>
+<td><p>Nombre del logro</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">description</span></code></p></td>
+<td><p>str</p></td>
+<td><p>Descripción de cómo desbloquear el logro</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<hr class="docutils" />
+<section id="imports-y-configuracion">
+<h2>Imports y configuración<a class="headerlink" href="#imports-y-configuracion" title="Permalink to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.ticker</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">mticker</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">seaborn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sns</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
+<span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s1">&#39;ignore&#39;</span><span class="p">)</span>
+
+<span class="n">DARK_BG</span> <span class="o">=</span> <span class="s1">&#39;#0e1117&#39;</span>
+<span class="n">CARD_BG</span> <span class="o">=</span> <span class="s1">&#39;#1a1f2e&#39;</span>
+<span class="n">ACCENT1</span> <span class="o">=</span> <span class="s1">&#39;#4f86f7&#39;</span>
+<span class="n">ACCENT2</span> <span class="o">=</span> <span class="s1">&#39;#7ee8a2&#39;</span>
+<span class="n">ACCENT3</span> <span class="o">=</span> <span class="s1">&#39;#ff6b6b&#39;</span>
+<span class="n">ACCENT4</span> <span class="o">=</span> <span class="s1">&#39;#ffd166&#39;</span>
+<span class="n">TEXT</span>    <span class="o">=</span> <span class="s1">&#39;#e0e6f0&#39;</span>
+<span class="n">MUTED</span>   <span class="o">=</span> <span class="s1">&#39;#8892a4&#39;</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="o">.</span><span class="n">update</span><span class="p">({</span>
+    <span class="s1">&#39;figure.facecolor&#39;</span><span class="p">:</span> <span class="n">DARK_BG</span><span class="p">,</span> <span class="s1">&#39;axes.facecolor&#39;</span><span class="p">:</span> <span class="n">CARD_BG</span><span class="p">,</span>
+    <span class="s1">&#39;axes.edgecolor&#39;</span><span class="p">:</span> <span class="n">MUTED</span><span class="p">,</span>     <span class="s1">&#39;axes.labelcolor&#39;</span><span class="p">:</span> <span class="n">TEXT</span><span class="p">,</span>
+    <span class="s1">&#39;xtick.color&#39;</span><span class="p">:</span> <span class="n">MUTED</span><span class="p">,</span>        <span class="s1">&#39;ytick.color&#39;</span><span class="p">:</span> <span class="n">MUTED</span><span class="p">,</span>
+    <span class="s1">&#39;text.color&#39;</span><span class="p">:</span> <span class="n">TEXT</span><span class="p">,</span>          <span class="s1">&#39;grid.color&#39;</span><span class="p">:</span> <span class="s1">&#39;#2d3348&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;grid.alpha&#39;</span><span class="p">:</span> <span class="mf">0.6</span><span class="p">,</span>           <span class="s1">&#39;font.family&#39;</span><span class="p">:</span> <span class="s1">&#39;DejaVu Sans&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;font.size&#39;</span><span class="p">:</span> <span class="mi">11</span><span class="p">,</span>
+<span class="p">})</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">title_ax</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">txt</span><span class="p">,</span> <span class="n">sub</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">txt</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">13</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">&#39;bold&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">TEXT</span><span class="p">,</span> <span class="n">pad</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">sub</span><span class="p">:</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">1.02</span><span class="p">,</span> <span class="n">sub</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">ax</span><span class="o">.</span><span class="n">transAxes</span><span class="p">,</span>
+                <span class="n">ha</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">MUTED</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="carga-y-exploracion-inicial">
+<h2>Carga y exploración inicial<a class="headerlink" href="#carga-y-exploracion-inicial" title="Permalink to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df_raw</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;Datos/achievements.csv&#39;</span><span class="p">)</span> 
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Shape: </span><span class="si">{</span><span class="n">df_raw</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s2">,</span><span class="si">}</span><span class="s2"> filas × </span><span class="si">{</span><span class="n">df_raw</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2"> columnas&quot;</span><span class="p">)</span>
+<span class="n">df_raw</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Shape: 1,939,027 filas × 4 columnas
+</pre></div>
+</div>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>achievementid</th>
+      <th>gameid</th>
+      <th>title</th>
+      <th>description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>2621440_ACH_FIRST_KILL</td>
+      <td>2621440</td>
+      <td>FIRST KILL</td>
+      <td>You should kill ONE enemy.</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2621440_ACH_0_LEVEL_COMPLETED</td>
+      <td>2621440</td>
+      <td>TUTORIAL COMPLETED</td>
+      <td>You should complete tutorial.</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>2621440_ACH_1_LEVEL_COMPLETED</td>
+      <td>2621440</td>
+      <td>FIRST LEVEL</td>
+      <td>You should complete first level</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>2621440_ACH_2_LEVEL_COMPLETED</td>
+      <td>2621440</td>
+      <td>SECOND LEVEL</td>
+      <td>You should complete second level</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>2621440_ACH_3_LEVEL_COMPLETED</td>
+      <td>2621440</td>
+      <td>THIRD LEVEL</td>
+      <td>You should complete third level</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">df_raw</span><span class="o">.</span><span class="n">dtypes</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">()</span>
+<span class="n">df_raw</span><span class="o">.</span><span class="n">describe</span><span class="p">(</span><span class="n">include</span><span class="o">=</span><span class="s1">&#39;all&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>achievementid    object
+gameid            int64
+title            object
+description      object
+dtype: object
+</pre></div>
+</div>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>achievementid</th>
+      <th>gameid</th>
+      <th>title</th>
+      <th>description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>count</th>
+      <td>1939027</td>
+      <td>1.939027e+06</td>
+      <td>1934556</td>
+      <td>1766815</td>
+    </tr>
+    <tr>
+      <th>unique</th>
+      <td>1939027</td>
+      <td>NaN</td>
+      <td>983204</td>
+      <td>1063798</td>
+    </tr>
+    <tr>
+      <th>top</th>
+      <td>2621440_ACH_FIRST_KILL</td>
+      <td>NaN</td>
+      <td>Super Trivia Champion</td>
+      <td>Super Trivia Champion</td>
+    </tr>
+    <tr>
+      <th>freq</th>
+      <td>1</td>
+      <td>NaN</td>
+      <td>148999</td>
+      <td>148999</td>
+    </tr>
+    <tr>
+      <th>mean</th>
+      <td>NaN</td>
+      <td>1.194505e+06</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>std</th>
+      <td>NaN</td>
+      <td>7.509441e+05</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>min</th>
+      <td>NaN</td>
+      <td>2.200000e+02</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>25%</th>
+      <td>NaN</td>
+      <td>6.902400e+05</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>50%</th>
+      <td>NaN</td>
+      <td>8.570600e+05</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>75%</th>
+      <td>NaN</td>
+      <td>1.655550e+06</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>max</th>
+      <td>NaN</td>
+      <td>3.425420e+06</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="analisis-y-tratamiento-de-valores-faltantes">
+<h2>Análisis y tratamiento de valores faltantes<a class="headerlink" href="#analisis-y-tratamiento-de-valores-faltantes" title="Permalink to this heading">#</a></h2>
+<section id="razonamiento">
+<h3>Razonamiento<a class="headerlink" href="#razonamiento" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Un logro sin <code class="docutils literal notranslate"><span class="pre">title</span></code> no tiene nombre visible en Steam es un registro corrupto o placeholder. Al ser &lt;0.1%, se elimina sin pérdida significativa.</p></li>
+<li><p>La <code class="docutils literal notranslate"><span class="pre">description</span></code> vacía es un patrón habitual en Steam: muchos desarrolladores registran logros sin texto explicativo. Imputar con <code class="docutils literal notranslate"><span class="pre">'No</span> <span class="pre">description'</span></code> preserva el registro y permite análisis de texto posteriores sin errores.</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">missing</span> <span class="o">=</span> <span class="n">df_raw</span><span class="o">.</span><span class="n">isnull</span><span class="p">()</span> <span class="o">|</span> <span class="p">(</span><span class="n">df_raw</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">col</span><span class="p">:</span> <span class="n">col</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;&#39;</span><span class="p">))</span>
+<span class="n">miss_pct</span> <span class="o">=</span> <span class="p">(</span><span class="n">missing</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span> <span class="o">*</span> <span class="mi">100</span><span class="p">)</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">miss_cnt</span> <span class="o">=</span> <span class="n">missing</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Faltantes por columna:&quot;</span><span class="p">)</span>
+<span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;count&#39;</span><span class="p">:</span> <span class="n">miss_cnt</span><span class="p">,</span> <span class="s1">&#39;pct (%)&#39;</span><span class="p">:</span> <span class="n">miss_pct</span><span class="p">})</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s1">&#39;pct (%)&#39;</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Faltantes por columna:
+</pre></div>
+</div>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>count</th>
+      <th>pct (%)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>description</th>
+      <td>177487</td>
+      <td>9.15</td>
+    </tr>
+    <tr>
+      <th>title</th>
+      <td>5224</td>
+      <td>0.27</td>
+    </tr>
+    <tr>
+      <th>gameid</th>
+      <td>0</td>
+      <td>0.00</td>
+    </tr>
+    <tr>
+      <th>achievementid</th>
+      <td>0</td>
+      <td>0.00</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">18</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">patch</span><span class="o">.</span><span class="n">set_facecolor</span><span class="p">(</span><span class="n">DARK_BG</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s1">&#39;Diagnóstico de Valores Faltantes — achievements&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span>
+             <span class="n">fontweight</span><span class="o">=</span><span class="s1">&#39;bold&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">TEXT</span><span class="p">)</span>
+
+<span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">cols_m</span> <span class="o">=</span> <span class="n">miss_pct</span><span class="p">[</span><span class="n">miss_pct</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">sort_values</span><span class="p">()</span>
+<span class="n">colors_m</span> <span class="o">=</span> <span class="p">[</span><span class="n">ACCENT3</span> <span class="k">if</span> <span class="n">v</span> <span class="o">&gt;</span> <span class="mi">30</span> <span class="k">else</span> <span class="n">ACCENT4</span> <span class="k">if</span> <span class="n">v</span> <span class="o">&gt;</span> <span class="mi">5</span> <span class="k">else</span> <span class="n">ACCENT1</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">cols_m</span><span class="o">.</span><span class="n">values</span><span class="p">]</span>
+<span class="n">bars</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">barh</span><span class="p">(</span><span class="n">cols_m</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">cols_m</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">colors_m</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">bar</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">bars</span><span class="p">,</span> <span class="n">cols_m</span><span class="o">.</span><span class="n">values</span><span class="p">):</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">val</span> <span class="o">+</span> <span class="mf">0.1</span><span class="p">,</span> <span class="n">bar</span><span class="o">.</span><span class="n">get_y</span><span class="p">()</span> <span class="o">+</span> <span class="n">bar</span><span class="o">.</span><span class="n">get_height</span><span class="p">()</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span>
+            <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">val</span><span class="si">:</span><span class="s1">.2f</span><span class="si">}</span><span class="s1">%&#39;</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">TEXT</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">11</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">max</span><span class="p">(</span><span class="n">cols_m</span><span class="o">.</span><span class="n">values</span><span class="p">)</span> <span class="o">*</span> <span class="mf">1.25</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">% f</span><span class="s1">altante&#39;</span><span class="p">)</span>
+<span class="n">title_ax</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="s1">&#39;🔍  Faltantes por Columna&#39;</span><span class="p">)</span>
+
+<span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">sample</span> <span class="o">=</span> <span class="n">df_raw</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="mi">500</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">df_raw</span><span class="p">)),</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
+<span class="n">miss_m</span> <span class="o">=</span> <span class="n">sample</span><span class="o">.</span><span class="n">isnull</span><span class="p">()</span> <span class="o">|</span> <span class="p">(</span><span class="n">sample</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">col</span><span class="p">:</span> <span class="n">col</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;&#39;</span><span class="p">))</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">heatmap</span><span class="p">(</span><span class="n">miss_m</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">cbar</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">cmap</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;#2d3348&#39;</span><span class="p">,</span> <span class="n">ACCENT3</span><span class="p">],</span> <span class="n">yticklabels</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">xticklabels</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">title_ax</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="s1">&#39;🗺️  Mapa de Missingness (500 muestra)&#39;</span><span class="p">,</span> <span class="s1">&#39;Rojo = faltante&#39;</span><span class="p">)</span>
+
+<span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+<span class="n">desc_missing</span> <span class="o">=</span> <span class="n">df_raw</span><span class="p">[</span><span class="n">df_raw</span><span class="p">[</span><span class="s1">&#39;description&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">isnull</span><span class="p">()</span> <span class="o">|</span> <span class="p">(</span><span class="n">df_raw</span><span class="p">[</span><span class="s1">&#39;description&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;&#39;</span><span class="p">)]</span>
+<span class="n">games_with_missing</span> <span class="o">=</span> <span class="n">desc_missing</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;gameid&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">size</span><span class="p">()</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">top_missing</span> <span class="o">=</span> <span class="n">games_with_missing</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">15</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">barh</span><span class="p">(</span><span class="n">top_missing</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)[::</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">top_missing</span><span class="o">.</span><span class="n">values</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="n">ACCENT3</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Logros sin descripción&#39;</span><span class="p">)</span>
+<span class="n">title_ax</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="s1">&#39;⚠️  Top 15 Juegos con más Description Vacía&#39;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/9915ea3cf1094717051146bfcecf3fc2a72855c8da186a8e280c41b8ddb7662c.png" src="_images/9915ea3cf1094717051146bfcecf3fc2a72855c8da186a8e280c41b8ddb7662c.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">df_raw</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+<span class="n">before</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;title&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">notna</span><span class="p">()</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;title&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="o">!=</span> <span class="s1">&#39;&#39;</span><span class="p">)]</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Eliminadas por title vacío: </span><span class="si">{</span><span class="n">before</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">)</span><span class="si">:</span><span class="s2">,</span><span class="si">}</span><span class="s2"> filas&quot;</span><span class="p">)</span>
+
+<span class="n">mask_desc</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;description&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">isna</span><span class="p">()</span> <span class="o">|</span> <span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;description&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+<span class="n">df</span><span class="p">[</span><span class="s1">&#39;description&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;description&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="s1">&#39;No description&#39;</span><span class="p">)</span>
+<span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;description&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="s1">&#39;description&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;No description&#39;</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Description imputada: </span><span class="si">{</span><span class="n">mask_desc</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="si">:</span><span class="s2">,</span><span class="si">}</span><span class="s2"> filas → &#39;No description&#39;&quot;</span><span class="p">)</span>
+
+<span class="n">df</span><span class="p">[</span><span class="s1">&#39;gameid&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;gameid&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+
+<span class="n">GENERIC_TITLES</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s1">&#39;an achievement.&#39;</span><span class="p">,</span> <span class="s1">&#39;community achievement&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;this is an achievement.&#39;</span><span class="p">,</span> <span class="s1">&#39;achievement&#39;</span>
+<span class="p">]</span>
+<span class="n">df</span><span class="p">[</span><span class="s1">&#39;is_generic&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;title&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">GENERIC_TITLES</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Dataset final: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">)</span><span class="si">:</span><span class="s2">,</span><span class="si">}</span><span class="s2"> filas&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Faltantes restantes: </span><span class="si">{</span><span class="n">df</span><span class="o">.</span><span class="n">isnull</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Eliminadas por title vacío: 5,224 filas
+Description imputada: 173,173 filas → &#39;No description&#39;
+
+Dataset final: 1,933,803 filas
+Faltantes restantes: 0
+</pre></div>
+</div>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>achievementid</th>
+      <th>gameid</th>
+      <th>title</th>
+      <th>description</th>
+      <th>is_generic</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>2621440_ACH_FIRST_KILL</td>
+      <td>2621440</td>
+      <td>FIRST KILL</td>
+      <td>You should kill ONE enemy.</td>
+      <td>False</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2621440_ACH_0_LEVEL_COMPLETED</td>
+      <td>2621440</td>
+      <td>TUTORIAL COMPLETED</td>
+      <td>You should complete tutorial.</td>
+      <td>False</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>2621440_ACH_1_LEVEL_COMPLETED</td>
+      <td>2621440</td>
+      <td>FIRST LEVEL</td>
+      <td>You should complete first level</td>
+      <td>False</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+</section>
+</section>
+<hr class="docutils" />
+<section id="estructura-del-achievementid-y-validacion-de-integridad">
+<h2>Estructura del <code class="docutils literal notranslate"><span class="pre">achievementid</span></code> y validación de integridad<a class="headerlink" href="#estructura-del-achievementid-y-validacion-de-integridad" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p>El campo <code class="docutils literal notranslate"><span class="pre">achievementid</span></code> sigue el patrón <code class="docutils literal notranslate"><span class="pre">{gameid}_{codigo}</span></code>, lo que permite extraer el <code class="docutils literal notranslate"><span class="pre">gameid</span></code> directamente del ID y <strong>validar consistencia</strong> con la columna <code class="docutils literal notranslate"><span class="pre">gameid</span></code>.</p></li>
+<li><p><strong>No hay <code class="docutils literal notranslate"><span class="pre">achievementid</span></code> duplicados</strong>, lo que confirma que es una clave primaria confiable.</p></li>
+<li><p>El código del logro (sufijo) tiene alta variabilidad: algunos juegos usan nombres descriptivos (<code class="docutils literal notranslate"><span class="pre">ACH_FIRST_KILL</span></code>), otros usan índices numéricos (<code class="docutils literal notranslate"><span class="pre">ACH_00001</span></code>).</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;ach_gameid_prefix&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;achievementid&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">str</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">df</span><span class="p">[</span><span class="s1">&#39;ach_code&#39;</span><span class="p">]</span>          <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;achievementid&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">str</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+<span class="n">mismatch</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;ach_gameid_prefix&#39;</span><span class="p">]</span> <span class="o">!=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;gameid&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)]</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;achievementid con prefijo != gameid : </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">mismatch</span><span class="p">)</span><span class="si">:</span><span class="s2">,</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;achievementid duplicados            : </span><span class="si">{</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;achievementid&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">duplicated</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="si">:</span><span class="s2">,</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Juegos únicos                       : </span><span class="si">{</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;gameid&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">nunique</span><span class="p">()</span><span class="si">:</span><span class="s2">,</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Logros totales                      : </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">)</span><span class="si">:</span><span class="s2">,</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">mismatch</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Registros con mismatch:&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">mismatch</span><span class="p">[[</span><span class="s1">&#39;achievementid&#39;</span><span class="p">,</span> <span class="s1">&#39;gameid&#39;</span><span class="p">,</span> <span class="s1">&#39;title&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">head</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>achievementid con prefijo != gameid : 0
+achievementid duplicados            : 0
+Juegos únicos                       : 50,540
+Logros totales                      : 1,933,803
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="distribucion-de-logros-por-juego">
+<h2>Distribución de Logros por Juego<a class="headerlink" href="#distribucion-de-logros-por-juego" title="Permalink to this heading">#</a></h2>
+<section id="hallazgos">
+<h3>Hallazgos<a class="headerlink" href="#hallazgos" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p>La distribución es <strong>fuertemente sesgada a la derecha</strong>: la mediana es <strong>18 logros por juego</strong>, mientras que el promedio es <strong>38</strong>, lo que indica que unos pocos juegos con muchos logros elevan la media.</p></li>
+<li><p>El <strong>75% de los juegos tiene 32 logros o menos</strong>, lo que representa un diseño de logros razonable y consistente con la mayoría de juegos comerciales.</p></li>
+<li><p>Existe una <strong>cola larga</strong> hacia valores altos: el <strong>1% superior supera los 152 logros</strong>, mostrando que algunos juegos incluyen sistemas de logros muy extensos.</p></li>
+<li><p>Se detectan <strong>77 juegos con exactamente 5,000 logros</strong>, un valor sospechoso porque <strong>5,000 es el límite impuesto por Steam</strong>. Alcanzar ese límite exacto suele asociarse con prácticas de <em>achievement spam</em>, donde se generan miles de logros triviales para inflar el conteo visible en el perfil del jugador.</p></li>
+<li><p>El valor máximo observado es <strong>10,979 logros</strong>, muy por encima del límite estándar. Esto sugiere posibles <strong>errores de datos, agregación de múltiples versiones del juego o inconsistencias en el scraping del dataset</strong>.</p></li>
+<li><p>También existe una <strong>cola de juegos con muy pocos logros</strong>: <strong>1,241 juegos tienen solo 1 logro</strong>, típicamente demos, juegos muy pequeños o títulos experimentales.</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">per_game</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;gameid&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">size</span><span class="p">()</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="s1">&#39;n_achievements&#39;</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Estadísticas de logros por juego:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">per_game</span><span class="o">.</span><span class="n">describe</span><span class="p">(</span><span class="n">percentiles</span><span class="o">=</span><span class="p">[</span><span class="mf">.25</span><span class="p">,</span> <span class="mf">.5</span><span class="p">,</span> <span class="mf">.75</span><span class="p">,</span> <span class="mf">.90</span><span class="p">,</span> <span class="mf">.95</span><span class="p">,</span> <span class="mf">.99</span><span class="p">]))</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Juegos con exactamente 5,000 logros (spam): </span><span class="si">{</span><span class="p">(</span><span class="n">per_game</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">5000</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="si">:</span><span class="s2">,</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Juegos con 1 solo logro                   : </span><span class="si">{</span><span class="p">(</span><span class="n">per_game</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="si">:</span><span class="s2">,</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Estadísticas de logros por juego:
+count    50540.000000
+mean        38.262822
+std        230.239123
+min          1.000000
+25%         10.000000
+50%         18.000000
+75%         32.000000
+90%         54.000000
+95%         80.000000
+99%        152.000000
+max      10979.000000
+Name: n_achievements, dtype: float64
+
+Juegos con exactamente 5,000 logros (spam): 77
+Juegos con 1 solo logro                   : 1,241
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">patch</span><span class="o">.</span><span class="n">set_facecolor</span><span class="p">(</span><span class="n">DARK_BG</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s1">&#39;Distribución de Logros por Juego&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">&#39;bold&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">TEXT</span><span class="p">)</span>
+
+<span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">cap</span> <span class="o">=</span> <span class="n">per_game</span><span class="p">[</span><span class="n">per_game</span> <span class="o">&lt;</span> <span class="mi">200</span><span class="p">]</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">cap</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">ACCENT1</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="n">DARK_BG</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.4</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">cap</span><span class="o">.</span><span class="n">median</span><span class="p">(),</span> <span class="n">color</span><span class="o">=</span><span class="n">ACCENT4</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span>
+           <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;Mediana: </span><span class="si">{</span><span class="n">cap</span><span class="o">.</span><span class="n">median</span><span class="p">()</span><span class="si">:</span><span class="s1">.0f</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">cap</span><span class="o">.</span><span class="n">mean</span><span class="p">(),</span> <span class="n">color</span><span class="o">=</span><span class="n">ACCENT3</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span>
+           <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;Media: </span><span class="si">{</span><span class="n">cap</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="si">:</span><span class="s1">.0f</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="n">CARD_BG</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="n">MUTED</span><span class="p">,</span> <span class="n">labelcolor</span><span class="o">=</span><span class="n">TEXT</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Logros por juego&#39;</span><span class="p">);</span> <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Juegos&#39;</span><span class="p">)</span>
+<span class="n">title_ax</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="s1">&#39;  Distribución (sin extremos &gt;200)&#39;</span><span class="p">)</span>
+
+<span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">bins</span>   <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">250</span><span class="p">,</span> <span class="mi">500</span><span class="p">,</span> <span class="mi">5001</span><span class="p">]</span>
+<span class="n">labels</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;1–5&#39;</span><span class="p">,</span><span class="s1">&#39;6–10&#39;</span><span class="p">,</span><span class="s1">&#39;11–25&#39;</span><span class="p">,</span><span class="s1">&#39;26–50&#39;</span><span class="p">,</span><span class="s1">&#39;51–100&#39;</span><span class="p">,</span><span class="s1">&#39;101–250&#39;</span><span class="p">,</span><span class="s1">&#39;251–500&#39;</span><span class="p">,</span><span class="s1">&#39;500+&#39;</span><span class="p">]</span>
+<span class="n">pg_df</span> <span class="o">=</span> <span class="n">per_game</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
+<span class="n">pg_df</span><span class="p">[</span><span class="s1">&#39;bucket&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">cut</span><span class="p">(</span><span class="n">pg_df</span><span class="p">[</span><span class="s1">&#39;n_achievements&#39;</span><span class="p">],</span> <span class="n">bins</span><span class="o">=</span><span class="n">bins</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="n">labels</span><span class="p">)</span>
+<span class="n">bucket_counts</span> <span class="o">=</span> <span class="n">pg_df</span><span class="p">[</span><span class="s1">&#39;bucket&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span><span class="o">.</span><span class="n">sort_index</span><span class="p">()</span>
+<span class="n">colors_b</span> <span class="o">=</span> <span class="p">[</span><span class="n">ACCENT2</span> <span class="k">if</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">4</span> <span class="k">else</span> <span class="n">ACCENT4</span> <span class="k">if</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">6</span> <span class="k">else</span> <span class="n">ACCENT3</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">bucket_counts</span><span class="p">))]</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">bucket_counts</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">),</span> <span class="n">bucket_counts</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">colors_b</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">bucket_counts</span><span class="o">.</span><span class="n">values</span><span class="p">):</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">v</span> <span class="o">+</span> <span class="mi">20</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">v</span><span class="si">:</span><span class="s1">,</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">TEXT</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Rango de logros&#39;</span><span class="p">);</span> <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Juegos&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="n">rotation</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span>
+<span class="n">title_ax</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="s1">&#39;  Juegos por Rango de Logros&#39;</span><span class="p">)</span>
+
+<span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+<span class="n">top15</span> <span class="o">=</span> <span class="n">per_game</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">15</span><span class="p">)</span>
+<span class="n">colors_t</span> <span class="o">=</span> <span class="p">[</span><span class="n">ACCENT3</span> <span class="k">if</span> <span class="n">v</span> <span class="o">==</span> <span class="mi">5000</span> <span class="k">else</span> <span class="n">ACCENT4</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">top15</span><span class="o">.</span><span class="n">values</span><span class="p">]</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">barh</span><span class="p">(</span><span class="n">top15</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)[::</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">top15</span><span class="o">.</span><span class="n">values</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="n">colors_t</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Nº de logros&#39;</span><span class="p">)</span>
+<span class="n">title_ax</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="s1">&#39;  Top 15 Juegos por Logros&#39;</span><span class="p">,</span> <span class="s1">&#39;Rojo = hit del límite de 5,000 (spam)&#39;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/adfd962a5de6d962aaad9788b60bf81de76a0242f5991cd424082d30c6536eee.png" src="_images/adfd962a5de6d962aaad9788b60bf81de76a0242f5991cd424082d30c6536eee.png" />
+</div>
+</div>
+</section>
+</section>
+<hr class="docutils" />
+<section id="outliers-juegos-con-cantidad-extrema-de-logros">
+<h2>Outliers: Juegos con Cantidad Extrema de Logros<a class="headerlink" href="#outliers-juegos-con-cantidad-extrema-de-logros" title="Permalink to this heading">#</a></h2>
+<p>La sección anterior reveló que el <strong>máximo de logros por juego supera los 10,000</strong>, y que Steam impone un límite oficial de <strong>5,000</strong>. Esto significa que los valores más extremos son <strong>anomalías reales</strong> registros que exceden incluso las prácticas de spam convencional.</p>
+<section id="enfoque-del-analisis">
+<h3>Enfoque del análisis<a class="headerlink" href="#enfoque-del-analisis" title="Permalink to this heading">#</a></h3>
+<p>Se utilizan <strong>dos métodos complementarios</strong> para detectar outliers:</p>
+<ul class="simple">
+<li><p><strong>IQR (Rango Intercuartílico):</strong> método robusto, no sensible a la cola extrema. Umbral = Q3 + 1.5 × IQR.</p></li>
+<li><p><strong>Percentil 99:</strong> criterio práctico para separar el 1% superior del universo de juegos.</p></li>
+</ul>
+<p>Además, se segmentan los outliers en tres categorías:</p>
+<ol class="arabic simple">
+<li><p><strong>&gt; 5,000 logros</strong> → Viola el límite oficial de Steam. Probablemente errores de ingesta o duplicados.</p></li>
+<li><p><strong>= 5,000 logros</strong> → Tope exacto. Casi siempre achievement spam deliberado.</p></li>
+<li><p><strong>Outlier IQR pero &lt; 5,000</strong> → Casos elevados pero posiblemente legítimos (franquicias grandes, DLC incluidos).</p></li>
+</ol>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">per_game</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;gameid&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">size</span><span class="p">()</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="s1">&#39;n_achievements&#39;</span><span class="p">)</span>
+
+<span class="n">Q1</span><span class="p">,</span> <span class="n">Q3</span> <span class="o">=</span> <span class="n">per_game</span><span class="o">.</span><span class="n">quantile</span><span class="p">(</span><span class="mf">0.25</span><span class="p">),</span> <span class="n">per_game</span><span class="o">.</span><span class="n">quantile</span><span class="p">(</span><span class="mf">0.75</span><span class="p">)</span>
+<span class="n">IQR</span>    <span class="o">=</span> <span class="n">Q3</span> <span class="o">-</span> <span class="n">Q1</span>
+<span class="n">iqr_upper</span> <span class="o">=</span> <span class="n">Q3</span> <span class="o">+</span> <span class="mf">1.5</span> <span class="o">*</span> <span class="n">IQR</span>
+<span class="n">p99</span>        <span class="o">=</span> <span class="n">per_game</span><span class="o">.</span><span class="n">quantile</span><span class="p">(</span><span class="mf">0.99</span><span class="p">)</span>
+
+
+<span class="n">mask_above_5k</span>  <span class="o">=</span> <span class="n">per_game</span> <span class="o">&gt;</span> <span class="mi">5000</span>          
+<span class="n">mask_exact_5k</span>  <span class="o">=</span> <span class="n">per_game</span> <span class="o">==</span> <span class="mi">5000</span>         
+<span class="n">mask_iqr_out</span>   <span class="o">=</span> <span class="p">(</span><span class="n">per_game</span> <span class="o">&gt;</span> <span class="n">iqr_upper</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">per_game</span> <span class="o">&lt;</span> <span class="mi">5000</span><span class="p">)</span>  
+<span class="n">mask_normal</span>    <span class="o">=</span> <span class="n">per_game</span> <span class="o">&lt;=</span> <span class="n">iqr_upper</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Q1=</span><span class="si">{</span><span class="n">Q1</span><span class="si">:</span><span class="s2">.0f</span><span class="si">}</span><span class="s2">  Q3=</span><span class="si">{</span><span class="n">Q3</span><span class="si">:</span><span class="s2">.0f</span><span class="si">}</span><span class="s2">  IQR=</span><span class="si">{</span><span class="n">IQR</span><span class="si">:</span><span class="s2">.0f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Umbral IQR (Q3 + 1.5×IQR) : </span><span class="si">{</span><span class="n">iqr_upper</span><span class="si">:</span><span class="s2">.0f</span><span class="si">}</span><span class="s2"> logros&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Percentil 99               : </span><span class="si">{</span><span class="n">p99</span><span class="si">:</span><span class="s2">.0f</span><span class="si">}</span><span class="s2"> logros&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Máximo observado           : </span><span class="si">{</span><span class="n">per_game</span><span class="o">.</span><span class="n">max</span><span class="p">()</span><span class="si">:</span><span class="s2">,</span><span class="si">}</span><span class="s2"> logros&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Juegos con &gt; 5,000 logros (inválidos)  : </span><span class="si">{</span><span class="n">mask_above_5k</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="si">:</span><span class="s2">,</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Juegos con = 5,000 logros (spam tope)  : </span><span class="si">{</span><span class="n">mask_exact_5k</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="si">:</span><span class="s2">,</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Outliers IQR moderados (&lt; 5,000)       : </span><span class="si">{</span><span class="n">mask_iqr_out</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="si">:</span><span class="s2">,</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Juegos dentro del rango normal         : </span><span class="si">{</span><span class="n">mask_normal</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="si">:</span><span class="s2">,</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Top 20 juegos con más logros:&quot;</span><span class="p">)</span>
+<span class="n">per_game</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span><span class="o">.</span><span class="n">to_frame</span><span class="p">()</span><span class="o">.</span><span class="n">assign</span><span class="p">(</span>
+    <span class="n">categoria</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="s1">&#39;n_achievements&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">map</span><span class="p">(</span>
+        <span class="k">lambda</span> <span class="n">v</span><span class="p">:</span> <span class="s1">&#39;🔴 Inválido (&gt;5k)&#39;</span> <span class="k">if</span> <span class="n">v</span> <span class="o">&gt;</span> <span class="mi">5000</span> <span class="k">else</span>
+                  <span class="s1">&#39;🟠 Spam tope (5k)&#39;</span> <span class="k">if</span> <span class="n">v</span> <span class="o">==</span> <span class="mi">5000</span> <span class="k">else</span>
+                  <span class="s1">&#39;🟡 Outlier IQR&#39;</span> <span class="k">if</span> <span class="n">v</span> <span class="o">&gt;</span> <span class="n">iqr_upper</span> <span class="k">else</span> <span class="s1">&#39;🟢 Normal&#39;</span>
+    <span class="p">)</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Q1=10  Q3=32  IQR=22
+Umbral IQR (Q3 + 1.5×IQR) : 65 logros
+Percentil 99               : 152 logros
+Máximo observado           : 10,979 logros
+
+Juegos con &gt; 5,000 logros (inválidos)  : 3
+Juegos con = 5,000 logros (spam tope)  : 77
+Outliers IQR moderados (&lt; 5,000)       : 3,556
+Juegos dentro del rango normal         : 46,904
+
+Top 20 juegos con más logros:
+</pre></div>
+</div>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>n_achievements</th>
+      <th>categoria</th>
+    </tr>
+    <tr>
+      <th>gameid</th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>664290</th>
+      <td>10979</td>
+      <td>🔴 Inválido (&gt;5k)</td>
+    </tr>
+    <tr>
+      <th>573060</th>
+      <td>9821</td>
+      <td>🔴 Inválido (&gt;5k)</td>
+    </tr>
+    <tr>
+      <th>640310</th>
+      <td>5394</td>
+      <td>🔴 Inválido (&gt;5k)</td>
+    </tr>
+    <tr>
+      <th>774281</th>
+      <td>5000</td>
+      <td>🟠 Spam tope (5k)</td>
+    </tr>
+    <tr>
+      <th>844140</th>
+      <td>5000</td>
+      <td>🟠 Spam tope (5k)</td>
+    </tr>
+    <tr>
+      <th>705300</th>
+      <td>5000</td>
+      <td>🟠 Spam tope (5k)</td>
+    </tr>
+    <tr>
+      <th>840710</th>
+      <td>5000</td>
+      <td>🟠 Spam tope (5k)</td>
+    </tr>
+    <tr>
+      <th>845970</th>
+      <td>5000</td>
+      <td>🟠 Spam tope (5k)</td>
+    </tr>
+    <tr>
+      <th>804210</th>
+      <td>5000</td>
+      <td>🟠 Spam tope (5k)</td>
+    </tr>
+    <tr>
+      <th>808130</th>
+      <td>5000</td>
+      <td>🟠 Spam tope (5k)</td>
+    </tr>
+    <tr>
+      <th>805360</th>
+      <td>5000</td>
+      <td>🟠 Spam tope (5k)</td>
+    </tr>
+    <tr>
+      <th>806610</th>
+      <td>5000</td>
+      <td>🟠 Spam tope (5k)</td>
+    </tr>
+    <tr>
+      <th>877360</th>
+      <td>5000</td>
+      <td>🟠 Spam tope (5k)</td>
+    </tr>
+    <tr>
+      <th>721940</th>
+      <td>5000</td>
+      <td>🟠 Spam tope (5k)</td>
+    </tr>
+    <tr>
+      <th>723450</th>
+      <td>5000</td>
+      <td>🟠 Spam tope (5k)</td>
+    </tr>
+    <tr>
+      <th>804600</th>
+      <td>5000</td>
+      <td>🟠 Spam tope (5k)</td>
+    </tr>
+    <tr>
+      <th>786720</th>
+      <td>5000</td>
+      <td>🟠 Spam tope (5k)</td>
+    </tr>
+    <tr>
+      <th>743640</th>
+      <td>5000</td>
+      <td>🟠 Spam tope (5k)</td>
+    </tr>
+    <tr>
+      <th>658430</th>
+      <td>5000</td>
+      <td>🟠 Spam tope (5k)</td>
+    </tr>
+    <tr>
+      <th>693250</th>
+      <td>5000</td>
+      <td>🟠 Spam tope (5k)</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">22</span><span class="p">,</span> <span class="mi">12</span><span class="p">))</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">patch</span><span class="o">.</span><span class="n">set_facecolor</span><span class="p">(</span><span class="n">DARK_BG</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s1">&#39;Outliers — Logros por Juego&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">&#39;bold&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">TEXT</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mf">0.99</span><span class="p">)</span>
+
+<span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+<span class="n">bp</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">boxplot</span><span class="p">(</span><span class="n">per_game</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">vert</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">patch_artist</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">widths</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
+                <span class="n">boxprops</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">facecolor</span><span class="o">=</span><span class="n">ACCENT1</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">MUTED</span><span class="p">),</span>
+                <span class="n">medianprops</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="n">ACCENT4</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">),</span>
+                <span class="n">whiskerprops</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="n">MUTED</span><span class="p">),</span> <span class="n">capprops</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="n">MUTED</span><span class="p">),</span>
+                <span class="n">flierprops</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">marker</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">ACCENT3</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">3</span><span class="p">))</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="mi">5000</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">ACCENT3</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Límite oficial Steam (5k)&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="n">iqr_upper</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">ACCENT4</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;:&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;Umbral IQR (</span><span class="si">{</span><span class="n">iqr_upper</span><span class="si">:</span><span class="s1">.0f</span><span class="si">}</span><span class="s1">)&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="n">CARD_BG</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="n">MUTED</span><span class="p">,</span> <span class="n">labelcolor</span><span class="o">=</span><span class="n">TEXT</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Logros por juego&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">([])</span>
+<span class="n">title_ax</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="s1">&#39;  Boxplot Completo (todos los juegos)&#39;</span><span class="p">)</span>
+
+<span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">per_game</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="mi">80</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">ACCENT1</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="n">DARK_BG</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">log</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">iqr_upper</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">ACCENT4</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;:&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;IQR upper (</span><span class="si">{</span><span class="n">iqr_upper</span><span class="si">:</span><span class="s1">.0f</span><span class="si">}</span><span class="s1">)&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="mi">5000</span><span class="p">,</span>      <span class="n">color</span><span class="o">=</span><span class="n">ACCENT3</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Límite Steam (5k)&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">per_game</span><span class="o">.</span><span class="n">max</span><span class="p">(),</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;#ff00ff&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;-.&#39;</span><span class="p">,</span>
+           <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;Máx: </span><span class="si">{</span><span class="n">per_game</span><span class="o">.</span><span class="n">max</span><span class="p">()</span><span class="si">:</span><span class="s1">,</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="n">CARD_BG</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="n">MUTED</span><span class="p">,</span> <span class="n">labelcolor</span><span class="o">=</span><span class="n">TEXT</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Logros por juego&#39;</span><span class="p">);</span> <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Juegos (escala log)&#39;</span><span class="p">)</span>
+<span class="n">title_ax</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="s1">&#39;  Histograma en Escala Logarítmica&#39;</span><span class="p">)</span>
+
+<span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
+<span class="n">cats</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;Normal</span><span class="se">\n</span><span class="s1">(≤ IQR upper)&#39;</span><span class="p">:</span>     <span class="n">mask_normal</span><span class="o">.</span><span class="n">sum</span><span class="p">(),</span>
+    <span class="sa">f</span><span class="s1">&#39;Outlier IQR</span><span class="se">\n</span><span class="s1">(&lt;5k)&#39;</span><span class="p">:</span>       <span class="n">mask_iqr_out</span><span class="o">.</span><span class="n">sum</span><span class="p">(),</span>
+    <span class="s1">&#39;Spam tope</span><span class="se">\n</span><span class="s1">(= 5,000)&#39;</span><span class="p">:</span>      <span class="n">mask_exact_5k</span><span class="o">.</span><span class="n">sum</span><span class="p">(),</span>
+    <span class="s1">&#39;Inválido</span><span class="se">\n</span><span class="s1">(&gt; 5,000)&#39;</span><span class="p">:</span>       <span class="n">mask_above_5k</span><span class="o">.</span><span class="n">sum</span><span class="p">(),</span>
+<span class="p">}</span>
+<span class="n">bar_colors</span> <span class="o">=</span> <span class="p">[</span><span class="n">ACCENT2</span><span class="p">,</span> <span class="n">ACCENT4</span><span class="p">,</span> <span class="n">ACCENT3</span><span class="p">,</span> <span class="s1">&#39;#ff00ff&#39;</span><span class="p">]</span>
+<span class="n">bars</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">cats</span><span class="o">.</span><span class="n">keys</span><span class="p">()),</span> <span class="nb">list</span><span class="p">(</span><span class="n">cats</span><span class="o">.</span><span class="n">values</span><span class="p">()),</span> <span class="n">color</span><span class="o">=</span><span class="n">bar_colors</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">bar</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">bars</span><span class="p">,</span> <span class="n">cats</span><span class="o">.</span><span class="n">values</span><span class="p">()):</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">bar</span><span class="o">.</span><span class="n">get_x</span><span class="p">()</span> <span class="o">+</span> <span class="n">bar</span><span class="o">.</span><span class="n">get_width</span><span class="p">()</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">bar</span><span class="o">.</span><span class="n">get_height</span><span class="p">()</span> <span class="o">+</span> <span class="n">per_game</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="mf">0.003</span><span class="p">,</span>
+            <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">val</span><span class="si">:</span><span class="s1">,</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">TEXT</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">&#39;bold&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Juegos&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="n">labelsize</span><span class="o">=</span><span class="mi">9</span><span class="p">)</span>
+<span class="n">title_ax</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="s1">&#39;  Juegos por Categoría Outlier&#39;</span><span class="p">)</span>
+
+
+<span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+<span class="n">outliers_only</span> <span class="o">=</span> <span class="n">per_game</span><span class="p">[</span><span class="n">per_game</span> <span class="o">&gt;</span> <span class="n">iqr_upper</span><span class="p">]</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">outliers_only</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">ACCENT3</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="n">DARK_BG</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.4</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="mi">5000</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;#ff00ff&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Límite oficial Steam&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="n">CARD_BG</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="n">MUTED</span><span class="p">,</span> <span class="n">labelcolor</span><span class="o">=</span><span class="n">TEXT</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Logros por juego&#39;</span><span class="p">);</span> <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Juegos&#39;</span><span class="p">)</span>
+<span class="n">title_ax</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;  Zoom: Outliers IQR (n=</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">outliers_only</span><span class="p">)</span><span class="si">:</span><span class="s1">,</span><span class="si">}</span><span class="s1"> juegos)&#39;</span><span class="p">)</span>
+
+
+<span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+<span class="n">top20</span> <span class="o">=</span> <span class="n">per_game</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span>
+<span class="n">c_top</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;#ff00ff&#39;</span> <span class="k">if</span> <span class="n">v</span> <span class="o">&gt;</span> <span class="mi">5000</span> <span class="k">else</span> <span class="n">ACCENT3</span> <span class="k">if</span> <span class="n">v</span> <span class="o">==</span> <span class="mi">5000</span> <span class="k">else</span> <span class="n">ACCENT4</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">top20</span><span class="o">.</span><span class="n">values</span><span class="p">]</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">barh</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">top20</span><span class="p">)),</span> <span class="n">top20</span><span class="o">.</span><span class="n">values</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="n">c_top</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_yticks</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">top20</span><span class="p">)))</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_yticklabels</span><span class="p">([</span><span class="nb">str</span><span class="p">(</span><span class="n">g</span><span class="p">)</span> <span class="k">for</span> <span class="n">g</span> <span class="ow">in</span> <span class="n">top20</span><span class="o">.</span><span class="n">index</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]],</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="mi">5000</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;white&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Nº logros&#39;</span><span class="p">)</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">matplotlib.patches</span><span class="w"> </span><span class="kn">import</span> <span class="n">Patch</span>
+<span class="n">legend_elements</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="n">Patch</span><span class="p">(</span><span class="n">facecolor</span><span class="o">=</span><span class="s1">&#39;#ff00ff&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Inválido (&gt;5k)&#39;</span><span class="p">),</span>
+    <span class="n">Patch</span><span class="p">(</span><span class="n">facecolor</span><span class="o">=</span><span class="n">ACCENT3</span><span class="p">,</span>   <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Spam tope (=5k)&#39;</span><span class="p">),</span>
+    <span class="n">Patch</span><span class="p">(</span><span class="n">facecolor</span><span class="o">=</span><span class="n">ACCENT4</span><span class="p">,</span>   <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Outlier IQR (&lt;5k)&#39;</span><span class="p">),</span>
+<span class="p">]</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">handles</span><span class="o">=</span><span class="n">legend_elements</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="n">CARD_BG</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="n">MUTED</span><span class="p">,</span> <span class="n">labelcolor</span><span class="o">=</span><span class="n">TEXT</span><span class="p">)</span>
+<span class="n">title_ax</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="s1">&#39;  Top 20 Juegos con Más Logros&#39;</span><span class="p">)</span>
+
+
+<span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
+<span class="n">rows_normal</span>  <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;gameid&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">per_game</span><span class="p">[</span><span class="n">mask_normal</span><span class="p">]</span><span class="o">.</span><span class="n">index</span><span class="p">)]</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">rows_iqr_out</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;gameid&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">per_game</span><span class="p">[</span><span class="n">mask_iqr_out</span><span class="p">]</span><span class="o">.</span><span class="n">index</span><span class="p">)]</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">rows_spam5k</span>  <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;gameid&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">per_game</span><span class="p">[</span><span class="n">mask_exact_5k</span><span class="p">]</span><span class="o">.</span><span class="n">index</span><span class="p">)]</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">rows_inv</span>     <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;gameid&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">per_game</span><span class="p">[</span><span class="n">mask_above_5k</span><span class="p">]</span><span class="o">.</span><span class="n">index</span><span class="p">)]</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">total</span>        <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+<span class="n">wedge_sizes</span>  <span class="o">=</span> <span class="p">[</span><span class="n">rows_normal</span><span class="p">,</span> <span class="n">rows_iqr_out</span><span class="p">,</span> <span class="n">rows_spam5k</span><span class="p">,</span> <span class="n">rows_inv</span><span class="p">]</span>
+<span class="n">wedge_labels</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="sa">f</span><span class="s1">&#39;Normal</span><span class="se">\n</span><span class="s1">(</span><span class="si">{</span><span class="n">rows_normal</span><span class="o">/</span><span class="n">total</span><span class="o">*</span><span class="mi">100</span><span class="si">:</span><span class="s1">.1f</span><span class="si">}</span><span class="s1">%)&#39;</span><span class="p">,</span>
+    <span class="sa">f</span><span class="s1">&#39;Outlier IQR</span><span class="se">\n</span><span class="s1">(</span><span class="si">{</span><span class="n">rows_iqr_out</span><span class="o">/</span><span class="n">total</span><span class="o">*</span><span class="mi">100</span><span class="si">:</span><span class="s1">.1f</span><span class="si">}</span><span class="s1">%)&#39;</span><span class="p">,</span>
+    <span class="sa">f</span><span class="s1">&#39;Spam 5k</span><span class="se">\n</span><span class="s1">(</span><span class="si">{</span><span class="n">rows_spam5k</span><span class="o">/</span><span class="n">total</span><span class="o">*</span><span class="mi">100</span><span class="si">:</span><span class="s1">.1f</span><span class="si">}</span><span class="s1">%)&#39;</span><span class="p">,</span>
+    <span class="sa">f</span><span class="s1">&#39;Inválido &gt;5k</span><span class="se">\n</span><span class="s1">(</span><span class="si">{</span><span class="n">rows_inv</span><span class="o">/</span><span class="n">total</span><span class="o">*</span><span class="mi">100</span><span class="si">:</span><span class="s1">.1f</span><span class="si">}</span><span class="s1">%)&#39;</span><span class="p">,</span>
+<span class="p">]</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">pie</span><span class="p">([</span><span class="n">w</span> <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">wedge_sizes</span> <span class="k">if</span> <span class="n">w</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">],</span>
+       <span class="n">labels</span><span class="o">=</span><span class="p">[</span><span class="n">l</span> <span class="k">for</span> <span class="n">l</span><span class="p">,</span> <span class="n">w</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">wedge_labels</span><span class="p">,</span> <span class="n">wedge_sizes</span><span class="p">)</span> <span class="k">if</span> <span class="n">w</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">],</span>
+       <span class="n">colors</span><span class="o">=</span><span class="p">[</span><span class="n">c</span> <span class="k">for</span> <span class="n">c</span><span class="p">,</span> <span class="n">w</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">([</span><span class="n">ACCENT2</span><span class="p">,</span> <span class="n">ACCENT4</span><span class="p">,</span> <span class="n">ACCENT3</span><span class="p">,</span> <span class="s1">&#39;#ff00ff&#39;</span><span class="p">],</span> <span class="n">wedge_sizes</span><span class="p">)</span> <span class="k">if</span> <span class="n">w</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">],</span>
+       <span class="n">startangle</span><span class="o">=</span><span class="mi">90</span><span class="p">,</span> <span class="n">textprops</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;color&#39;</span><span class="p">:</span> <span class="n">TEXT</span><span class="p">},</span> <span class="n">autopct</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">%1.1f%%</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="n">title_ax</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="s1">&#39; Impacto en Filas del Dataset&#39;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">(</span><span class="n">rect</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mf">0.97</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/09915752a401f32dcb7f778968ce71f118deffe4e652515ca37c921c2ac52a57.png" src="_images/09915752a401f32dcb7f778968ce71f118deffe4e652515ca37c921c2ac52a57.png" />
+</div>
+</div>
+<p>Después de revisar personalmente estos 3 juegos con más de 5.000 logros, sí es cierto que tienen esa cantidad exhorbitante. Sin embargo, hemos decidido borrarlos para no afectar el análisis.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">per_game</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;gameid&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">size</span><span class="p">()</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="s2">&quot;n_achievements&quot;</span><span class="p">)</span>
+
+<span class="n">Q1_o</span><span class="p">,</span> <span class="n">Q3_o</span> <span class="o">=</span> <span class="n">per_game</span><span class="o">.</span><span class="n">quantile</span><span class="p">(</span><span class="mf">0.25</span><span class="p">),</span> <span class="n">per_game</span><span class="o">.</span><span class="n">quantile</span><span class="p">(</span><span class="mf">0.75</span><span class="p">)</span>
+<span class="n">iqr_upper_o</span> <span class="o">=</span> <span class="n">Q3_o</span> <span class="o">+</span> <span class="mf">1.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">Q3_o</span> <span class="o">-</span> <span class="n">Q1_o</span><span class="p">)</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">categorize_game</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">n</span> <span class="o">&gt;</span> <span class="mi">5000</span><span class="p">:</span>        <span class="k">return</span> <span class="s2">&quot;invalido&quot;</span>
+    <span class="k">elif</span> <span class="n">n</span> <span class="o">==</span> <span class="mi">5000</span><span class="p">:</span>     <span class="k">return</span> <span class="s2">&quot;spam_tope&quot;</span>
+    <span class="k">elif</span> <span class="n">n</span> <span class="o">&gt;</span> <span class="n">iqr_upper_o</span><span class="p">:</span> <span class="k">return</span> <span class="s2">&quot;outlier_iqr&quot;</span>
+    <span class="k">return</span> <span class="s2">&quot;normal&quot;</span>
+
+<span class="n">game_cat</span> <span class="o">=</span> <span class="n">per_game</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">categorize_game</span><span class="p">)</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="s2">&quot;outlier_cat&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">game_cat</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="s2">&quot;gameid&quot;</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s2">&quot;left&quot;</span><span class="p">)</span>
+
+
+<span class="n">invalid_game_ids</span> <span class="o">=</span> <span class="n">per_game</span><span class="p">[</span><span class="n">per_game</span> <span class="o">&gt;</span> <span class="mi">5000</span><span class="p">]</span><span class="o">.</span><span class="n">index</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="o">~</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;gameid&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">invalid_game_ids</span><span class="p">)]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+<span class="n">n_cat</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;outlier_cat&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;outlier_cat en df:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">n_cat</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Df tras eliminar inválidos: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">)</span><span class="si">:</span><span class="s2">,</span><span class="si">}</span><span class="s2"> filas&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>outlier_cat en df:
+outlier_cat
+normal         957413
+outlier_iqr    565196
+spam_tope      385000
+Name: count, dtype: int64
+Df tras eliminar inválidos: 1,907,609 filas
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<hr class="docutils" />
+<section id="analisis-de-texto-titulos-y-descripciones">
+<h2>Análisis de Texto: Títulos y Descripciones<a class="headerlink" href="#analisis-de-texto-titulos-y-descripciones" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Los <strong>títulos de logros son muy cortos y consistentes</strong>, con una media cercana a 15 caracteres. La mitad de los títulos se encuentra entre <strong>9 y 21 caracteres</strong>, lo que indica que suelen ser frases breves y directas.</p></li>
+<li><p>Las <strong>descripciones son ligeramente más largas</strong> (media ≈ 27 caracteres) y generalmente explican la condición para desbloquear el logro, por ejemplo: <em>“Kill 100 enemies”</em> o <em>“Complete chapter 3”</em>.</p></li>
+<li><p>Se detectan <strong>valores extremos</strong> (títulos de hasta 2,196 caracteres y descripciones de 1,660), que probablemente corresponden a <strong>errores de formato o registros atípicos</strong>.</p></li>
+<li><p>Se identificaron <strong>10,634 logros con títulos genéricos</strong> (<code class="docutils literal notranslate"><span class="pre">0.56%</span></code> del dataset), como <em>“This is an achievement”</em> o <em>“Community achievement”</em>, los cuales aportan poca información semántica.</p></li>
+<li><p>Algunos títulos aparecen <strong>decenas de miles de veces</strong> (ej. <em>“Super Trivia Champion”</em>), lo que sugiere la presencia de <strong>juegos con generación masiva de logros (achievement spam)</strong>.</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;title_len&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;title&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">len</span><span class="p">()</span>
+<span class="n">df</span><span class="p">[</span><span class="s1">&#39;desc_len&#39;</span><span class="p">]</span>  <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;description&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">len</span><span class="p">()</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Longitud de títulos:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;title_len&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">describe</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Longitud de descripciones:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;desc_len&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">describe</span><span class="p">())</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Logros con título genérico (is_generic=True): </span><span class="si">{</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;is_generic&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="si">:</span><span class="s2">,</span><span class="si">}</span><span class="s2"> (</span><span class="si">{</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;is_generic&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">*</span><span class="mi">100</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">%)&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Longitud de títulos:
+count    1.907609e+06
+mean     1.525122e+01
+std      8.630370e+00
+min      1.000000e+00
+25%      9.000000e+00
+50%      1.500000e+01
+75%      2.100000e+01
+max      2.196000e+03
+Name: title_len, dtype: float64
+
+Longitud de descripciones:
+count    1.907609e+06
+mean     2.672150e+01
+std      1.845247e+01
+min      1.000000e+00
+25%      1.500000e+01
+50%      2.300000e+01
+75%      3.300000e+01
+max      1.660000e+03
+Name: desc_len, dtype: float64
+
+Logros con título genérico (is_generic=True): 10,634 (0.56%)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">11</span><span class="p">))</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">patch</span><span class="o">.</span><span class="n">set_facecolor</span><span class="p">(</span><span class="n">DARK_BG</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s1">&#39;Análisis de Texto — Títulos y Descripciones&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">&#39;bold&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">TEXT</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mf">0.98</span><span class="p">)</span>
+
+<span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+<span class="n">top_titles</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;title&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span>
+<span class="n">cmap</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">Reds</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">0.4</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">top_titles</span><span class="p">)))</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">barh</span><span class="p">(</span><span class="n">top_titles</span><span class="o">.</span><span class="n">index</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">top_titles</span><span class="o">.</span><span class="n">values</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="n">cmap</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Frecuencia&#39;</span><span class="p">)</span>
+<span class="n">title_ax</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="s1">&#39;  Top 20 Títulos Más Repetidos&#39;</span><span class="p">)</span>
+
+<span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;title_len&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">upper</span><span class="o">=</span><span class="mi">80</span><span class="p">),</span> <span class="n">bins</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">ACCENT1</span><span class="p">,</span>
+        <span class="n">edgecolor</span><span class="o">=</span><span class="n">DARK_BG</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.4</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;title_len&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">median</span><span class="p">(),</span> <span class="n">color</span><span class="o">=</span><span class="n">ACCENT4</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+           <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Mediana: </span><span class="si">{</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;title_len&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">median</span><span class="p">()</span><span class="si">:</span><span class="s2">.0f</span><span class="si">}</span><span class="s2"> chars&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="n">CARD_BG</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="n">MUTED</span><span class="p">,</span> <span class="n">labelcolor</span><span class="o">=</span><span class="n">TEXT</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Longitud del título (chars)&#39;</span><span class="p">);</span> <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Logros&#39;</span><span class="p">)</span>
+<span class="n">title_ax</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="s1">&#39;  Longitud de Títulos&#39;</span><span class="p">)</span>
+
+<span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
+<span class="n">no_desc</span> <span class="o">=</span> <span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;description&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;No description&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+<span class="n">has_desc</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;description&#39;</span><span class="p">]</span> <span class="o">!=</span> <span class="s1">&#39;No description&#39;</span><span class="p">]</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">has_desc</span><span class="p">[</span><span class="s1">&#39;desc_len&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">upper</span><span class="o">=</span><span class="mi">150</span><span class="p">),</span> <span class="n">bins</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">ACCENT2</span><span class="p">,</span>
+        <span class="n">edgecolor</span><span class="o">=</span><span class="n">DARK_BG</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.4</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">has_desc</span><span class="p">[</span><span class="s1">&#39;desc_len&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">median</span><span class="p">(),</span> <span class="n">color</span><span class="o">=</span><span class="n">ACCENT4</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+           <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Mediana: </span><span class="si">{</span><span class="n">has_desc</span><span class="p">[</span><span class="s1">&#39;desc_len&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">median</span><span class="p">()</span><span class="si">:</span><span class="s2">.0f</span><span class="si">}</span><span class="s2"> chars&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="n">CARD_BG</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="n">MUTED</span><span class="p">,</span> <span class="n">labelcolor</span><span class="o">=</span><span class="n">TEXT</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Longitud de descripción (chars)&#39;</span><span class="p">);</span> <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Logros&#39;</span><span class="p">)</span>
+<span class="n">title_ax</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="s1">&#39;  Longitud de Descripciones (con texto real)&#39;</span><span class="p">)</span>
+
+<span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+<span class="n">sample_games</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;gameid&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">agg</span><span class="p">(</span>
+    <span class="n">avg_title_len</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;title_len&#39;</span><span class="p">,</span><span class="s1">&#39;mean&#39;</span><span class="p">),</span>
+    <span class="n">avg_desc_len</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;desc_len&#39;</span><span class="p">,</span><span class="s1">&#39;mean&#39;</span><span class="p">),</span>
+    <span class="n">n_ach</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;achievementid&#39;</span><span class="p">,</span><span class="s1">&#39;count&#39;</span><span class="p">)</span>
+<span class="p">)</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="mi">3000</span><span class="p">,</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;gameid&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">nunique</span><span class="p">()),</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
+<span class="n">sc</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">sample_games</span><span class="p">[</span><span class="s1">&#39;avg_title_len&#39;</span><span class="p">],</span> <span class="n">sample_games</span><span class="p">[</span><span class="s1">&#39;avg_desc_len&#39;</span><span class="p">],</span>
+                <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">log1p</span><span class="p">(</span><span class="n">sample_games</span><span class="p">[</span><span class="s1">&#39;n_ach&#39;</span><span class="p">]),</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;plasma&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">sc</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;log(nº logros)&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Avg longitud título&#39;</span><span class="p">);</span> <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Avg longitud descripción&#39;</span><span class="p">)</span>
+<span class="n">title_ax</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="s1">&#39;  Título vs Descripción por Juego&#39;</span><span class="p">)</span>
+
+
+<span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+<span class="n">real_desc</span> <span class="o">=</span> <span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;description&#39;</span><span class="p">]</span> <span class="o">!=</span> <span class="s1">&#39;No description&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">pie</span><span class="p">([</span><span class="n">real_desc</span><span class="p">,</span> <span class="n">no_desc</span><span class="p">],</span>
+       <span class="n">labels</span><span class="o">=</span><span class="p">[</span><span class="sa">f</span><span class="s1">&#39;Con descripción</span><span class="se">\n</span><span class="s1">(</span><span class="si">{</span><span class="n">real_desc</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">)</span><span class="o">*</span><span class="mi">100</span><span class="si">:</span><span class="s1">.1f</span><span class="si">}</span><span class="s1">%)&#39;</span><span class="p">,</span>
+               <span class="sa">f</span><span class="s1">&#39;Sin descripción</span><span class="se">\n</span><span class="s1">(</span><span class="si">{</span><span class="n">no_desc</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">)</span><span class="o">*</span><span class="mi">100</span><span class="si">:</span><span class="s1">.1f</span><span class="si">}</span><span class="s1">%)&#39;</span><span class="p">],</span>
+       <span class="n">colors</span><span class="o">=</span><span class="p">[</span><span class="n">ACCENT2</span><span class="p">,</span> <span class="n">ACCENT3</span><span class="p">],</span> <span class="n">startangle</span><span class="o">=</span><span class="mi">90</span><span class="p">,</span>
+       <span class="n">textprops</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;color&#39;</span><span class="p">:</span> <span class="n">TEXT</span><span class="p">},</span> <span class="n">autopct</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">%1.1f%%</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="n">title_ax</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="s1">&#39;  Logros con / sin Descripción&#39;</span><span class="p">)</span>
+
+
+<span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
+<span class="n">unique_titles</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;title&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">nunique</span><span class="p">()</span>
+<span class="n">total_titles</span>  <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+<span class="n">repeated</span> <span class="o">=</span> <span class="n">total_titles</span> <span class="o">-</span> <span class="n">unique_titles</span>
+<span class="n">generic_n</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;is_generic&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+<span class="n">bars_lbl</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Títulos únicos&#39;</span><span class="p">,</span> <span class="s1">&#39;Títulos repetidos&#39;</span><span class="p">,</span> <span class="s1">&#39;Títulos genéricos&#39;</span><span class="p">]</span>
+<span class="n">bars_val</span> <span class="o">=</span> <span class="p">[</span><span class="n">unique_titles</span><span class="p">,</span> <span class="n">repeated</span><span class="p">,</span> <span class="n">generic_n</span><span class="p">]</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">bars_lbl</span><span class="p">,</span> <span class="n">bars_val</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="p">[</span><span class="n">ACCENT2</span><span class="p">,</span> <span class="n">ACCENT4</span><span class="p">,</span> <span class="n">ACCENT3</span><span class="p">])</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">bars_val</span><span class="p">):</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">v</span> <span class="o">+</span> <span class="n">total_titles</span><span class="o">*</span><span class="mf">0.005</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">v</span><span class="si">:</span><span class="s1">,</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+            <span class="n">color</span><span class="o">=</span><span class="n">TEXT</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">&#39;bold&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Logros&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="n">rotation</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">title_ax</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="s1">&#39;  Unicidad de Títulos&#39;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">(</span><span class="n">rect</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mf">0.96</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/d305fc3e7683f818de123b5523352923f23bf684361896bc73a1562ddce23d1a.png" src="_images/d305fc3e7683f818de123b5523352923f23bf684361896bc73a1562ddce23d1a.png" />
+</div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="deteccion-de-achievement-spam">
+<h2>Detección de Achievement Spam<a class="headerlink" href="#deteccion-de-achievement-spam" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Se observa <strong>achievement spam</strong> en algunos juegos: títulos que contienen muchos logros con <strong>nombres repetidos o casi idénticos</strong>, práctica asociada con inflar artificialmente los contadores de logros en Steam.</p></li>
+<li><p>Se define un juego como <strong>spam</strong> cuando <strong>más del 80% de sus logros tienen el mismo título</strong>.</p></li>
+<li><p>Con este criterio se identificaron <strong>1,413 juegos spam (2.8%)</strong>, que contienen <strong>110,917 logros (5.8%)</strong> del dataset.</p></li>
+<li><p>Aunque Steam tiene un <strong>límite de 5,000 logros por juego</strong>, solo <strong>24.68%</strong> de los juegos con ese número fueron detectados como spam bajo esta métrica.</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">spam_ratio</span><span class="p">(</span><span class="n">group</span><span class="p">):</span>
+    <span class="n">top_freq</span> <span class="o">=</span> <span class="n">group</span><span class="p">[</span><span class="s1">&#39;title&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">top_freq</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">group</span><span class="p">)</span>
+
+<span class="n">game_spam</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;gameid&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">spam_ratio</span><span class="p">)</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="s1">&#39;spam_ratio&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
+<span class="n">game_spam</span><span class="p">[</span><span class="s1">&#39;is_spam_game&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">game_spam</span><span class="p">[</span><span class="s1">&#39;spam_ratio&#39;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mf">0.8</span>
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">game_spam</span><span class="p">[[</span><span class="s1">&#39;gameid&#39;</span><span class="p">,</span><span class="s1">&#39;spam_ratio&#39;</span><span class="p">,</span><span class="s1">&#39;is_spam_game&#39;</span><span class="p">]],</span> <span class="n">on</span><span class="o">=</span><span class="s1">&#39;gameid&#39;</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s1">&#39;left&#39;</span><span class="p">)</span>
+
+<span class="n">n_spam_games</span> <span class="o">=</span> <span class="n">game_spam</span><span class="p">[</span><span class="s1">&#39;is_spam_game&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+<span class="n">n_spam_rows</span>  <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;is_spam_game&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Juegos marcados como spam     : </span><span class="si">{</span><span class="n">n_spam_games</span><span class="si">:</span><span class="s2">,</span><span class="si">}</span><span class="s2"> (</span><span class="si">{</span><span class="n">n_spam_games</span><span class="o">/</span><span class="n">game_spam</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="mi">100</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">% de juegos)&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Logros en juegos spam         : </span><span class="si">{</span><span class="n">n_spam_rows</span><span class="si">:</span><span class="s2">,</span><span class="si">}</span><span class="s2"> (</span><span class="si">{</span><span class="n">n_spam_rows</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">)</span><span class="o">*</span><span class="mi">100</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">% de logros)&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Dataset sin spam              : </span><span class="si">{</span><span class="p">(</span><span class="o">~</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;is_spam_game&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="si">:</span><span class="s2">,</span><span class="si">}</span><span class="s2"> logros&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Juegos marcados como spam     : 1,413 (2.8% de juegos)
+Logros en juegos spam         : 110,917 (5.8% de logros)
+
+Dataset sin spam              : 1,796,692 logros
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">spam_top_games</span> <span class="o">=</span> <span class="n">per_game</span><span class="p">[</span><span class="n">per_game</span> <span class="o">==</span> <span class="mi">5000</span><span class="p">]</span><span class="o">.</span><span class="n">index</span> 
+
+<span class="n">top5000</span> <span class="o">=</span> <span class="n">game_spam</span><span class="p">[</span><span class="n">game_spam</span><span class="p">[</span><span class="s1">&#39;gameid&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">spam_top_games</span><span class="p">)]</span>
+
+<span class="n">ratio_detected</span> <span class="o">=</span> <span class="n">top5000</span><span class="p">[</span><span class="s1">&#39;is_spam_game&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Porcentaje de juegos con 5000 logros detectados como spam: </span><span class="si">{</span><span class="n">ratio_detected</span><span class="o">*</span><span class="mi">100</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">%&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Porcentaje de juegos con 5000 logros detectados como spam: 24.68%
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">patch</span><span class="o">.</span><span class="n">set_facecolor</span><span class="p">(</span><span class="n">DARK_BG</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s1">&#39;Detección de Achievement Spam&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">&#39;bold&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">TEXT</span><span class="p">)</span>
+
+<span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">game_spam</span><span class="p">[</span><span class="s1">&#39;spam_ratio&#39;</span><span class="p">],</span> <span class="n">bins</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">ACCENT1</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="n">DARK_BG</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.4</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="mf">0.8</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">ACCENT3</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Umbral spam (0.8)&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="n">CARD_BG</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="n">MUTED</span><span class="p">,</span> <span class="n">labelcolor</span><span class="o">=</span><span class="n">TEXT</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Ratio de título repetido&#39;</span><span class="p">);</span> <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Juegos&#39;</span><span class="p">)</span>
+<span class="n">title_ax</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="s1">&#39;  Distribución del Spam Ratio&#39;</span><span class="p">)</span>
+
+<span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">pie</span><span class="p">([</span><span class="n">n_spam_rows</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">)</span> <span class="o">-</span> <span class="n">n_spam_rows</span><span class="p">],</span>
+       <span class="n">labels</span><span class="o">=</span><span class="p">[</span><span class="sa">f</span><span class="s1">&#39;Spam</span><span class="se">\n</span><span class="s1">(</span><span class="si">{</span><span class="n">n_spam_rows</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">)</span><span class="o">*</span><span class="mi">100</span><span class="si">:</span><span class="s1">.1f</span><span class="si">}</span><span class="s1">%)&#39;</span><span class="p">,</span>
+               <span class="sa">f</span><span class="s1">&#39;Legítimos</span><span class="se">\n</span><span class="s1">(</span><span class="si">{</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">)</span><span class="o">-</span><span class="n">n_spam_rows</span><span class="p">)</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">)</span><span class="o">*</span><span class="mi">100</span><span class="si">:</span><span class="s1">.1f</span><span class="si">}</span><span class="s1">%)&#39;</span><span class="p">],</span>
+       <span class="n">colors</span><span class="o">=</span><span class="p">[</span><span class="n">ACCENT3</span><span class="p">,</span> <span class="n">ACCENT2</span><span class="p">],</span> <span class="n">startangle</span><span class="o">=</span><span class="mi">90</span><span class="p">,</span>
+       <span class="n">textprops</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;color&#39;</span><span class="p">:</span> <span class="n">TEXT</span><span class="p">},</span> <span class="n">autopct</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">%1.1f%%</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="n">title_ax</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="s1">&#39;  Logros Spam vs Legítimos&#39;</span><span class="p">)</span>
+
+<span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+<span class="n">clean</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="o">~</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;is_spam_game&#39;</span><span class="p">]]</span>
+<span class="n">per_game_clean</span> <span class="o">=</span> <span class="n">clean</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;gameid&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">size</span><span class="p">()</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">per_game_clean</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">upper</span><span class="o">=</span><span class="mi">200</span><span class="p">),</span> <span class="n">bins</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">ACCENT2</span><span class="p">,</span>
+        <span class="n">edgecolor</span><span class="o">=</span><span class="n">DARK_BG</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.4</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">per_game_clean</span><span class="o">.</span><span class="n">median</span><span class="p">(),</span> <span class="n">color</span><span class="o">=</span><span class="n">ACCENT4</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+           <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Mediana: </span><span class="si">{</span><span class="n">per_game_clean</span><span class="o">.</span><span class="n">median</span><span class="p">()</span><span class="si">:</span><span class="s2">.0f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="n">CARD_BG</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="n">MUTED</span><span class="p">,</span> <span class="n">labelcolor</span><span class="o">=</span><span class="n">TEXT</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Logros por juego&#39;</span><span class="p">);</span> <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Juegos&#39;</span><span class="p">)</span>
+<span class="n">title_ax</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="s1">&#39;  Distribución Sin Spam (cap. 200)&#39;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/deaa42aaaa7edf1409a323bd7d405e3944da21a13dc7dc8f96e4b24816396de6.png" src="_images/deaa42aaaa7edf1409a323bd7d405e3944da21a13dc7dc8f96e4b24816396de6.png" />
+</div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="dataset-limpio-final">
+<h2>Dataset limpio final<a class="headerlink" href="#dataset-limpio-final" title="Permalink to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;═&quot;</span> <span class="o">*</span> <span class="mi">55</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;  RESUMEN DEL DATASET LIMPIO — achievements&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;═&quot;</span> <span class="o">*</span> <span class="mi">55</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  Filas originales        : </span><span class="si">{</span><span class="n">df_raw</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s2">&gt;10,</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  Eliminadas (title NaN)  : </span><span class="si">{</span><span class="n">df_raw</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">)</span><span class="si">:</span><span class="s2">&gt;10,</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  Filas finales           : </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">)</span><span class="si">:</span><span class="s2">&gt;10,</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  Juegos únicos           : </span><span class="si">{</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;gameid&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">nunique</span><span class="p">()</span><span class="si">:</span><span class="s2">&gt;10,</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  Logros con desc real    : </span><span class="si">{</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;description&#39;</span><span class="p">]</span><span class="o">!=</span><span class="s1">&#39;No description&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="si">:</span><span class="s2">&gt;10,</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  Logros spam             : </span><span class="si">{</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;is_spam_game&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="si">:</span><span class="s2">&gt;10,</span><span class="si">}</span><span class="s2">  (</span><span class="si">{</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;is_spam_game&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">*</span><span class="mi">100</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">%)&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  Faltantes restantes     : </span><span class="si">{</span><span class="n">df</span><span class="o">.</span><span class="n">isnull</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="si">:</span><span class="s2">&gt;10,</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;═&quot;</span> <span class="o">*</span> <span class="mi">55</span><span class="p">)</span>
+<span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>═══════════════════════════════════════════════════════
+  RESUMEN DEL DATASET LIMPIO — achievements
+═══════════════════════════════════════════════════════
+  Filas originales        :  1,939,027
+  Eliminadas (title NaN)  :     31,418
+  Filas finales           :  1,907,609
+  Juegos únicos           :     50,537
+  Logros con desc real    :  1,734,436
+  Logros spam             :    110,917  (5.8%)
+  Faltantes restantes     :          0
+═══════════════════════════════════════════════════════
+</pre></div>
+</div>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>achievementid</th>
+      <th>gameid</th>
+      <th>title</th>
+      <th>description</th>
+      <th>is_generic</th>
+      <th>ach_gameid_prefix</th>
+      <th>ach_code</th>
+      <th>outlier_cat</th>
+      <th>title_len</th>
+      <th>desc_len</th>
+      <th>spam_ratio</th>
+      <th>is_spam_game</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>2621440_ACH_FIRST_KILL</td>
+      <td>2621440</td>
+      <td>FIRST KILL</td>
+      <td>You should kill ONE enemy.</td>
+      <td>False</td>
+      <td>2621440</td>
+      <td>ACH_FIRST_KILL</td>
+      <td>normal</td>
+      <td>10</td>
+      <td>26</td>
+      <td>0.090909</td>
+      <td>False</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2621440_ACH_0_LEVEL_COMPLETED</td>
+      <td>2621440</td>
+      <td>TUTORIAL COMPLETED</td>
+      <td>You should complete tutorial.</td>
+      <td>False</td>
+      <td>2621440</td>
+      <td>ACH_0_LEVEL_COMPLETED</td>
+      <td>normal</td>
+      <td>18</td>
+      <td>29</td>
+      <td>0.090909</td>
+      <td>False</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>2621440_ACH_1_LEVEL_COMPLETED</td>
+      <td>2621440</td>
+      <td>FIRST LEVEL</td>
+      <td>You should complete first level</td>
+      <td>False</td>
+      <td>2621440</td>
+      <td>ACH_1_LEVEL_COMPLETED</td>
+      <td>normal</td>
+      <td>11</td>
+      <td>31</td>
+      <td>0.090909</td>
+      <td>False</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="exportar-dataset-limpio">
+<h2>Exportar dataset limpio<a class="headerlink" href="#exportar-dataset-limpio" title="Permalink to this heading">#</a></h2>
+<p><strong>Archivos generados:</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">achievements_clean.csv</span></code> — todos los logros con flags: <code class="docutils literal notranslate"><span class="pre">is_spam_game</span></code>, <code class="docutils literal notranslate"><span class="pre">spam_ratio</span></code>, <code class="docutils literal notranslate"><span class="pre">outlier_cat</span></code>, <code class="docutils literal notranslate"><span class="pre">is_generic</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">achievements_per_game.csv</span></code> — una fila por juego: <code class="docutils literal notranslate"><span class="pre">gameid</span></code>, <code class="docutils literal notranslate"><span class="pre">n_achievements</span></code>, <code class="docutils literal notranslate"><span class="pre">is_spam_game</span></code>, <code class="docutils literal notranslate"><span class="pre">spam_ratio</span></code>, <code class="docutils literal notranslate"><span class="pre">outlier_cat</span></code></p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cols_export</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;achievementid&#39;</span><span class="p">,</span><span class="s1">&#39;gameid&#39;</span><span class="p">,</span><span class="s1">&#39;title&#39;</span><span class="p">,</span><span class="s1">&#39;description&#39;</span><span class="p">,</span>
+               <span class="s1">&#39;is_generic&#39;</span><span class="p">,</span><span class="s1">&#39;spam_ratio&#39;</span><span class="p">,</span><span class="s1">&#39;is_spam_game&#39;</span><span class="p">,</span><span class="s1">&#39;outlier_cat&#39;</span><span class="p">]</span>
+<span class="n">df</span><span class="p">[</span><span class="n">cols_export</span><span class="p">]</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s1">&#39;Datos/achievements_clean.csv&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+
+<span class="n">per_game_export</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;gameid&#39;</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">agg</span><span class="p">(</span>
+        <span class="n">n_achievements</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;achievementid&#39;</span><span class="p">,</span> <span class="s1">&#39;count&#39;</span><span class="p">),</span>
+        <span class="n">is_spam_game</span>  <span class="o">=</span><span class="p">(</span><span class="s1">&#39;is_spam_game&#39;</span><span class="p">,</span>  <span class="s1">&#39;first&#39;</span><span class="p">),</span>
+        <span class="n">spam_ratio</span>    <span class="o">=</span><span class="p">(</span><span class="s1">&#39;spam_ratio&#39;</span><span class="p">,</span>     <span class="s1">&#39;first&#39;</span><span class="p">),</span>
+        <span class="n">outlier_cat</span>   <span class="o">=</span><span class="p">(</span><span class="s1">&#39;outlier_cat&#39;</span><span class="p">,</span>    <span class="s1">&#39;first&#39;</span><span class="p">),</span>
+        <span class="n">pct_generic</span>   <span class="o">=</span><span class="p">(</span><span class="s1">&#39;is_generic&#39;</span><span class="p">,</span>     <span class="s1">&#39;mean&#39;</span><span class="p">),</span>
+    <span class="p">)</span>
+    <span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
+<span class="p">)</span>
+<span class="n">per_game_export</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s1">&#39;Datos/achievements_per_game.csv&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;achievements_clean.csv    : </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">)</span><span class="si">:</span><span class="s1">,</span><span class="si">}</span><span class="s1"> filas, </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">cols_export</span><span class="p">)</span><span class="si">}</span><span class="s1"> columnas&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;achievements_per_game.csv : </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">per_game_export</span><span class="p">)</span><span class="si">:</span><span class="s1">,</span><span class="si">}</span><span class="s1"> juegos&#39;</span><span class="p">)</span>
+<span class="n">per_game_export</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>achievements_clean.csv    : 1,907,609 filas, 8 columnas
+achievements_per_game.csv : 50,537 juegos
+</pre></div>
+</div>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>gameid</th>
+      <th>n_achievements</th>
+      <th>is_spam_game</th>
+      <th>spam_ratio</th>
+      <th>outlier_cat</th>
+      <th>pct_generic</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>220</td>
+      <td>69</td>
+      <td>False</td>
+      <td>0.014493</td>
+      <td>outlier_iqr</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>240</td>
+      <td>147</td>
+      <td>False</td>
+      <td>0.006803</td>
+      <td>outlier_iqr</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>300</td>
+      <td>54</td>
+      <td>False</td>
+      <td>0.018519</td>
+      <td>normal</td>
+      <td>0.0</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="conclusiones">
+<h2>Conclusiones<a class="headerlink" href="#conclusiones" title="Permalink to this heading">#</a></h2>
+<section id="proximos-pasos">
+<h3>Próximos pasos<a class="headerlink" href="#proximos-pasos" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Paso obligatorio antes de cruzar con <code class="docutils literal notranslate"><span class="pre">history</span></code>: filtrar <code class="docutils literal notranslate"><span class="pre">is_spam_game</span> <span class="pre">=</span> <span class="pre">True</span></code> antes de calcular cualquier <code class="docutils literal notranslate"><span class="pre">completion_rate</span></code>. Los juegos spam distorsionan la variable objetivo del modelo de regresión — un usuario que completa un juego spam al 100% tiene 5,000 logros pero cero engagement real.</p></li>
+<li><p><strong>Cruzar con <code class="docutils literal notranslate"><span class="pre">history</span></code></strong> (post-filtro spam): calcular <code class="docutils literal notranslate"><span class="pre">completion_rate</span> <span class="pre">=</span> <span class="pre">logros_desbloqueados</span> <span class="pre">/</span> <span class="pre">n_logros_juego</span></code> por par <code class="docutils literal notranslate"><span class="pre">(playerid,</span> <span class="pre">gameid)</span></code>. Este es el target de regresión.</p></li>
+<li><p><strong>Cruzar con <code class="docutils literal notranslate"><span class="pre">games</span></code>:</strong> enriquecer con género — ¿qué géneros tienen más logros en promedio? ¿Los juegos de ciertos géneros tienen mayor tasa de completion?</p></li>
+<li><p><strong>Columnas disponibles para feature engineering:</strong> <code class="docutils literal notranslate"><span class="pre">n_achievements</span></code> (por juego), <code class="docutils literal notranslate"><span class="pre">is_spam_game</span></code>, <code class="docutils literal notranslate"><span class="pre">spam_ratio</span></code>, <code class="docutils literal notranslate"><span class="pre">outlier_cat</span></code>, <code class="docutils literal notranslate"><span class="pre">is_generic</span></code>.</p></li>
+</ul>
+</section>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="intro.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Análisis de la Plataforma Steam — Proyecto de Machine Learning</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="eda_friends.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Steam Dataset — EDA: <code class="docutils literal notranslate"><span class="pre">friends</span></code></p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#imports-y-configuracion">Imports y configuración</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#carga-y-exploracion-inicial">Carga y exploración inicial</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analisis-y-tratamiento-de-valores-faltantes">Análisis y tratamiento de valores faltantes</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#razonamiento">Razonamiento</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#estructura-del-achievementid-y-validacion-de-integridad">Estructura del <code class="docutils literal notranslate"><span class="pre">achievementid</span></code> y validación de integridad</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#distribucion-de-logros-por-juego">Distribución de Logros por Juego</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#hallazgos">Hallazgos</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#outliers-juegos-con-cantidad-extrema-de-logros">Outliers: Juegos con Cantidad Extrema de Logros</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#enfoque-del-analisis">Enfoque del análisis</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analisis-de-texto-titulos-y-descripciones">Análisis de Texto: Títulos y Descripciones</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#deteccion-de-achievement-spam">Detección de Achievement Spam</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dataset-limpio-final">Dataset limpio final</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exportar-dataset-limpio">Exportar dataset limpio</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#conclusiones">Conclusiones</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#proximos-pasos">Próximos pasos</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By David Estrada Lora, Alex Terán, Rubén Esguerra
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2022.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

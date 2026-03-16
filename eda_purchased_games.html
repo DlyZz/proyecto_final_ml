@@ -1,0 +1,1858 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>Steam Dataset EDA: purchased_games × private_steamids &#8212; Proyecto Final Machine Learning</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" href="_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'eda_purchased_games';</script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/UN.png" class="logo__image only-light" alt="Proyecto Final Machine Learning - Home"/>
+    <script>document.write(`<img src="_static/UN.png" class="logo__image only-dark" alt="Proyecto Final Machine Learning - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="intro.html">
+                    Análisis de la Plataforma Steam — Proyecto de Machine Learning
+                </a>
+            </li>
+        </ul>
+        <ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="eda_achievements.html">🏆 Steam Dataset — EDA: <code class="docutils literal notranslate"><span class="pre">achievements</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="eda_friends.html">Steam Dataset — EDA: <code class="docutils literal notranslate"><span class="pre">friends</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="eda_games.html">Steam Dataset EDA: <code class="docutils literal notranslate"><span class="pre">games</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="eda_history.html">Steam Dataset — EDA: <code class="docutils literal notranslate"><span class="pre">history</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="eda_players.html">Steam Dataset EDA: <code class="docutils literal notranslate"><span class="pre">players</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="eda_reviews.html">Steam Dataset  EDA: <code class="docutils literal notranslate"><span class="pre">reviews</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="eda_feature_engineering.html">Steam Dataset — Feature Engineering</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/executablebooks/jupyter-book" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/executablebooks/jupyter-book/issues/new?title=Issue%20on%20page%20%2Feda_purchased_games.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/eda_purchased_games.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Steam Dataset  EDA: purchased_games × private_steamids</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#imports-y-configuracion">Imports y configuración</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#carga">Carga</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#segmentacion-por-privacidad-cruce-con-private-steamids">Segmentación por Privacidad Cruce con <code class="docutils literal notranslate"><span class="pre">private_steamids</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#hallazgos">Hallazgos</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#hallazgo-clave-los-usuarios-privados-tienen-bibliotecas-mas-pequenas">Hallazgo clave: los usuarios privados tienen bibliotecas más pequeñas</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analisis-y-tratamiento-de-valores-faltantes">Análisis y tratamiento de valores faltantes</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#diagnostico-resuelto">Diagnóstico resuelto</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#distribucion-del-tamano-de-biblioteca">Distribución del Tamaño de Biblioteca</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Hallazgos</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#outliers-bibliotecas-extremas-y-segmentacion">Outliers: Bibliotecas Extremas y Segmentación</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">Hallazgos</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#popularidad-de-juegos-n-owners-todos-vs-solo-publicos">Popularidad de Juegos — <code class="docutils literal notranslate"><span class="pre">n_owners</span></code> (todos vs solo públicos)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">Hallazgos</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dataset-limpio-final">Dataset limpio final</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exportar-dataset-limpio">Exportar dataset limpio</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#conclusiones">Conclusiones</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#proximos-pasos">Próximos pasos</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="steam-dataset-eda-purchased-games-private-steamids">
+<h1>Steam Dataset  EDA: <code class="docutils literal notranslate"><span class="pre">purchased_games</span></code> × <code class="docutils literal notranslate"><span class="pre">private_steamids</span></code><a class="headerlink" href="#steam-dataset-eda-purchased-games-private-steamids" title="Permalink to this heading">#</a></h1>
+<p><strong>Columnas de <code class="docutils literal notranslate"><span class="pre">purchased_games</span></code>:</strong></p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Columna</p></th>
+<th class="head"><p>Tipo</p></th>
+<th class="head"><p>Descripción</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">playerid</span></code></p></td>
+<td><p>int</p></td>
+<td><p>ID del jugador (Steam ID)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">library</span></code></p></td>
+<td><p>str (lista serializada)</p></td>
+<td><p>Lista de <code class="docutils literal notranslate"><span class="pre">gameids</span></code> en la biblioteca del usuario</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<hr class="docutils" />
+<section id="imports-y-configuracion">
+<h2>Imports y configuración<a class="headerlink" href="#imports-y-configuracion" title="Permalink to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">ast</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.patches</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">mpatches</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">seaborn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sns</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">Counter</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
+<span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s1">&#39;ignore&#39;</span><span class="p">)</span>
+
+<span class="n">DARK_BG</span> <span class="o">=</span> <span class="s1">&#39;#0e1117&#39;</span>
+<span class="n">CARD_BG</span> <span class="o">=</span> <span class="s1">&#39;#1a1f2e&#39;</span>
+<span class="n">ACCENT1</span> <span class="o">=</span> <span class="s1">&#39;#4f86f7&#39;</span>
+<span class="n">ACCENT2</span> <span class="o">=</span> <span class="s1">&#39;#7ee8a2&#39;</span>
+<span class="n">ACCENT3</span> <span class="o">=</span> <span class="s1">&#39;#ff6b6b&#39;</span>
+<span class="n">ACCENT4</span> <span class="o">=</span> <span class="s1">&#39;#ffd166&#39;</span>
+<span class="n">ACCENT5</span> <span class="o">=</span> <span class="s1">&#39;#c77dff&#39;</span>
+<span class="n">TEXT</span>    <span class="o">=</span> <span class="s1">&#39;#e0e6f0&#39;</span>
+<span class="n">MUTED</span>   <span class="o">=</span> <span class="s1">&#39;#8892a4&#39;</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="o">.</span><span class="n">update</span><span class="p">({</span>
+    <span class="s1">&#39;figure.facecolor&#39;</span><span class="p">:</span> <span class="n">DARK_BG</span><span class="p">,</span> <span class="s1">&#39;axes.facecolor&#39;</span><span class="p">:</span> <span class="n">CARD_BG</span><span class="p">,</span>
+    <span class="s1">&#39;axes.edgecolor&#39;</span><span class="p">:</span> <span class="n">MUTED</span><span class="p">,</span>     <span class="s1">&#39;axes.labelcolor&#39;</span><span class="p">:</span> <span class="n">TEXT</span><span class="p">,</span>
+    <span class="s1">&#39;xtick.color&#39;</span><span class="p">:</span> <span class="n">MUTED</span><span class="p">,</span>        <span class="s1">&#39;ytick.color&#39;</span><span class="p">:</span> <span class="n">MUTED</span><span class="p">,</span>
+    <span class="s1">&#39;text.color&#39;</span><span class="p">:</span> <span class="n">TEXT</span><span class="p">,</span>          <span class="s1">&#39;grid.color&#39;</span><span class="p">:</span> <span class="s1">&#39;#2d3348&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;grid.alpha&#39;</span><span class="p">:</span> <span class="mf">0.6</span><span class="p">,</span>           <span class="s1">&#39;font.family&#39;</span><span class="p">:</span> <span class="s1">&#39;DejaVu Sans&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;font.size&#39;</span><span class="p">:</span> <span class="mi">11</span><span class="p">,</span>
+<span class="p">})</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">title_ax</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">txt</span><span class="p">,</span> <span class="n">sub</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">txt</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">13</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">&#39;bold&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">TEXT</span><span class="p">,</span> <span class="n">pad</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">sub</span><span class="p">:</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">1.02</span><span class="p">,</span> <span class="n">sub</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">ax</span><span class="o">.</span><span class="n">transAxes</span><span class="p">,</span>
+                <span class="n">ha</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">MUTED</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="carga">
+<h2>Carga<a class="headerlink" href="#carga" title="Permalink to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df_private</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;Datos/private_steamids.csv&#39;</span><span class="p">)</span>  
+<span class="n">private_set</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">df_private</span><span class="p">[</span><span class="s1">&#39;playerid&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;IDs privados (archivo completo): </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">private_set</span><span class="p">)</span><span class="si">:</span><span class="s2">,</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>IDs privados (archivo completo): 227,963
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">parse_purchased_games</span><span class="p">(</span><span class="n">filepath</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Parser para CSV con listas multi-línea.</span>
+<span class="sd">    Retorna:</span>
+<span class="sd">      records      — lista de dicts {playerid, library, lib_size} (library parseada OK)</span>
+<span class="sd">      empty_ids    — lista de playerids con library vacía</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">records</span><span class="p">,</span> <span class="n">empty_ids</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[]</span>
+    <span class="n">current_pid</span><span class="p">,</span> <span class="n">current_parts</span><span class="p">,</span> <span class="n">in_multiline</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="p">[],</span> <span class="kc">False</span>
+
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>  
+        <span class="k">for</span> <span class="n">raw_line</span> <span class="ow">in</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">line</span> <span class="o">=</span> <span class="n">raw_line</span><span class="o">.</span><span class="n">rstrip</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\r\n</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">in_multiline</span><span class="p">:</span>
+                <span class="n">comma_idx</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">comma_idx</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span> <span class="k">continue</span>
+                <span class="n">pid_str</span><span class="p">,</span> <span class="n">rest</span> <span class="o">=</span> <span class="n">line</span><span class="p">[:</span><span class="n">comma_idx</span><span class="p">],</span> <span class="n">line</span><span class="p">[</span><span class="n">comma_idx</span><span class="o">+</span><span class="mi">1</span><span class="p">:]</span>
+                <span class="k">if</span> <span class="n">rest</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="s1">&#39;&quot;&quot;&#39;</span><span class="p">,</span> <span class="s1">&#39;[]&#39;</span><span class="p">):</span>
+                    <span class="k">try</span><span class="p">:</span> <span class="n">empty_ids</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">pid_str</span><span class="p">))</span>
+                    <span class="k">except</span><span class="p">:</span> <span class="k">pass</span>
+                    <span class="k">continue</span>
+                <span class="k">if</span> <span class="n">rest</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;&quot;&#39;</span><span class="p">):</span>
+                    <span class="n">rest</span> <span class="o">=</span> <span class="n">rest</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
+                    <span class="k">if</span> <span class="n">rest</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;&quot;&#39;</span><span class="p">):</span>
+                        <span class="k">try</span><span class="p">:</span>
+                            <span class="n">lib</span> <span class="o">=</span> <span class="n">ast</span><span class="o">.</span><span class="n">literal_eval</span><span class="p">(</span><span class="n">rest</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+                            <span class="n">records</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s1">&#39;playerid&#39;</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">pid_str</span><span class="p">),</span> <span class="s1">&#39;library&#39;</span><span class="p">:</span> <span class="n">lib</span><span class="p">,</span>
+                                            <span class="s1">&#39;lib_size&#39;</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">lib</span><span class="p">)})</span>
+                        <span class="k">except</span><span class="p">:</span> <span class="n">empty_ids</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">pid_str</span><span class="p">))</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">current_pid</span><span class="p">,</span> <span class="n">current_parts</span><span class="p">,</span> <span class="n">in_multiline</span> <span class="o">=</span> <span class="n">pid_str</span><span class="p">,</span> <span class="p">[</span><span class="n">rest</span><span class="p">],</span> <span class="kc">True</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">try</span><span class="p">:</span>
+                        <span class="n">lib</span> <span class="o">=</span> <span class="n">ast</span><span class="o">.</span><span class="n">literal_eval</span><span class="p">(</span><span class="n">rest</span><span class="p">)</span>
+                        <span class="n">records</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s1">&#39;playerid&#39;</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">pid_str</span><span class="p">),</span> <span class="s1">&#39;library&#39;</span><span class="p">:</span> <span class="n">lib</span><span class="p">,</span>
+                                        <span class="s1">&#39;lib_size&#39;</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">lib</span><span class="p">)})</span>
+                    <span class="k">except</span><span class="p">:</span> <span class="n">empty_ids</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">pid_str</span><span class="p">))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">line</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;&quot;&#39;</span><span class="p">):</span>
+                    <span class="n">current_parts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">line</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+                    <span class="k">try</span><span class="p">:</span>
+                        <span class="n">lib</span> <span class="o">=</span> <span class="n">ast</span><span class="o">.</span><span class="n">literal_eval</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">current_parts</span><span class="p">))</span>
+                        <span class="n">records</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s1">&#39;playerid&#39;</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">current_pid</span><span class="p">),</span> <span class="s1">&#39;library&#39;</span><span class="p">:</span> <span class="n">lib</span><span class="p">,</span>
+                                        <span class="s1">&#39;lib_size&#39;</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">lib</span><span class="p">)})</span>
+                    <span class="k">except</span><span class="p">:</span> <span class="n">empty_ids</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">current_pid</span><span class="p">))</span>
+                    <span class="n">current_pid</span><span class="p">,</span> <span class="n">current_parts</span><span class="p">,</span> <span class="n">in_multiline</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="p">[],</span> <span class="kc">False</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">current_parts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+
+    
+    <span class="k">if</span> <span class="n">in_multiline</span> <span class="ow">and</span> <span class="n">current_pid</span> <span class="ow">and</span> <span class="n">current_parts</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">lib</span> <span class="o">=</span> <span class="n">ast</span><span class="o">.</span><span class="n">literal_eval</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">current_parts</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;]&#39;</span><span class="p">)</span>
+            <span class="n">records</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s1">&#39;playerid&#39;</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">current_pid</span><span class="p">),</span> <span class="s1">&#39;library&#39;</span><span class="p">:</span> <span class="n">lib</span><span class="p">,</span>
+                            <span class="s1">&#39;lib_size&#39;</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">lib</span><span class="p">),</span> <span class="s1">&#39;truncated&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">})</span>
+        <span class="k">except</span><span class="p">:</span> <span class="n">empty_ids</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">current_pid</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">records</span><span class="p">,</span> <span class="n">empty_ids</span>
+
+
+<span class="n">PG_PATH</span> <span class="o">=</span> <span class="s1">&#39;Datos/purchased_games.csv&#39;</span>  
+<span class="n">records</span><span class="p">,</span> <span class="n">empty_ids</span> <span class="o">=</span> <span class="n">parse_purchased_games</span><span class="p">(</span><span class="n">PG_PATH</span><span class="p">)</span>
+
+<span class="n">total_rows</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">records</span><span class="p">)</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">empty_ids</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Total filas en el archivo  : </span><span class="si">{</span><span class="n">total_rows</span><span class="si">:</span><span class="s2">,</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Con library (parseada OK)  : </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">records</span><span class="p">)</span><span class="si">:</span><span class="s2">,</span><span class="si">}</span><span class="s2">  (</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">records</span><span class="p">)</span><span class="o">/</span><span class="n">total_rows</span><span class="o">*</span><span class="mi">100</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">%)&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Con library vacía          : </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">empty_ids</span><span class="p">)</span><span class="si">:</span><span class="s2">,</span><span class="si">}</span><span class="s2">  (</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">empty_ids</span><span class="p">)</span><span class="o">/</span><span class="n">total_rows</span><span class="o">*</span><span class="mi">100</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">%)&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Total filas en el archivo  : 102,548
+Con library (parseada OK)  : 46,941  (45.8%)
+Con library vacía          : 55,607  (54.2%)
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="segmentacion-por-privacidad-cruce-con-private-steamids">
+<h2>Segmentación por Privacidad Cruce con <code class="docutils literal notranslate"><span class="pre">private_steamids</span></code><a class="headerlink" href="#segmentacion-por-privacidad-cruce-con-private-steamids" title="Permalink to this heading">#</a></h2>
+<section id="hallazgos">
+<h3>Hallazgos<a class="headerlink" href="#hallazgos" title="Permalink to this heading">#</a></h3>
+<p>El cruce revela que los usuarios del dataset se dividen en 4 categorías con perfiles y utilidades distintas:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Categoría</p></th>
+<th class="head"><p>n</p></th>
+<th class="head"><p>%</p></th>
+<th class="head"><p>Significado</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>A</strong> Sin library + privado</p></td>
+<td><p>35,902</p></td>
+<td><p>35.0%</p></td>
+<td><p>Perfil privado sin datos de biblioteca visibles</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>B</strong> Sin library + público</p></td>
+<td><p>19,705</p></td>
+<td><p>19.2%</p></td>
+<td><p>Usuarios públicos sin juegos detectados (cuentas vacías o nuevas)</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>C</strong> Con library + privado</p></td>
+<td><p>16,810</p></td>
+<td><p>16.4%</p></td>
+<td><p>Biblioteca capturada pero perfil configurado como privado</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>D</strong> Con library + público</p></td>
+<td><p>30,131</p></td>
+<td><p>29.4%</p></td>
+<td><p>Gold standard biblioteca visible y perfil público</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="hallazgo-clave-los-usuarios-privados-tienen-bibliotecas-mas-pequenas">
+<h3>Hallazgo clave: los usuarios privados tienen bibliotecas más pequeñas<a class="headerlink" href="#hallazgo-clave-los-usuarios-privados-tienen-bibliotecas-mas-pequenas" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p><strong>Categoría C (privado con library)</strong></p>
+<ul>
+<li><p>mediana: 32 juegos</p></li>
+<li><p>percentil 75: 80 juegos</p></li>
+</ul>
+</li>
+<li><p><strong>Categoría D (público con library)</strong></p>
+<ul>
+<li><p>mediana: 114 juegos</p></li>
+<li><p>percentil 75: 251 juegos</p></li>
+</ul>
+</li>
+</ul>
+<p>Esto sugiere que los usuarios con bibliotecas más pequeñas tienden con mayor frecuencia a tener perfiles privados, mientras que los perfiles públicos concentran bibliotecas significativamente más grandes.</p>
+<p>En total, <strong>54.2% de los usuarios no tienen biblioteca observable en el dataset (categorías A+B)</strong>, mientras que <strong>45.8% sí presentan al menos un juego registrado (categorías C+D)</strong>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cat_a</span> <span class="o">=</span> <span class="p">[</span><span class="n">pid</span> <span class="k">for</span> <span class="n">pid</span> <span class="ow">in</span> <span class="n">empty_ids</span>  <span class="k">if</span> <span class="n">pid</span>     <span class="ow">in</span> <span class="n">private_set</span><span class="p">]</span>   
+<span class="n">cat_b</span> <span class="o">=</span> <span class="p">[</span><span class="n">pid</span> <span class="k">for</span> <span class="n">pid</span> <span class="ow">in</span> <span class="n">empty_ids</span>  <span class="k">if</span> <span class="n">pid</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">private_set</span><span class="p">]</span>   
+<span class="n">cat_c</span> <span class="o">=</span> <span class="p">[</span><span class="n">r</span>   <span class="k">for</span> <span class="n">r</span>   <span class="ow">in</span> <span class="n">records</span>    <span class="k">if</span> <span class="n">r</span><span class="p">[</span><span class="s1">&#39;playerid&#39;</span><span class="p">]</span>  <span class="ow">in</span> <span class="n">private_set</span><span class="p">]</span>  
+<span class="n">cat_d</span> <span class="o">=</span> <span class="p">[</span><span class="n">r</span>   <span class="k">for</span> <span class="n">r</span>   <span class="ow">in</span> <span class="n">records</span>    <span class="k">if</span> <span class="n">r</span><span class="p">[</span><span class="s1">&#39;playerid&#39;</span><span class="p">]</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">private_set</span><span class="p">]</span>  
+
+<span class="n">total</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">cat_a</span><span class="p">)</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">cat_b</span><span class="p">)</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">cat_c</span><span class="p">)</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">cat_d</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">label</span><span class="p">,</span> <span class="n">grp</span> <span class="ow">in</span> <span class="p">[(</span><span class="s1">&#39;A  Sin library + privado&#39;</span><span class="p">,</span> <span class="n">cat_a</span><span class="p">),</span>
+                   <span class="p">(</span><span class="s1">&#39;B  Sin library + público&#39;</span><span class="p">,</span> <span class="n">cat_b</span><span class="p">),</span>
+                   <span class="p">(</span><span class="s1">&#39;C  Con library + privado&#39;</span><span class="p">,</span> <span class="n">cat_c</span><span class="p">),</span>
+                   <span class="p">(</span><span class="s1">&#39;D  Con library + público&#39;</span><span class="p">,</span> <span class="n">cat_d</span><span class="p">)]:</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">grp</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">label</span><span class="si">}</span><span class="s2"> : </span><span class="si">{</span><span class="n">n</span><span class="si">:</span><span class="s2">,</span><span class="si">}</span><span class="s2">  (</span><span class="si">{</span><span class="n">n</span><span class="o">/</span><span class="n">total</span><span class="o">*</span><span class="mi">100</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">%)&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">()</span>
+
+<span class="n">df_c</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">([{</span><span class="s1">&#39;playerid&#39;</span><span class="p">:</span> <span class="n">r</span><span class="p">[</span><span class="s1">&#39;playerid&#39;</span><span class="p">],</span> <span class="s1">&#39;lib_size&#39;</span><span class="p">:</span> <span class="n">r</span><span class="p">[</span><span class="s1">&#39;lib_size&#39;</span><span class="p">],</span>
+                       <span class="s1">&#39;is_private&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">}</span>  <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">cat_c</span><span class="p">])</span>
+<span class="n">df_d</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">([{</span><span class="s1">&#39;playerid&#39;</span><span class="p">:</span> <span class="n">r</span><span class="p">[</span><span class="s1">&#39;playerid&#39;</span><span class="p">],</span> <span class="s1">&#39;lib_size&#39;</span><span class="p">:</span> <span class="n">r</span><span class="p">[</span><span class="s1">&#39;lib_size&#39;</span><span class="p">],</span>
+                       <span class="s1">&#39;is_private&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">}</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">cat_d</span><span class="p">])</span>
+<span class="n">df</span>   <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">df_c</span><span class="p">,</span> <span class="n">df_d</span><span class="p">],</span> <span class="n">ignore_index</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>  
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;lib_size — privados con library (Cat. C):&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df_c</span><span class="p">[</span><span class="s1">&#39;lib_size&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">describe</span><span class="p">(</span><span class="n">percentiles</span><span class="o">=</span><span class="p">[</span><span class="mf">.25</span><span class="p">,</span><span class="mf">.5</span><span class="p">,</span><span class="mf">.75</span><span class="p">])</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;lib_size — públicos con library (Cat. D):&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df_d</span><span class="p">[</span><span class="s1">&#39;lib_size&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">describe</span><span class="p">(</span><span class="n">percentiles</span><span class="o">=</span><span class="p">[</span><span class="mf">.25</span><span class="p">,</span><span class="mf">.5</span><span class="p">,</span><span class="mf">.75</span><span class="p">])</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>A  Sin library + privado : 35,902  (35.0%)
+B  Sin library + público : 19,705  (19.2%)
+C  Con library + privado : 16,810  (16.4%)
+D  Con library + público : 30,131  (29.4%)
+
+lib_size — privados con library (Cat. C):
+count    16810.0
+mean        95.5
+std        377.4
+min          1.0
+25%         11.0
+50%         32.0
+75%         80.0
+max      15685.0
+Name: lib_size, dtype: float64
+
+lib_size — públicos con library (Cat. D):
+count    30131.0
+mean       320.4
+std       1039.7
+min          1.0
+25%         50.0
+50%        114.0
+75%        251.0
+max      32463.0
+Name: lib_size, dtype: float64
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">22</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">patch</span><span class="o">.</span><span class="n">set_facecolor</span><span class="p">(</span><span class="n">DARK_BG</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s1">&#39;Segmentación por Privacidad — Cruce purchased_games × private_steamids&#39;</span><span class="p">,</span>
+             <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">&#39;bold&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">TEXT</span><span class="p">)</span>
+
+<span class="n">cat_labels</span>  <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;A</span><span class="se">\n</span><span class="s1">Sin lib</span><span class="se">\n</span><span class="s1">+ privado&#39;</span><span class="p">,</span> <span class="s1">&#39;B</span><span class="se">\n</span><span class="s1">Sin lib</span><span class="se">\n</span><span class="s1">+ público&#39;</span><span class="p">,</span>
+               <span class="s1">&#39;C</span><span class="se">\n</span><span class="s1">Con lib</span><span class="se">\n</span><span class="s1">+ privado&#39;</span><span class="p">,</span> <span class="s1">&#39;D</span><span class="se">\n</span><span class="s1">Con lib</span><span class="se">\n</span><span class="s1">+ público&#39;</span><span class="p">]</span>
+<span class="n">cat_sizes</span>   <span class="o">=</span> <span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">cat_a</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">cat_b</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">cat_c</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">cat_d</span><span class="p">)]</span>
+<span class="n">cat_colors</span>  <span class="o">=</span> <span class="p">[</span><span class="n">ACCENT3</span><span class="p">,</span> <span class="n">ACCENT4</span><span class="p">,</span> <span class="n">ACCENT5</span><span class="p">,</span> <span class="n">ACCENT2</span><span class="p">]</span>
+
+
+<span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">bars</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">cat_labels</span><span class="p">,</span> <span class="n">cat_sizes</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">cat_colors</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">bar</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">bars</span><span class="p">,</span> <span class="n">cat_sizes</span><span class="p">):</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">bar</span><span class="o">.</span><span class="n">get_x</span><span class="p">()</span> <span class="o">+</span> <span class="n">bar</span><span class="o">.</span><span class="n">get_width</span><span class="p">()</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">bar</span><span class="o">.</span><span class="n">get_height</span><span class="p">()</span> <span class="o">+</span> <span class="n">total</span><span class="o">*</span><span class="mf">0.005</span><span class="p">,</span>
+            <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">val</span><span class="si">:</span><span class="s1">,</span><span class="si">}</span><span class="se">\n</span><span class="s1">(</span><span class="si">{</span><span class="n">val</span><span class="o">/</span><span class="n">total</span><span class="o">*</span><span class="mi">100</span><span class="si">:</span><span class="s1">.1f</span><span class="si">}</span><span class="s1">%)&#39;</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+            <span class="n">color</span><span class="o">=</span><span class="n">TEXT</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">&#39;bold&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Usuarios&#39;</span><span class="p">);</span> <span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">max</span><span class="p">(</span><span class="n">cat_sizes</span><span class="p">)</span><span class="o">*</span><span class="mf">1.25</span><span class="p">)</span>
+<span class="n">title_ax</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="s1">&#39;Usuarios por Categoría&#39;</span><span class="p">)</span>
+
+
+<span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">pie</span><span class="p">(</span><span class="n">cat_sizes</span><span class="p">,</span>
+       <span class="n">labels</span><span class="o">=</span><span class="p">[</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">l</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="nb">chr</span><span class="p">(</span><span class="mi">10</span><span class="p">),</span><span class="w"> </span><span class="s2">&quot; &quot;</span><span class="p">)</span><span class="si">}</span><span class="se">\n</span><span class="s1">(</span><span class="si">{</span><span class="n">s</span><span class="o">/</span><span class="n">total</span><span class="o">*</span><span class="mi">100</span><span class="si">:</span><span class="s1">.1f</span><span class="si">}</span><span class="s1">%)&#39;</span>
+               <span class="k">for</span> <span class="n">l</span><span class="p">,</span> <span class="n">s</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">cat_labels</span><span class="p">,</span> <span class="n">cat_sizes</span><span class="p">)],</span>
+       <span class="n">colors</span><span class="o">=</span><span class="n">cat_colors</span><span class="p">,</span> <span class="n">startangle</span><span class="o">=</span><span class="mi">90</span><span class="p">,</span>
+       <span class="n">textprops</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;color&#39;</span><span class="p">:</span> <span class="n">TEXT</span><span class="p">,</span> <span class="s1">&#39;fontsize&#39;</span><span class="p">:</span> <span class="mi">8</span><span class="p">},</span> <span class="n">autopct</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">%1.1f%%</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="n">title_ax</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="s1">&#39;Composición del Dataset&#39;</span><span class="p">)</span>
+
+
+<span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+<span class="n">cap</span> <span class="o">=</span> <span class="mi">1500</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">df_d</span><span class="p">[</span><span class="s1">&#39;lib_size&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">upper</span><span class="o">=</span><span class="n">cap</span><span class="p">),</span> <span class="n">bins</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">ACCENT2</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span>
+        <span class="n">edgecolor</span><span class="o">=</span><span class="n">DARK_BG</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;Público (D), n=</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">df_d</span><span class="p">)</span><span class="si">:</span><span class="s1">,</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">df_c</span><span class="p">[</span><span class="s1">&#39;lib_size&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">upper</span><span class="o">=</span><span class="n">cap</span><span class="p">),</span> <span class="n">bins</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">ACCENT5</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span>
+        <span class="n">edgecolor</span><span class="o">=</span><span class="n">DARK_BG</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;Privado (C), n=</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">df_c</span><span class="p">)</span><span class="si">:</span><span class="s1">,</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">df_d</span><span class="p">[</span><span class="s1">&#39;lib_size&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">median</span><span class="p">(),</span> <span class="n">color</span><span class="o">=</span><span class="n">ACCENT2</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span>
+           <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;Mediana D: </span><span class="si">{</span><span class="n">df_d</span><span class="p">[</span><span class="s2">&quot;lib_size&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">median</span><span class="p">()</span><span class="si">:</span><span class="s1">.0f</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">df_c</span><span class="p">[</span><span class="s1">&#39;lib_size&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">median</span><span class="p">(),</span> <span class="n">color</span><span class="o">=</span><span class="n">ACCENT5</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span>
+           <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;Mediana C: </span><span class="si">{</span><span class="n">df_c</span><span class="p">[</span><span class="s2">&quot;lib_size&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">median</span><span class="p">()</span><span class="si">:</span><span class="s1">.0f</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="n">CARD_BG</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="n">MUTED</span><span class="p">,</span> <span class="n">labelcolor</span><span class="o">=</span><span class="n">TEXT</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Juegos en biblioteca (cap. </span><span class="si">{</span><span class="n">cap</span><span class="si">}</span><span class="s1">)&#39;</span><span class="p">);</span> <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Usuarios&#39;</span><span class="p">)</span>
+<span class="n">title_ax</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="s1">&#39;lib_size: Privados vs Públicos&#39;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/744e2fb2e8081ad8abc42eb0453c4814a87a5a0485601038ff6b4a77a23b8dea.png" src="_images/744e2fb2e8081ad8abc42eb0453c4814a87a5a0485601038ff6b4a77a23b8dea.png" />
+</div>
+</div>
+</section>
+</section>
+<hr class="docutils" />
+<section id="analisis-y-tratamiento-de-valores-faltantes">
+<h2>Análisis y tratamiento de valores faltantes<a class="headerlink" href="#analisis-y-tratamiento-de-valores-faltantes" title="Permalink to this heading">#</a></h2>
+<section id="diagnostico-resuelto">
+<h3>Diagnóstico resuelto<a class="headerlink" href="#diagnostico-resuelto" title="Permalink to this heading">#</a></h3>
+<p>Gracias al cruce con <code class="docutils literal notranslate"><span class="pre">private_steamids</span></code>, los usuarios sin biblioteca observable se descomponen en dos causas principales:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Causa</p></th>
+<th class="head"><p>n</p></th>
+<th class="head"><p>% del total</p></th>
+<th class="head"><p>Tratamiento</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Perfil privado sin datos (Cat. A)</p></td>
+<td><p>35,902</p></td>
+<td><p>35.0%</p></td>
+<td><p><strong>Etiquetar</strong> <code class="docutils literal notranslate"><span class="pre">reason='private_no_data'</span></code> — no es un error, es un límite de cobertura del dataset</p></td>
+</tr>
+<tr class="row-odd"><td><p>Sin juegos genuinamente (Cat. B)</p></td>
+<td><p>19,705</p></td>
+<td><p>19.2%</p></td>
+<td><p><strong>Etiquetar</strong> <code class="docutils literal notranslate"><span class="pre">reason='no_games'</span></code> — excluir de análisis de biblioteca</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>En total, 54.2% de los usuarios no tienen biblioteca observable en el dataset.<br />
+De ellos, la mayoría corresponde a perfiles privados (35.0%), mientras que 19.2% parecen ser cuentas públicas sin juegos registrados.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">n_total</span>       <span class="o">=</span> <span class="n">total</span>
+<span class="n">n_with_lib</span>    <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+<span class="n">n_private_nd</span>  <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">cat_a</span><span class="p">)</span>   
+<span class="n">n_no_games</span>    <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">cat_b</span><span class="p">)</span>   
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Diagnóstico completo de faltantes:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  Con library (C + D)                 : </span><span class="si">{</span><span class="n">n_with_lib</span><span class="si">:</span><span class="s2">,</span><span class="si">}</span><span class="s2">  (</span><span class="si">{</span><span class="n">n_with_lib</span><span class="o">/</span><span class="n">n_total</span><span class="o">*</span><span class="mi">100</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">%)&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  Sin library — perfil privado (A)     : </span><span class="si">{</span><span class="n">n_private_nd</span><span class="si">:</span><span class="s2">,</span><span class="si">}</span><span class="s2">  (</span><span class="si">{</span><span class="n">n_private_nd</span><span class="o">/</span><span class="n">n_total</span><span class="o">*</span><span class="mi">100</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">%)&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  Sin library — sin juegos reales (B)  : </span><span class="si">{</span><span class="n">n_no_games</span><span class="si">:</span><span class="s2">,</span><span class="si">}</span><span class="s2">  (</span><span class="si">{</span><span class="n">n_no_games</span><span class="o">/</span><span class="n">n_total</span><span class="o">*</span><span class="mi">100</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">%)&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">()</span>
+
+<span class="n">rows_all</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">cat_c</span><span class="p">:</span>
+    <span class="n">rows_all</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s1">&#39;playerid&#39;</span><span class="p">:</span> <span class="n">r</span><span class="p">[</span><span class="s1">&#39;playerid&#39;</span><span class="p">],</span> <span class="s1">&#39;lib_size&#39;</span><span class="p">:</span> <span class="n">r</span><span class="p">[</span><span class="s1">&#39;lib_size&#39;</span><span class="p">],</span>
+                     <span class="s1">&#39;has_library&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> <span class="s1">&#39;is_private&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>  <span class="s1">&#39;reason&#39;</span><span class="p">:</span> <span class="s1">&#39;ok_private&#39;</span><span class="p">})</span>
+<span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">cat_d</span><span class="p">:</span>
+    <span class="n">rows_all</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s1">&#39;playerid&#39;</span><span class="p">:</span> <span class="n">r</span><span class="p">[</span><span class="s1">&#39;playerid&#39;</span><span class="p">],</span> <span class="s1">&#39;lib_size&#39;</span><span class="p">:</span> <span class="n">r</span><span class="p">[</span><span class="s1">&#39;lib_size&#39;</span><span class="p">],</span>
+                     <span class="s1">&#39;has_library&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> <span class="s1">&#39;is_private&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span> <span class="s1">&#39;reason&#39;</span><span class="p">:</span> <span class="s1">&#39;ok_public&#39;</span><span class="p">})</span>
+<span class="k">for</span> <span class="n">pid</span> <span class="ow">in</span> <span class="n">cat_a</span><span class="p">:</span>
+    <span class="n">rows_all</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s1">&#39;playerid&#39;</span><span class="p">:</span> <span class="n">pid</span><span class="p">,</span> <span class="s1">&#39;lib_size&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+                     <span class="s1">&#39;has_library&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span> <span class="s1">&#39;is_private&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>  <span class="s1">&#39;reason&#39;</span><span class="p">:</span> <span class="s1">&#39;private_no_data&#39;</span><span class="p">})</span>
+<span class="k">for</span> <span class="n">pid</span> <span class="ow">in</span> <span class="n">cat_b</span><span class="p">:</span>
+    <span class="n">rows_all</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s1">&#39;playerid&#39;</span><span class="p">:</span> <span class="n">pid</span><span class="p">,</span> <span class="s1">&#39;lib_size&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+                     <span class="s1">&#39;has_library&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span> <span class="s1">&#39;is_private&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span> <span class="s1">&#39;reason&#39;</span><span class="p">:</span> <span class="s1">&#39;no_games&#39;</span><span class="p">})</span>
+
+<span class="n">df_all</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">rows_all</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Distribución de &#39;reason&#39;:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df_all</span><span class="p">[</span><span class="s1">&#39;reason&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;→ Para ML: usar df (solo has_library=True) con flag is_private.&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;→ Los &#39;no_games&#39; son cuentas sin actividad — excluir de features de usuario.&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Diagnóstico completo de faltantes:
+  Con library (C + D)                 : 46,941  (45.8%)
+  Sin library — perfil privado (A)     : 35,902  (35.0%)
+  Sin library — sin juegos reales (B)  : 19,705  (19.2%)
+
+Distribución de &#39;reason&#39;:
+reason
+private_no_data    35902
+ok_public          30131
+no_games           19705
+ok_private         16810
+Name: count, dtype: int64
+
+→ Para ML: usar df (solo has_library=True) con flag is_private.
+→ Los &#39;no_games&#39; son cuentas sin actividad — excluir de features de usuario.
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<hr class="docutils" />
+<section id="distribucion-del-tamano-de-biblioteca">
+<h2>Distribución del Tamaño de Biblioteca<a class="headerlink" href="#distribucion-del-tamano-de-biblioteca" title="Permalink to this heading">#</a></h2>
+<section id="id1">
+<h3>Hallazgos<a class="headerlink" href="#id1" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p>La distribución del tamaño de biblioteca es <strong>fuertemente sesgada a la derecha</strong>: mediana 76 juegos, media 240, y un máximo de 32,463 juegos.</p></li>
+<li><p>La mayoría de los usuarios tiene bibliotecas relativamente pequeñas: el 75% posee 186 juegos o menos, mientras que el 90% tiene menos de 427 juegos.</p></li>
+<li><p>Usando el criterio <strong>IQR (Q3 + 1.5×IQR = 423 juegos)</strong> se identifican 4,736 usuarios outliers (10.1%), correspondientes a bibliotecas significativamente más grandes que la mayoría.</p></li>
+<li><p>Un usuario extremo posee 32,463 juegos, más de 10× el percentil 99, lo que sugiere un caso atípico como coleccionista extremo o cuenta asociada a distribución/curaduría.</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Estadísticas globales de lib_size:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;lib_size&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">describe</span><span class="p">(</span><span class="n">percentiles</span><span class="o">=</span><span class="p">[</span><span class="mf">.1</span><span class="p">,</span> <span class="mf">.25</span><span class="p">,</span> <span class="mf">.5</span><span class="p">,</span> <span class="mf">.75</span><span class="p">,</span> <span class="mf">.90</span><span class="p">,</span> <span class="mf">.95</span><span class="p">,</span> <span class="mf">.99</span><span class="p">]))</span>
+<span class="nb">print</span><span class="p">()</span>
+
+<span class="n">Q1</span>  <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;lib_size&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">quantile</span><span class="p">(</span><span class="mf">0.25</span><span class="p">)</span>
+<span class="n">Q3</span>  <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;lib_size&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">quantile</span><span class="p">(</span><span class="mf">0.75</span><span class="p">)</span>
+<span class="n">IQR</span> <span class="o">=</span> <span class="n">Q3</span> <span class="o">-</span> <span class="n">Q1</span>
+<span class="n">upper_iqr</span> <span class="o">=</span> <span class="n">Q3</span> <span class="o">+</span> <span class="mf">1.5</span> <span class="o">*</span> <span class="n">IQR</span>
+<span class="n">p99</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;lib_size&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">quantile</span><span class="p">(</span><span class="mf">0.99</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Q1=</span><span class="si">{</span><span class="n">Q1</span><span class="si">:</span><span class="s2">.0f</span><span class="si">}</span><span class="s2">  Q3=</span><span class="si">{</span><span class="n">Q3</span><span class="si">:</span><span class="s2">.0f</span><span class="si">}</span><span class="s2">  IQR=</span><span class="si">{</span><span class="n">IQR</span><span class="si">:</span><span class="s2">.0f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Umbral IQR (Q3 + 1.5×IQR) : </span><span class="si">{</span><span class="n">upper_iqr</span><span class="si">:</span><span class="s2">.0f</span><span class="si">}</span><span class="s2"> juegos&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Percentil 99               : </span><span class="si">{</span><span class="n">p99</span><span class="si">:</span><span class="s2">.0f</span><span class="si">}</span><span class="s2"> juegos&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Outliers IQR               : </span><span class="si">{</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;lib_size&#39;</span><span class="p">]</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">upper_iqr</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="si">:</span><span class="s2">,</span><span class="si">}</span><span class="s2">  (</span><span class="si">{</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;lib_size&#39;</span><span class="p">]</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">upper_iqr</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">*</span><span class="mi">100</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">%)&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Estadísticas globales de lib_size:
+count    46941.000000
+mean       239.848214
+std        869.771849
+min          1.000000
+10%         10.000000
+25%         28.000000
+50%         76.000000
+75%        186.000000
+90%        427.000000
+95%        761.000000
+99%       3137.600000
+max      32463.000000
+Name: lib_size, dtype: float64
+
+Q1=28  Q3=186  IQR=158
+Umbral IQR (Q3 + 1.5×IQR) : 423 juegos
+Percentil 99               : 3138 juegos
+Outliers IQR               : 4,736  (10.1%)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">22</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">patch</span><span class="o">.</span><span class="n">set_facecolor</span><span class="p">(</span><span class="n">DARK_BG</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s1">&#39;Distribución del Tamaño de Biblioteca&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">&#39;bold&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">TEXT</span><span class="p">)</span>
+
+<span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">cap</span> <span class="o">=</span> <span class="mi">2000</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;is_private&#39;</span><span class="p">]</span><span class="o">==</span><span class="kc">False</span><span class="p">][</span><span class="s1">&#39;lib_size&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">upper</span><span class="o">=</span><span class="n">cap</span><span class="p">),</span> <span class="n">bins</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span>
+        <span class="n">color</span><span class="o">=</span><span class="n">ACCENT2</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="n">DARK_BG</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Público (D)&#39;</span><span class="p">,</span> <span class="n">log</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;is_private&#39;</span><span class="p">]</span><span class="o">==</span><span class="kc">True</span><span class="p">][</span><span class="s1">&#39;lib_size&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">upper</span><span class="o">=</span><span class="n">cap</span><span class="p">),</span>  <span class="n">bins</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span>
+        <span class="n">color</span><span class="o">=</span><span class="n">ACCENT5</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="n">DARK_BG</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Privado (C)&#39;</span><span class="p">,</span> <span class="n">log</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">upper_iqr</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">ACCENT3</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;:&#39;</span><span class="p">,</span>
+           <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;IQR upper (</span><span class="si">{</span><span class="n">upper_iqr</span><span class="si">:</span><span class="s1">.0f</span><span class="si">}</span><span class="s1">)&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="n">CARD_BG</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="n">MUTED</span><span class="p">,</span> <span class="n">labelcolor</span><span class="o">=</span><span class="n">TEXT</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Juegos (cap. </span><span class="si">{</span><span class="n">cap</span><span class="si">}</span><span class="s1">)&#39;</span><span class="p">);</span> <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Usuarios (log)&#39;</span><span class="p">)</span>
+<span class="n">title_ax</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="s1">&#39;  Distribución (log) por Privacidad&#39;</span><span class="p">)</span>
+
+<span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">data_box</span> <span class="o">=</span> <span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;is_private&#39;</span><span class="p">]</span><span class="o">==</span><span class="kc">False</span><span class="p">][</span><span class="s1">&#39;lib_size&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">,</span>
+            <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;is_private&#39;</span><span class="p">]</span><span class="o">==</span><span class="kc">True</span><span class="p">][</span><span class="s1">&#39;lib_size&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">]</span>
+<span class="n">bp</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">boxplot</span><span class="p">(</span><span class="n">data_box</span><span class="p">,</span> <span class="n">vert</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">patch_artist</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">widths</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
+                <span class="n">boxprops</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="n">MUTED</span><span class="p">),</span>
+                <span class="n">medianprops</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="n">ACCENT4</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">),</span>
+                <span class="n">whiskerprops</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="n">MUTED</span><span class="p">),</span> <span class="n">capprops</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="n">MUTED</span><span class="p">),</span>
+                <span class="n">flierprops</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">marker</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">2</span><span class="p">))</span>
+<span class="n">bp</span><span class="p">[</span><span class="s1">&#39;boxes&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_facecolor</span><span class="p">(</span><span class="n">ACCENT2</span><span class="p">)</span>
+<span class="n">bp</span><span class="p">[</span><span class="s1">&#39;boxes&#39;</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_facecolor</span><span class="p">(</span><span class="n">ACCENT5</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xticklabels</span><span class="p">([</span><span class="s1">&#39;Público (D)&#39;</span><span class="p">,</span> <span class="s1">&#39;Privado (C)&#39;</span><span class="p">])</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="n">upper_iqr</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">ACCENT3</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span>
+           <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;IQR upper (</span><span class="si">{</span><span class="n">upper_iqr</span><span class="si">:</span><span class="s1">.0f</span><span class="si">}</span><span class="s1">)&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="n">CARD_BG</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="n">MUTED</span><span class="p">,</span> <span class="n">labelcolor</span><span class="o">=</span><span class="n">TEXT</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Juegos en biblioteca&#39;</span><span class="p">)</span>
+<span class="n">title_ax</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="s1">&#39;  Boxplot Público vs Privado&#39;</span><span class="p">)</span>
+
+<span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+<span class="n">bins_r</span>   <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">250</span><span class="p">,</span> <span class="mi">500</span><span class="p">,</span> <span class="mi">1000</span><span class="p">,</span> <span class="mi">5000</span><span class="p">,</span> <span class="mi">99999</span><span class="p">]</span>
+<span class="n">labels_r</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;1–5&#39;</span><span class="p">,</span><span class="s1">&#39;6–10&#39;</span><span class="p">,</span><span class="s1">&#39;11–25&#39;</span><span class="p">,</span><span class="s1">&#39;26–50&#39;</span><span class="p">,</span><span class="s1">&#39;51–100&#39;</span><span class="p">,</span><span class="s1">&#39;101–250&#39;</span><span class="p">,</span><span class="s1">&#39;251–500&#39;</span><span class="p">,</span><span class="s1">&#39;501–1k&#39;</span><span class="p">,</span><span class="s1">&#39;1k–5k&#39;</span><span class="p">,</span><span class="s1">&#39;5k+&#39;</span><span class="p">]</span>
+<span class="n">df</span><span class="p">[</span><span class="s1">&#39;lib_bucket&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">cut</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;lib_size&#39;</span><span class="p">],</span> <span class="n">bins</span><span class="o">=</span><span class="n">bins_r</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="n">labels_r</span><span class="p">)</span>
+
+<span class="n">pub_counts</span>  <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;is_private&#39;</span><span class="p">]</span><span class="o">==</span><span class="kc">False</span><span class="p">][</span><span class="s1">&#39;lib_bucket&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span><span class="o">.</span><span class="n">sort_index</span><span class="p">()</span><span class="o">.</span><span class="n">reindex</span><span class="p">(</span><span class="n">labels_r</span><span class="p">,</span> <span class="n">fill_value</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">priv_counts</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;is_private&#39;</span><span class="p">]</span><span class="o">==</span><span class="kc">True</span> <span class="p">][</span><span class="s1">&#39;lib_bucket&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span><span class="o">.</span><span class="n">sort_index</span><span class="p">()</span><span class="o">.</span><span class="n">reindex</span><span class="p">(</span><span class="n">labels_r</span><span class="p">,</span> <span class="n">fill_value</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">x</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">labels_r</span><span class="p">))</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">pub_counts</span><span class="o">.</span><span class="n">values</span><span class="p">,</span>  <span class="n">color</span><span class="o">=</span><span class="n">ACCENT2</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Público (D)&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.85</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">priv_counts</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">ACCENT5</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Privado (C)&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.85</span><span class="p">,</span>
+       <span class="n">bottom</span><span class="o">=</span><span class="n">pub_counts</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">x</span><span class="p">));</span> <span class="n">ax</span><span class="o">.</span><span class="n">set_xticklabels</span><span class="p">(</span><span class="n">labels_r</span><span class="p">,</span> <span class="n">rotation</span><span class="o">=</span><span class="mi">35</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Usuarios&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="n">CARD_BG</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="n">MUTED</span><span class="p">,</span> <span class="n">labelcolor</span><span class="o">=</span><span class="n">TEXT</span><span class="p">)</span>
+<span class="n">title_ax</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="s1">&#39;  Usuarios por Rango (apilado)&#39;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/269e63438f2e53344fb0de747e41723fd8f5e23bc508e02fc10a0cfeef896726.png" src="_images/269e63438f2e53344fb0de747e41723fd8f5e23bc508e02fc10a0cfeef896726.png" />
+</div>
+</div>
+</section>
+</section>
+<hr class="docutils" />
+<section id="outliers-bibliotecas-extremas-y-segmentacion">
+<h2>Outliers: Bibliotecas Extremas y Segmentación<a class="headerlink" href="#outliers-bibliotecas-extremas-y-segmentacion" title="Permalink to this heading">#</a></h2>
+<section id="id2">
+<h3>Hallazgos<a class="headerlink" href="#id2" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Usando el umbral IQR (lib_size &gt; 423 juegos) se identifican 4,736 usuarios outliers (10.1%), correspondientes a bibliotecas extremadamente grandes.</p></li>
+<li><p>La distribución por tipo de usuario muestra diferencias claras entre perfiles públicos y privados:</p>
+<ul>
+<li><p>Públicos (D): 40.1% activos, 45.9% casuales, 13.9% coleccionistas.</p></li>
+<li><p>Privados (C): 16.6% activos, 80.2% casuales, 3.2% coleccionistas.</p></li>
+</ul>
+</li>
+<li><p>Esto confirma que los usuarios privados son mayoritariamente casuales, mientras que los coleccionistas se concentran principalmente en perfiles públicos.</p></li>
+<li><p>Aunque los coleccionistas representan una minoría de usuarios, generan una gran parte de la actividad del dataset:</p>
+<ul>
+<li><p>63.8% de los pares (usuario × juego) provienen de coleccionistas.</p></li>
+<li><p>26.8% de usuarios activos.</p></li>
+<li><p>9.5% de usuarios casuales.</p></li>
+</ul>
+</li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">user_type</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">upper</span><span class="o">=</span><span class="n">upper_iqr</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">n</span> <span class="o">&lt;=</span> <span class="mi">100</span><span class="p">:</span>    <span class="k">return</span> <span class="s1">&#39;casual&#39;</span>
+    <span class="k">elif</span> <span class="n">n</span> <span class="o">&lt;=</span> <span class="n">upper</span><span class="p">:</span> <span class="k">return</span> <span class="s1">&#39;activo&#39;</span>
+    <span class="k">else</span><span class="p">:</span>            <span class="k">return</span> <span class="s1">&#39;coleccionista&#39;</span>
+
+<span class="n">df</span><span class="p">[</span><span class="s1">&#39;user_type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;lib_size&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">user_type</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;user_type por grupo de privacidad:&quot;</span><span class="p">)</span>
+<span class="n">pivot</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;is_private&#39;</span><span class="p">,</span> <span class="s1">&#39;user_type&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">size</span><span class="p">()</span><span class="o">.</span><span class="n">unstack</span><span class="p">(</span><span class="n">fill_value</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">pivot</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Público (D)&#39;</span><span class="p">,</span> <span class="s1">&#39;Privado (C)&#39;</span><span class="p">]</span>
+<span class="n">pivot_pct</span> <span class="o">=</span> <span class="n">pivot</span><span class="o">.</span><span class="n">div</span><span class="p">(</span><span class="n">pivot</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="o">*</span> <span class="mi">100</span>
+<span class="n">display</span><span class="p">(</span><span class="n">pivot</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Porcentajes por fila:&quot;</span><span class="p">)</span>
+<span class="n">display</span><span class="p">(</span><span class="n">pivot_pct</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">()</span>
+
+<span class="n">pairs_by_type</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;casual&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;activo&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;coleccionista&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">}</span>
+<span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">cat_c</span> <span class="o">+</span> <span class="n">cat_d</span><span class="p">:</span>
+    <span class="n">utype</span> <span class="o">=</span> <span class="n">user_type</span><span class="p">(</span><span class="n">r</span><span class="p">[</span><span class="s1">&#39;lib_size&#39;</span><span class="p">])</span>
+    <span class="n">pairs_by_type</span><span class="p">[</span><span class="n">utype</span><span class="p">]</span> <span class="o">+=</span> <span class="n">r</span><span class="p">[</span><span class="s1">&#39;lib_size&#39;</span><span class="p">]</span>
+<span class="n">total_pairs</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">pairs_by_type</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Pares (usuario×juego) por user_type:&quot;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">t</span><span class="p">,</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">pairs_by_type</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  </span><span class="si">{</span><span class="n">t</span><span class="si">:</span><span class="s2">&lt;18</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">n</span><span class="si">:</span><span class="s2">,</span><span class="si">}</span><span class="s2">  (</span><span class="si">{</span><span class="n">n</span><span class="o">/</span><span class="n">total_pairs</span><span class="o">*</span><span class="mi">100</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">% del volumen total)&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>user_type por grupo de privacidad:
+</pre></div>
+</div>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th>user_type</th>
+      <th>activo</th>
+      <th>casual</th>
+      <th>coleccionista</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>Público (D)</th>
+      <td>12096</td>
+      <td>13844</td>
+      <td>4191</td>
+    </tr>
+    <tr>
+      <th>Privado (C)</th>
+      <td>2789</td>
+      <td>13476</td>
+      <td>545</td>
+    </tr>
+  </tbody>
+</table>
+</div></div><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Porcentajes por fila:
+</pre></div>
+</div>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th>user_type</th>
+      <th>activo</th>
+      <th>casual</th>
+      <th>coleccionista</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>Público (D)</th>
+      <td>40.1</td>
+      <td>45.9</td>
+      <td>13.9</td>
+    </tr>
+    <tr>
+      <th>Privado (C)</th>
+      <td>16.6</td>
+      <td>80.2</td>
+      <td>3.2</td>
+    </tr>
+  </tbody>
+</table>
+</div></div><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Pares (usuario×juego) por user_type:
+  casual            : 1,066,280  (9.5% del volumen total)
+  activo            : 3,012,412  (26.8% del volumen total)
+  coleccionista     : 7,180,023  (63.8% del volumen total)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">22</span><span class="p">,</span> <span class="mi">12</span><span class="p">))</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">patch</span><span class="o">.</span><span class="n">set_facecolor</span><span class="p">(</span><span class="n">DARK_BG</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s1">&#39;Outliers y Segmentación — Tamaño de Biblioteca&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span>
+             <span class="n">fontweight</span><span class="o">=</span><span class="s1">&#39;bold&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">TEXT</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mf">0.99</span><span class="p">)</span>
+
+<span class="n">type_order</span>  <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;casual&#39;</span><span class="p">,</span> <span class="s1">&#39;activo&#39;</span><span class="p">,</span> <span class="s1">&#39;coleccionista&#39;</span><span class="p">]</span>
+<span class="n">type_colors</span> <span class="o">=</span> <span class="p">[</span><span class="n">ACCENT2</span><span class="p">,</span> <span class="n">ACCENT1</span><span class="p">,</span> <span class="n">ACCENT3</span><span class="p">]</span>
+
+<span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+<span class="n">bp</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">boxplot</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;lib_size&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">vert</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">patch_artist</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">widths</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
+                <span class="n">boxprops</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">facecolor</span><span class="o">=</span><span class="n">ACCENT1</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">MUTED</span><span class="p">),</span>
+                <span class="n">medianprops</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="n">ACCENT4</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">),</span>
+                <span class="n">whiskerprops</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="n">MUTED</span><span class="p">),</span> <span class="n">capprops</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="n">MUTED</span><span class="p">),</span>
+                <span class="n">flierprops</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">marker</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">ACCENT3</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">3</span><span class="p">))</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="n">upper_iqr</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">ACCENT4</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span>
+           <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;IQR upper (</span><span class="si">{</span><span class="n">upper_iqr</span><span class="si">:</span><span class="s1">.0f</span><span class="si">}</span><span class="s1">)&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="n">CARD_BG</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="n">MUTED</span><span class="p">,</span> <span class="n">labelcolor</span><span class="o">=</span><span class="n">TEXT</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Juegos en biblioteca&#39;</span><span class="p">);</span> <span class="n">ax</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">([])</span>
+<span class="n">title_ax</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="s1">&#39;  Boxplot — lib_size completo&#39;</span><span class="p">)</span>
+
+<span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+<span class="n">pub_t</span>  <span class="o">=</span> <span class="p">[</span><span class="n">df</span><span class="p">[(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;is_private&#39;</span><span class="p">]</span><span class="o">==</span><span class="kc">False</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;user_type&#39;</span><span class="p">]</span><span class="o">==</span><span class="n">t</span><span class="p">)]</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">type_order</span><span class="p">]</span>
+<span class="n">priv_t</span> <span class="o">=</span> <span class="p">[</span><span class="n">df</span><span class="p">[(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;is_private&#39;</span><span class="p">]</span><span class="o">==</span><span class="kc">True</span> <span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;user_type&#39;</span><span class="p">]</span><span class="o">==</span><span class="n">t</span><span class="p">)]</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">type_order</span><span class="p">]</span>
+<span class="n">x</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">type_order</span><span class="p">))</span>
+<span class="n">b1</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">pub_t</span><span class="p">,</span>  <span class="n">color</span><span class="o">=</span><span class="n">ACCENT2</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Público (D)&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.9</span><span class="p">)</span>
+<span class="n">b2</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">priv_t</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">ACCENT5</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Privado (C)&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.9</span><span class="p">,</span> <span class="n">bottom</span><span class="o">=</span><span class="n">pub_t</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">pv</span><span class="p">,</span> <span class="n">prv</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">pub_t</span><span class="p">,</span> <span class="n">priv_t</span><span class="p">)):</span>
+    <span class="n">total_bar</span> <span class="o">=</span> <span class="n">pv</span> <span class="o">+</span> <span class="n">prv</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">total_bar</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">)</span><span class="o">*</span><span class="mf">0.01</span><span class="p">,</span>
+            <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">total_bar</span><span class="si">:</span><span class="s1">,</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">TEXT</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">&#39;bold&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">x</span><span class="p">));</span> <span class="n">ax</span><span class="o">.</span><span class="n">set_xticklabels</span><span class="p">(</span><span class="n">type_order</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Usuarios&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="n">CARD_BG</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="n">MUTED</span><span class="p">,</span> <span class="n">labelcolor</span><span class="o">=</span><span class="n">TEXT</span><span class="p">)</span>
+<span class="n">title_ax</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="s1">&#39;  user_type × Privacidad&#39;</span><span class="p">)</span>
+
+<span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
+<span class="n">pairs_vals</span> <span class="o">=</span> <span class="p">[</span><span class="n">pairs_by_type</span><span class="p">[</span><span class="n">t</span><span class="p">]</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">type_order</span><span class="p">]</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">pie</span><span class="p">(</span><span class="n">pairs_vals</span><span class="p">,</span>
+       <span class="n">labels</span><span class="o">=</span><span class="p">[</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">t</span><span class="si">}</span><span class="se">\n</span><span class="s1">(</span><span class="si">{</span><span class="n">v</span><span class="o">/</span><span class="n">total_pairs</span><span class="o">*</span><span class="mi">100</span><span class="si">:</span><span class="s1">.1f</span><span class="si">}</span><span class="s1">%)&#39;</span> <span class="k">for</span> <span class="n">t</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">type_order</span><span class="p">,</span> <span class="n">pairs_vals</span><span class="p">)],</span>
+       <span class="n">colors</span><span class="o">=</span><span class="n">type_colors</span><span class="p">,</span> <span class="n">startangle</span><span class="o">=</span><span class="mi">90</span><span class="p">,</span>
+       <span class="n">textprops</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;color&#39;</span><span class="p">:</span> <span class="n">TEXT</span><span class="p">},</span> <span class="n">autopct</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">%1.1f%%</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="n">title_ax</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="s1">&#39;  Pares (usuario×juego) por user_type&#39;</span><span class="p">)</span>
+
+<span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+<span class="n">top15</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">nlargest</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="s1">&#39;lib_size&#39;</span><span class="p">)</span>
+<span class="n">colors_top</span> <span class="o">=</span> <span class="p">[</span><span class="n">ACCENT5</span> <span class="k">if</span> <span class="n">priv</span> <span class="k">else</span> <span class="n">ACCENT2</span> <span class="k">for</span> <span class="n">priv</span> <span class="ow">in</span> <span class="n">top15</span><span class="p">[</span><span class="s1">&#39;is_private&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">]</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">barh</span><span class="p">(</span><span class="n">top15</span><span class="p">[</span><span class="s1">&#39;playerid&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)[::</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">top15</span><span class="p">[</span><span class="s1">&#39;lib_size&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span>
+        <span class="n">color</span><span class="o">=</span><span class="n">colors_top</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">upper_iqr</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">ACCENT4</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span>
+           <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;IQR upper (</span><span class="si">{</span><span class="n">upper_iqr</span><span class="si">:</span><span class="s1">.0f</span><span class="si">}</span><span class="s1">)&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="n">CARD_BG</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="n">MUTED</span><span class="p">,</span> <span class="n">labelcolor</span><span class="o">=</span><span class="n">TEXT</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="n">labelsize</span><span class="o">=</span><span class="mi">7</span><span class="p">);</span> <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Juegos en biblioteca&#39;</span><span class="p">)</span>
+<span class="n">legend_els</span> <span class="o">=</span> <span class="p">[</span><span class="n">mpatches</span><span class="o">.</span><span class="n">Patch</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="n">ACCENT2</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Público&#39;</span><span class="p">),</span> <span class="n">mpatches</span><span class="o">.</span><span class="n">Patch</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="n">ACCENT5</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Privado&#39;</span><span class="p">)]</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">handles</span><span class="o">=</span><span class="n">legend_els</span> <span class="o">+</span> <span class="n">ax</span><span class="o">.</span><span class="n">get_legend_handles_labels</span><span class="p">()[</span><span class="mi">0</span><span class="p">],</span>
+          <span class="n">fontsize</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="n">CARD_BG</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="n">MUTED</span><span class="p">,</span> <span class="n">labelcolor</span><span class="o">=</span><span class="n">TEXT</span><span class="p">)</span>
+<span class="n">title_ax</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="s1">&#39;  Top 15 Bibliotecas Más Grandes&#39;</span><span class="p">)</span>
+
+<span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+<span class="k">for</span> <span class="n">t</span><span class="p">,</span> <span class="n">c</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">type_order</span><span class="p">,</span> <span class="n">type_colors</span><span class="p">):</span>
+    <span class="n">subset</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;user_type&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">t</span><span class="p">][</span><span class="s1">&#39;lib_size&#39;</span><span class="p">]</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">subset</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">subset</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">upper</span><span class="o">=</span><span class="mi">2000</span><span class="p">),</span> <span class="n">bins</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.65</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">c</span><span class="p">,</span>
+                <span class="n">edgecolor</span><span class="o">=</span><span class="n">DARK_BG</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">t</span><span class="si">}</span><span class="s1"> (n=</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">subset</span><span class="p">)</span><span class="si">:</span><span class="s1">,</span><span class="si">}</span><span class="s1">)&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">upper_iqr</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">ACCENT3</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span>
+           <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;IQR upper (</span><span class="si">{</span><span class="n">upper_iqr</span><span class="si">:</span><span class="s1">.0f</span><span class="si">}</span><span class="s1">)&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="n">CARD_BG</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="n">MUTED</span><span class="p">,</span> <span class="n">labelcolor</span><span class="o">=</span><span class="n">TEXT</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Juegos (cap. 2000)&#39;</span><span class="p">);</span> <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Usuarios&#39;</span><span class="p">)</span>
+<span class="n">title_ax</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="s1">&#39;  Distribución por user_type&#39;</span><span class="p">)</span>
+
+<span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
+<span class="n">seg_labels</span><span class="p">,</span> <span class="n">seg_vals</span><span class="p">,</span> <span class="n">seg_cols</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[],</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">priv</span><span class="p">,</span> <span class="n">label_priv</span><span class="p">,</span> <span class="n">col_priv</span> <span class="ow">in</span> <span class="p">[(</span><span class="kc">False</span><span class="p">,</span> <span class="s1">&#39;Público&#39;</span><span class="p">,</span> <span class="n">ACCENT2</span><span class="p">),</span> <span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="s1">&#39;Privado&#39;</span><span class="p">,</span> <span class="n">ACCENT5</span><span class="p">)]:</span>
+    <span class="k">for</span> <span class="n">t</span><span class="p">,</span> <span class="n">col_t</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">type_order</span><span class="p">,</span> <span class="n">type_colors</span><span class="p">):</span>
+        <span class="n">n</span> <span class="o">=</span> <span class="n">df</span><span class="p">[(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;is_private&#39;</span><span class="p">]</span><span class="o">==</span><span class="n">priv</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;user_type&#39;</span><span class="p">]</span><span class="o">==</span><span class="n">t</span><span class="p">)]</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">seg_labels</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">label_priv</span><span class="si">}</span><span class="se">\n</span><span class="si">{</span><span class="n">t</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="n">seg_vals</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+      
+        <span class="n">seg_cols</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">col_priv</span> <span class="k">if</span> <span class="n">t</span> <span class="o">!=</span> <span class="s1">&#39;coleccionista&#39;</span> <span class="k">else</span> <span class="n">ACCENT3</span><span class="p">)</span>
+
+<span class="n">bars_seg</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">seg_labels</span><span class="p">)),</span> <span class="n">seg_vals</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">seg_cols</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">bar</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">bars_seg</span><span class="p">,</span> <span class="n">seg_vals</span><span class="p">):</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">bar</span><span class="o">.</span><span class="n">get_x</span><span class="p">()</span> <span class="o">+</span> <span class="n">bar</span><span class="o">.</span><span class="n">get_width</span><span class="p">()</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">bar</span><span class="o">.</span><span class="n">get_height</span><span class="p">()</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">)</span><span class="o">*</span><span class="mf">0.005</span><span class="p">,</span>
+            <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">val</span><span class="si">:</span><span class="s1">,</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">TEXT</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">seg_labels</span><span class="p">)))</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xticklabels</span><span class="p">(</span><span class="n">seg_labels</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span> <span class="n">rotation</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Usuarios&#39;</span><span class="p">)</span>
+<span class="n">title_ax</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="s1">&#39;  Los 6 Segmentos de Usuario&#39;</span><span class="p">,</span> <span class="s1">&#39;Privacidad × user_type&#39;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">(</span><span class="n">rect</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mf">0.97</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/af0724420b9c7ad8167f96746bd2489b71730a9bf585b55acddcb3be0cb16466.png" src="_images/af0724420b9c7ad8167f96746bd2489b71730a9bf585b55acddcb3be0cb16466.png" />
+</div>
+</div>
+</section>
+</section>
+<hr class="docutils" />
+<section id="popularidad-de-juegos-n-owners-todos-vs-solo-publicos">
+<h2>Popularidad de Juegos — <code class="docutils literal notranslate"><span class="pre">n_owners</span></code> (todos vs solo públicos)<a class="headerlink" href="#popularidad-de-juegos-n-owners-todos-vs-solo-publicos" title="Permalink to this heading">#</a></h2>
+<section id="id3">
+<h3>Hallazgos<a class="headerlink" href="#id3" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p>El juego 730 (Counter-Strike 2) aparece en 93.7% de las bibliotecas del dataset, lo que lo convierte en el título con mayor penetración en la muestra.</p></li>
+<li><p>La diferencia entre usar todos los usuarios y solo perfiles públicos es significativa.<br />
+Por ejemplo, CS2 pasa de 43,967 propietarios a 28,434 al excluir usuarios privados, lo que implica una reducción de aproximadamente 35%.</p></li>
+<li><p>Para el modelo de clasificación, calcularemos dos versiones de la popularidad del juego:</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">n_owners_all</span></code> — máxima cobertura, incluye usuarios privados.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">n_owners_public</span></code> — métrica más limpia basada solo en perfiles públicos.</p></li>
+</ul>
+</li>
+<li><p>La distribución de <code class="docutils literal notranslate"><span class="pre">n_owners</span></code> presenta una cola larga muy pronunciada: aunque existen 40,988 juegos únicos, la mayoría aparece en muy pocas bibliotecas dentro del dataset, mientras que un pequeño grupo de títulos extremadamente populares concentra gran parte de las bibliotecas.</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">counter_all</span>    <span class="o">=</span> <span class="n">Counter</span><span class="p">()</span>
+<span class="n">counter_public</span> <span class="o">=</span> <span class="n">Counter</span><span class="p">()</span>
+<span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">cat_c</span> <span class="o">+</span> <span class="n">cat_d</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">gid</span> <span class="ow">in</span> <span class="n">r</span><span class="p">[</span><span class="s1">&#39;library&#39;</span><span class="p">]:</span>
+        <span class="n">counter_all</span><span class="p">[</span><span class="n">gid</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+<span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">cat_d</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">gid</span> <span class="ow">in</span> <span class="n">r</span><span class="p">[</span><span class="s1">&#39;library&#39;</span><span class="p">]:</span>
+        <span class="n">counter_public</span><span class="p">[</span><span class="n">gid</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+
+<span class="n">df_games</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">counter_all</span><span class="o">.</span><span class="n">most_common</span><span class="p">(),</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;gameid&#39;</span><span class="p">,</span> <span class="s1">&#39;n_owners_all&#39;</span><span class="p">])</span>
+<span class="n">df_games</span><span class="p">[</span><span class="s1">&#39;n_owners_public&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df_games</span><span class="p">[</span><span class="s1">&#39;gameid&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">counter_public</span><span class="p">)</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+<span class="n">df_games</span><span class="p">[</span><span class="s1">&#39;private_contribution&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df_games</span><span class="p">[</span><span class="s1">&#39;n_owners_all&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="n">df_games</span><span class="p">[</span><span class="s1">&#39;n_owners_public&#39;</span><span class="p">]</span>
+<span class="n">df_games</span><span class="p">[</span><span class="s1">&#39;private_pct&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">df_games</span><span class="p">[</span><span class="s1">&#39;private_contribution&#39;</span><span class="p">]</span> <span class="o">/</span> <span class="n">df_games</span><span class="p">[</span><span class="s1">&#39;n_owners_all&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="mi">100</span><span class="p">)</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">df_games</span><span class="p">[</span><span class="s1">&#39;penetration_pct&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">df_games</span><span class="p">[</span><span class="s1">&#39;n_owners_all&#39;</span><span class="p">]</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">cat_c</span> <span class="o">+</span> <span class="n">cat_d</span><span class="p">)</span> <span class="o">*</span> <span class="mi">100</span><span class="p">)</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Juegos únicos en el dataset   : </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">df_games</span><span class="p">)</span><span class="si">:</span><span class="s2">,</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Total pares (usuario×juego)   : </span><span class="si">{</span><span class="nb">sum</span><span class="p">(</span><span class="n">counter_all</span><span class="o">.</span><span class="n">values</span><span class="p">())</span><span class="si">:</span><span class="s2">,</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Top 20 juegos — comparación n_owners_all vs n_owners_public:&quot;</span><span class="p">)</span>
+<span class="n">display</span><span class="p">(</span><span class="n">df_games</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">20</span><span class="p">)[[</span><span class="s1">&#39;gameid&#39;</span><span class="p">,</span><span class="s1">&#39;n_owners_all&#39;</span><span class="p">,</span><span class="s1">&#39;n_owners_public&#39;</span><span class="p">,</span><span class="s1">&#39;private_pct&#39;</span><span class="p">,</span><span class="s1">&#39;penetration_pct&#39;</span><span class="p">]])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Juegos únicos en el dataset   : 40,988
+Total pares (usuario×juego)   : 11,258,715
+
+Top 20 juegos — comparación n_owners_all vs n_owners_public:
+</pre></div>
+</div>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>gameid</th>
+      <th>n_owners_all</th>
+      <th>n_owners_public</th>
+      <th>private_pct</th>
+      <th>penetration_pct</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>730</td>
+      <td>43967</td>
+      <td>28434</td>
+      <td>35.3</td>
+      <td>93.66</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>578080</td>
+      <td>28356</td>
+      <td>19690</td>
+      <td>30.6</td>
+      <td>60.41</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>550</td>
+      <td>24727</td>
+      <td>18766</td>
+      <td>24.1</td>
+      <td>52.68</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>218620</td>
+      <td>23785</td>
+      <td>18451</td>
+      <td>22.4</td>
+      <td>50.67</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>304930</td>
+      <td>21620</td>
+      <td>16271</td>
+      <td>24.7</td>
+      <td>46.06</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>1172470</td>
+      <td>21197</td>
+      <td>15474</td>
+      <td>27.0</td>
+      <td>45.16</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>230410</td>
+      <td>18906</td>
+      <td>14324</td>
+      <td>24.2</td>
+      <td>40.28</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>431960</td>
+      <td>18573</td>
+      <td>14162</td>
+      <td>23.7</td>
+      <td>39.57</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>271590</td>
+      <td>17904</td>
+      <td>13480</td>
+      <td>24.7</td>
+      <td>38.14</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>407530</td>
+      <td>17711</td>
+      <td>13754</td>
+      <td>22.3</td>
+      <td>37.73</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>4000</td>
+      <td>17676</td>
+      <td>13903</td>
+      <td>21.3</td>
+      <td>37.66</td>
+    </tr>
+    <tr>
+      <th>11</th>
+      <td>1085660</td>
+      <td>17366</td>
+      <td>13249</td>
+      <td>23.7</td>
+      <td>37.00</td>
+    </tr>
+    <tr>
+      <th>12</th>
+      <td>346110</td>
+      <td>17082</td>
+      <td>13284</td>
+      <td>22.2</td>
+      <td>36.39</td>
+    </tr>
+    <tr>
+      <th>13</th>
+      <td>620</td>
+      <td>17026</td>
+      <td>13799</td>
+      <td>19.0</td>
+      <td>36.27</td>
+    </tr>
+    <tr>
+      <th>14</th>
+      <td>596350</td>
+      <td>16721</td>
+      <td>12205</td>
+      <td>27.0</td>
+      <td>35.62</td>
+    </tr>
+    <tr>
+      <th>15</th>
+      <td>444090</td>
+      <td>16380</td>
+      <td>12129</td>
+      <td>26.0</td>
+      <td>34.89</td>
+    </tr>
+    <tr>
+      <th>16</th>
+      <td>945360</td>
+      <td>15946</td>
+      <td>11788</td>
+      <td>26.1</td>
+      <td>33.97</td>
+    </tr>
+    <tr>
+      <th>17</th>
+      <td>291550</td>
+      <td>15877</td>
+      <td>11960</td>
+      <td>24.7</td>
+      <td>33.82</td>
+    </tr>
+    <tr>
+      <th>18</th>
+      <td>320</td>
+      <td>15617</td>
+      <td>12628</td>
+      <td>19.1</td>
+      <td>33.27</td>
+    </tr>
+    <tr>
+      <th>19</th>
+      <td>105600</td>
+      <td>15573</td>
+      <td>12420</td>
+      <td>20.2</td>
+      <td>33.18</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">22</span><span class="p">,</span> <span class="mi">7</span><span class="p">))</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">patch</span><span class="o">.</span><span class="n">set_facecolor</span><span class="p">(</span><span class="n">DARK_BG</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s1">&#39;Popularidad de Juegos — n_owners (todos vs públicos)&#39;</span><span class="p">,</span>
+             <span class="n">fontsize</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">&#39;bold&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">TEXT</span><span class="p">)</span>
+
+<span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">df_games</span><span class="p">[</span><span class="s1">&#39;n_owners_all&#39;</span><span class="p">],</span> <span class="n">bins</span><span class="o">=</span><span class="mi">60</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">ACCENT1</span><span class="p">,</span>
+        <span class="n">edgecolor</span><span class="o">=</span><span class="n">DARK_BG</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">log</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;all&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">df_games</span><span class="p">[</span><span class="s1">&#39;n_owners_public&#39;</span><span class="p">],</span> <span class="n">bins</span><span class="o">=</span><span class="mi">60</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">ACCENT2</span><span class="p">,</span>
+        <span class="n">edgecolor</span><span class="o">=</span><span class="n">DARK_BG</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">log</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.6</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;public&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">df_games</span><span class="p">[</span><span class="s1">&#39;n_owners_all&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">median</span><span class="p">(),</span> <span class="n">color</span><span class="o">=</span><span class="n">ACCENT4</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+           <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;Mediana all: </span><span class="si">{</span><span class="n">df_games</span><span class="p">[</span><span class="s2">&quot;n_owners_all&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">median</span><span class="p">()</span><span class="si">:</span><span class="s1">.0f</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="n">CARD_BG</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="n">MUTED</span><span class="p">,</span> <span class="n">labelcolor</span><span class="o">=</span><span class="n">TEXT</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Compradores&#39;</span><span class="p">);</span> <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Juegos (log)&#39;</span><span class="p">)</span>
+<span class="n">title_ax</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="s1">&#39;  Distribución n_owners (log)&#39;</span><span class="p">)</span>
+
+<span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">top20</span> <span class="o">=</span> <span class="n">df_games</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">top20</span><span class="p">))</span>
+<span class="n">w</span> <span class="o">=</span> <span class="mf">0.4</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">barh</span><span class="p">(</span><span class="n">x</span> <span class="o">+</span> <span class="n">w</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">top20</span><span class="p">[</span><span class="s1">&#39;n_owners_all&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">,</span>    <span class="n">height</span><span class="o">=</span><span class="n">w</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">ACCENT1</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;all&#39;</span><span class="p">,</span>    <span class="n">alpha</span><span class="o">=</span><span class="mf">0.85</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">barh</span><span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="n">w</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">top20</span><span class="p">[</span><span class="s1">&#39;n_owners_public&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="n">w</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">ACCENT2</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;public&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.85</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_yticks</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_yticklabels</span><span class="p">(</span><span class="n">top20</span><span class="p">[</span><span class="s1">&#39;gameid&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="n">CARD_BG</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="n">MUTED</span><span class="p">,</span> <span class="n">labelcolor</span><span class="o">=</span><span class="n">TEXT</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Compradores&#39;</span><span class="p">)</span>
+<span class="n">title_ax</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="s1">&#39;  Top 20: all vs public&#39;</span><span class="p">)</span>
+
+<span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+<span class="n">colors_priv</span> <span class="o">=</span> <span class="p">[</span><span class="n">ACCENT3</span> <span class="k">if</span> <span class="n">v</span> <span class="o">&gt;</span> <span class="mi">30</span> <span class="k">else</span> <span class="n">ACCENT4</span> <span class="k">if</span> <span class="n">v</span> <span class="o">&gt;</span> <span class="mi">15</span> <span class="k">else</span> <span class="n">ACCENT2</span>
+               <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">top20</span><span class="p">[</span><span class="s1">&#39;private_pct&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">]</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">barh</span><span class="p">(</span><span class="n">top20</span><span class="p">[</span><span class="s1">&#39;gameid&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)[::</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span>
+        <span class="n">top20</span><span class="p">[</span><span class="s1">&#39;private_pct&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="n">colors_priv</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">top20</span><span class="p">[</span><span class="s1">&#39;private_pct&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">(),</span> <span class="n">color</span><span class="o">=</span><span class="n">ACCENT4</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+           <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;Media: </span><span class="si">{</span><span class="n">top20</span><span class="p">[</span><span class="s2">&quot;private_pct&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="si">:</span><span class="s1">.1f</span><span class="si">}</span><span class="s1">%&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="n">CARD_BG</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="n">MUTED</span><span class="p">,</span> <span class="n">labelcolor</span><span class="o">=</span><span class="n">TEXT</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">% c</span><span class="s1">ompradores privados&#39;</span><span class="p">)</span>
+<span class="n">title_ax</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="s1">&#39;  Contribución Privada al n_owners&#39;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/5a5e58d441853a147b6b23cee7d20a665ed01a1c56b8e3a43585327017ac8018.png" src="_images/5a5e58d441853a147b6b23cee7d20a665ed01a1c56b8e3a43585327017ac8018.png" />
+</div>
+</div>
+</section>
+</section>
+<hr class="docutils" />
+<section id="dataset-limpio-final">
+<h2>Dataset limpio final<a class="headerlink" href="#dataset-limpio-final" title="Permalink to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;═&quot;</span> <span class="o">*</span> <span class="mi">62</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;  RESUMEN FINAL — purchased_games × private_steamids&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;═&quot;</span> <span class="o">*</span> <span class="mi">62</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  Filas totales en purchased_games : </span><span class="si">{</span><span class="n">total</span><span class="si">:</span><span class="s2">&gt;10,</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  IDs en private_steamids (completo): </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">private_set</span><span class="p">)</span><span class="si">:</span><span class="s2">&gt;9,</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  [A] Sin library + privado         : </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">cat_a</span><span class="p">)</span><span class="si">:</span><span class="s2">&gt;10,</span><span class="si">}</span><span class="s2">  (</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">cat_a</span><span class="p">)</span><span class="o">/</span><span class="n">total</span><span class="o">*</span><span class="mi">100</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">%)&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  [B] Sin library + público         : </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">cat_b</span><span class="p">)</span><span class="si">:</span><span class="s2">&gt;10,</span><span class="si">}</span><span class="s2">  (</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">cat_b</span><span class="p">)</span><span class="o">/</span><span class="n">total</span><span class="o">*</span><span class="mi">100</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">%)&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  [C] Con library + privado         : </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">cat_c</span><span class="p">)</span><span class="si">:</span><span class="s2">&gt;10,</span><span class="si">}</span><span class="s2">  (</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">cat_c</span><span class="p">)</span><span class="o">/</span><span class="n">total</span><span class="o">*</span><span class="mi">100</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">%)&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  [D] Con library + público         : </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">cat_d</span><span class="p">)</span><span class="si">:</span><span class="s2">&gt;10,</span><span class="si">}</span><span class="s2">  (</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">cat_d</span><span class="p">)</span><span class="o">/</span><span class="n">total</span><span class="o">*</span><span class="mi">100</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">%)&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  Juegos únicos detectados          : </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">df_games</span><span class="p">)</span><span class="si">:</span><span class="s2">&gt;10,</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  Total pares (usuario×juego)       : </span><span class="si">{</span><span class="nb">sum</span><span class="p">(</span><span class="n">counter_all</span><span class="o">.</span><span class="n">values</span><span class="p">())</span><span class="si">:</span><span class="s2">&gt;10,</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  Outliers IQR lib_size (&gt;815)      : </span><span class="si">{</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;lib_size&#39;</span><span class="p">]</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">upper_iqr</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="si">:</span><span class="s2">&gt;10,</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;═&quot;</span> <span class="o">*</span> <span class="mi">62</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Tablas disponibles:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;  df       — usuarios con library (lib_size, is_private, user_type)&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;  df_all   — todos los usuarios (has_library, is_private, reason)&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;  df_games — juegos con n_owners_all, n_owners_public, private_pct&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">()</span>
+<span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>══════════════════════════════════════════════════════════════
+  RESUMEN FINAL — purchased_games × private_steamids
+══════════════════════════════════════════════════════════════
+  Filas totales en purchased_games :    102,548
+  IDs en private_steamids (completo):   227,963
+
+  [A] Sin library + privado         :     35,902  (35.0%)
+  [B] Sin library + público         :     19,705  (19.2%)
+  [C] Con library + privado         :     16,810  (16.4%)
+  [D] Con library + público         :     30,131  (29.4%)
+
+  Juegos únicos detectados          :     40,988
+  Total pares (usuario×juego)       : 11,258,715
+  Outliers IQR lib_size (&gt;815)      :      4,736
+══════════════════════════════════════════════════════════════
+
+Tablas disponibles:
+  df       — usuarios con library (lib_size, is_private, user_type)
+  df_all   — todos los usuarios (has_library, is_private, reason)
+  df_games — juegos con n_owners_all, n_owners_public, private_pct
+</pre></div>
+</div>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>playerid</th>
+      <th>lib_size</th>
+      <th>is_private</th>
+      <th>lib_bucket</th>
+      <th>user_type</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>76561198119605821</td>
+      <td>20</td>
+      <td>True</td>
+      <td>11–25</td>
+      <td>casual</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>76561197972409418</td>
+      <td>275</td>
+      <td>True</td>
+      <td>251–500</td>
+      <td>activo</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>76561198068969988</td>
+      <td>330</td>
+      <td>True</td>
+      <td>251–500</td>
+      <td>activo</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="exportar-dataset-limpio">
+<h2>Exportar dataset limpio<a class="headerlink" href="#exportar-dataset-limpio" title="Permalink to this heading">#</a></h2>
+<blockquote>
+<div><p>Exporta el dataframe limpio con todas las columnas calculadas en este EDA. El notebook <code class="docutils literal notranslate"><span class="pre">eda_feature_engineering</span></code> carga este CSV directamente — no recalcula nada.</p>
+</div></blockquote>
+<p><strong>Archivos generados:</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">purchased_users.csv</span></code> — una fila por usuario: <code class="docutils literal notranslate"><span class="pre">playerid</span></code>, <code class="docutils literal notranslate"><span class="pre">lib_size</span></code>, <code class="docutils literal notranslate"><span class="pre">user_type</span></code>, <code class="docutils literal notranslate"><span class="pre">is_private</span></code>, <code class="docutils literal notranslate"><span class="pre">has_library</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">purchased_per_game.csv</span></code> — una fila por juego: <code class="docutils literal notranslate"><span class="pre">gameid</span></code>, <code class="docutils literal notranslate"><span class="pre">n_owners_all</span></code>, <code class="docutils literal notranslate"><span class="pre">n_owners_public</span></code>, <code class="docutils literal notranslate"><span class="pre">private_pct</span></code>, <code class="docutils literal notranslate"><span class="pre">penetration_pct</span></code></p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">rows_all_export</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">cat_c</span> <span class="o">+</span> <span class="n">cat_d</span><span class="p">:</span>
+    <span class="n">rows_all_export</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
+        <span class="s2">&quot;playerid&quot;</span><span class="p">:</span>    <span class="n">r</span><span class="p">[</span><span class="s2">&quot;playerid&quot;</span><span class="p">],</span>
+        <span class="s2">&quot;lib_size&quot;</span><span class="p">:</span>    <span class="n">r</span><span class="p">[</span><span class="s2">&quot;lib_size&quot;</span><span class="p">],</span>
+        <span class="s2">&quot;user_type&quot;</span><span class="p">:</span>   <span class="n">user_type</span><span class="p">(</span><span class="n">r</span><span class="p">[</span><span class="s2">&quot;lib_size&quot;</span><span class="p">]),</span>
+        <span class="s2">&quot;is_private&quot;</span><span class="p">:</span>  <span class="n">r</span><span class="p">[</span><span class="s2">&quot;playerid&quot;</span><span class="p">]</span> <span class="ow">in</span> <span class="n">private_set</span><span class="p">,</span>
+        <span class="s2">&quot;has_library&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="p">})</span>
+<span class="k">for</span> <span class="n">pid</span> <span class="ow">in</span> <span class="n">cat_a</span><span class="p">:</span>
+    <span class="n">rows_all_export</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s2">&quot;playerid&quot;</span><span class="p">:</span> <span class="n">pid</span><span class="p">,</span> <span class="s2">&quot;lib_size&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+                            <span class="s2">&quot;user_type&quot;</span><span class="p">:</span> <span class="s2">&quot;casual&quot;</span><span class="p">,</span> <span class="s2">&quot;is_private&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> <span class="s2">&quot;has_library&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">})</span>
+<span class="k">for</span> <span class="n">pid</span> <span class="ow">in</span> <span class="n">cat_b</span><span class="p">:</span>
+    <span class="n">rows_all_export</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s2">&quot;playerid&quot;</span><span class="p">:</span> <span class="n">pid</span><span class="p">,</span> <span class="s2">&quot;lib_size&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+                            <span class="s2">&quot;user_type&quot;</span><span class="p">:</span> <span class="s2">&quot;casual&quot;</span><span class="p">,</span> <span class="s2">&quot;is_private&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span> <span class="s2">&quot;has_library&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">})</span>
+
+<span class="n">df_export</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">rows_all_export</span><span class="p">)</span>
+
+<span class="n">df_export</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s2">&quot;Datos/purchased_users.csv&quot;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+<span class="c1"># ── purchased_per_game.csv ────────────────────────────────────────────────────</span>
+<span class="n">cols_games_exp</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;gameid&quot;</span><span class="p">,</span><span class="s2">&quot;n_owners_all&quot;</span><span class="p">,</span><span class="s2">&quot;n_owners_public&quot;</span><span class="p">,</span><span class="s2">&quot;private_pct&quot;</span><span class="p">,</span><span class="s2">&quot;penetration_pct&quot;</span><span class="p">]</span>
+<span class="n">df_games</span><span class="p">[</span><span class="n">cols_games_exp</span><span class="p">]</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s2">&quot;Datos/purchased_per_game.csv&quot;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;purchased_users.csv    : </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">df_export</span><span class="p">)</span><span class="si">:</span><span class="s2">,</span><span class="si">}</span><span class="s2"> usuarios&quot;</span><span class="p">)</span>
+<span class="n">n_with</span>    <span class="o">=</span> <span class="n">df_export</span><span class="p">[</span><span class="s1">&#39;has_library&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+<span class="n">n_without</span> <span class="o">=</span> <span class="p">(</span><span class="o">~</span><span class="n">df_export</span><span class="p">[</span><span class="s1">&#39;has_library&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  has_library=True     : </span><span class="si">{</span><span class="n">n_with</span><span class="si">:</span><span class="s2">,</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  has_library=False    : </span><span class="si">{</span><span class="n">n_without</span><span class="si">:</span><span class="s2">,</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;purchased_per_game.csv : </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">df_games</span><span class="p">)</span><span class="si">:</span><span class="s2">,</span><span class="si">}</span><span class="s2"> juegos&quot;</span><span class="p">)</span>
+<span class="n">df_export</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>purchased_users.csv    : 102,548 usuarios
+  has_library=True     : 46,941
+  has_library=False    : 55,607
+purchased_per_game.csv : 40,988 juegos
+</pre></div>
+</div>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>playerid</th>
+      <th>lib_size</th>
+      <th>user_type</th>
+      <th>is_private</th>
+      <th>has_library</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>76561198119605821</td>
+      <td>20</td>
+      <td>casual</td>
+      <td>True</td>
+      <td>True</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>76561197972409418</td>
+      <td>275</td>
+      <td>activo</td>
+      <td>True</td>
+      <td>True</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>76561198068969988</td>
+      <td>330</td>
+      <td>activo</td>
+      <td>True</td>
+      <td>True</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="conclusiones">
+<h2>Conclusiones<a class="headerlink" href="#conclusiones" title="Permalink to this heading">#</a></h2>
+<section id="proximos-pasos">
+<h3>Próximos pasos<a class="headerlink" href="#proximos-pasos" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p><strong>Usar <code class="docutils literal notranslate"><span class="pre">n_owners_public</span></code></strong> como feature principal del modelo de clasificación — más limpia que <code class="docutils literal notranslate"><span class="pre">n_owners_all</span></code>.</p></li>
+<li><p><strong>Usar <code class="docutils literal notranslate"><span class="pre">user_type</span></code> + <code class="docutils literal notranslate"><span class="pre">is_private</span></code></strong> como features del usuario en el modelo de regresión.</p></li>
+<li><p><strong>Flag F2P — este notebook aporta <code class="docutils literal notranslate"><span class="pre">n_owners_public</span></code>:</strong> cruzar con <code class="docutils literal notranslate"><span class="pre">has_price=False</span></code> de <code class="docutils literal notranslate"><span class="pre">prices</span></code> en el notebook de feature engineering. Lógica: si <code class="docutils literal notranslate"><span class="pre">n_owners_public</span> <span class="pre">&gt;</span> <span class="pre">umbral</span></code> Y <code class="docutils literal notranslate"><span class="pre">has_price</span> <span class="pre">=</span> <span class="pre">False</span></code>, entonces <code class="docutils literal notranslate"><span class="pre">is_f2p</span> <span class="pre">=</span> <span class="pre">True</span></code>.</p></li>
+<li><p><strong>Cruzar con <code class="docutils literal notranslate"><span class="pre">history</span></code>:</strong> ¿los usuarios con más juegos en biblioteca también desbloquean más logros? ¿Correlación <code class="docutils literal notranslate"><span class="pre">lib_size</span></code> ↔ <code class="docutils literal notranslate"><span class="pre">n_logros_par</span></code>?</p></li>
+<li><p><strong>Cruzar con <code class="docutils literal notranslate"><span class="pre">prices</span></code>:</strong> unir <code class="docutils literal notranslate"><span class="pre">price_tier</span></code> y <code class="docutils literal notranslate"><span class="pre">usd_log</span></code> a <code class="docutils literal notranslate"><span class="pre">df_games</span></code> usando <code class="docutils literal notranslate"><span class="pre">gameid</span></code> como clave.</p></li>
+<li><p><strong>Cruzar con <code class="docutils literal notranslate"><span class="pre">games</span></code>:</strong> unir <code class="docutils literal notranslate"><span class="pre">genre</span></code>, <code class="docutils literal notranslate"><span class="pre">release_date</span></code> y flags de spam a <code class="docutils literal notranslate"><span class="pre">df_games</span></code> usando <code class="docutils literal notranslate"><span class="pre">gameid</span></code>.</p></li>
+</ul>
+</section>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#imports-y-configuracion">Imports y configuración</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#carga">Carga</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#segmentacion-por-privacidad-cruce-con-private-steamids">Segmentación por Privacidad Cruce con <code class="docutils literal notranslate"><span class="pre">private_steamids</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#hallazgos">Hallazgos</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#hallazgo-clave-los-usuarios-privados-tienen-bibliotecas-mas-pequenas">Hallazgo clave: los usuarios privados tienen bibliotecas más pequeñas</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analisis-y-tratamiento-de-valores-faltantes">Análisis y tratamiento de valores faltantes</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#diagnostico-resuelto">Diagnóstico resuelto</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#distribucion-del-tamano-de-biblioteca">Distribución del Tamaño de Biblioteca</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Hallazgos</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#outliers-bibliotecas-extremas-y-segmentacion">Outliers: Bibliotecas Extremas y Segmentación</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">Hallazgos</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#popularidad-de-juegos-n-owners-todos-vs-solo-publicos">Popularidad de Juegos — <code class="docutils literal notranslate"><span class="pre">n_owners</span></code> (todos vs solo públicos)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">Hallazgos</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dataset-limpio-final">Dataset limpio final</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exportar-dataset-limpio">Exportar dataset limpio</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#conclusiones">Conclusiones</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#proximos-pasos">Próximos pasos</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By David Estrada Lora, Alex Terán, Rubén Esguerra
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2022.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
