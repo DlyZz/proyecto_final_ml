@@ -382,10 +382,8 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tabla-de-features-de-juego">Tabla de features de juego</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tabla-maestra-regresion">Tabla maestra — Regresion</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tabla-maestra-clasificacion">Tabla maestra — Clasificacion</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exportar">Exportar</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#decisiones-y-advertencias">Decisiones y advertencias</a><ul class="nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exportar">Exportar</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#decisiones-tomadas-aqui">Decisiones tomadas aqui</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#advertencias">Advertencias</a></li>
 </ul>
 </li>
 </ul>
@@ -1149,10 +1147,7 @@ Columnas tabla_clasificacion:
 </div>
 </div>
 </div>
-</section>
 <hr class="docutils" />
-<section id="decisiones-y-advertencias">
-<h2>Decisiones y advertencias<a class="headerlink" href="#decisiones-y-advertencias" title="Permalink to this heading">#</a></h2>
 <section id="decisiones-tomadas-aqui">
 <h3>Decisiones tomadas aqui<a class="headerlink" href="#decisiones-tomadas-aqui" title="Permalink to this heading">#</a></h3>
 <div class="pst-scrollable-table-container"><table class="table">
@@ -1173,31 +1168,6 @@ Columnas tabla_clasificacion:
 </tr>
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">n_owners_public</span></code> sobre <code class="docutils literal notranslate"><span class="pre">n_owners_all</span></code></p></td>
 <td><p>Los privados inflan n_owners 10-24% — ver <code class="docutils literal notranslate"><span class="pre">eda_purchased_games</span></code>.</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-</section>
-<section id="advertencias">
-<h3>Advertencias<a class="headerlink" href="#advertencias" title="Permalink to this heading">#</a></h3>
-<div class="pst-scrollable-table-container"><table class="table">
-<thead>
-<tr class="row-odd"><th class="head"><p>Advertencia</p></th>
-<th class="head"><p>Impacto</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p>Muestra pequena en <code class="docutils literal notranslate"><span class="pre">history</span></code></p></td>
-<td><p>Tabla de regresion con pocas filas. Repetir con dataset completo.</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">prices</span></code> cubre solo nov-dic 2024</p></td>
-<td><p>El precio actual puede no reflejar el precio al momento de compra.</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">avg_completion_rate</span></code> con pocos jugadores</p></td>
-<td><p>Estimacion ruidosa. Mejora con dataset completo.</p></td>
-</tr>
-<tr class="row-odd"><td><p>CS2 (gameid=730) en 93% de bibliotecas</p></td>
-<td><p>Poca varianza como feature. Evaluar si excluir en clasificacion.</p></td>
 </tr>
 </tbody>
 </table>
@@ -1268,10 +1238,8 @@ Columnas tabla_clasificacion:
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tabla-de-features-de-juego">Tabla de features de juego</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tabla-maestra-regresion">Tabla maestra — Regresion</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tabla-maestra-clasificacion">Tabla maestra — Clasificacion</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exportar">Exportar</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#decisiones-y-advertencias">Decisiones y advertencias</a><ul class="nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exportar">Exportar</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#decisiones-tomadas-aqui">Decisiones tomadas aqui</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#advertencias">Advertencias</a></li>
 </ul>
 </li>
 </ul>
