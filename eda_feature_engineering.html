@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
-    <title>Feature Engineering &#8212; Proyecto Final Machine Learning</title>
+    <title>Feature Engineering — Clasificación de Popularidad &#8212; Proyecto Final Machine Learning</title>
   
   
   
@@ -65,6 +65,7 @@ const thebe_selector_output = ".output, .cell_output"
     <script>DOCUMENTATION_OPTIONS.pagename = 'eda_feature_engineering';</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Benchmarking y Stacking" href="benchmark_vs_stack.html" />
     <link rel="prev" title="EDA: reviews" href="eda_reviews.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -179,7 +180,8 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l1"><a class="reference internal" href="eda_history.html">EDA: <code class="docutils literal notranslate"><span class="pre">history</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="eda_players.html">EDA: <code class="docutils literal notranslate"><span class="pre">players</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="eda_reviews.html">EDA: <code class="docutils literal notranslate"><span class="pre">reviews</span></code></a></li>
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">Feature Engineering</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Feature Engineering — Clasificación de Popularidad</a></li>
+<li class="toctree-l1"><a class="reference internal" href="benchmark_vs_stack.html">Benchmarking y Stacking</a></li>
 </ul>
 
     </div>
@@ -365,7 +367,7 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>Feature Engineering</h1>
+    <h1>Feature Engineering — Clasificación de Popularidad</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -375,17 +377,20 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#imports">Imports</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cargar-csvs-exportados-por-los-edas">Cargar CSVs exportados por los EDAs</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#features-derivadas-que-requieren-dos-fuentes">Features derivadas que requieren dos fuentes</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tabla-de-features-de-usuario">Tabla de features de usuario</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tabla-de-features-de-juego">Tabla de features de juego</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tabla-maestra-regresion">Tabla maestra — Regresion</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tabla-maestra-clasificacion">Tabla maestra — Clasificacion</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exportar">Exportar</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#decisiones-tomadas-aqui">Decisiones tomadas aqui</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#decision-de-modelo">Decisión de modelo</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#feature-avg-completion-rate-por-juego">1. Feature: avg_completion_rate por juego</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#feature-is-f2p">2. Feature: is_f2p</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ensamble-de-game-features">3. Ensamble de game_features</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#filtrar-al-universo-valido">4. Filtrar al universo válido</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#construccion-del-target-is-popular">5. Construcción del target: <code class="docutils literal notranslate"><span class="pre">is_popular</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#target-global-vs-estratificado-por-genero">Target global vs estratificado por género</a></li>
 </ul>
 </li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#imputacion-de-faltantes-en-features">6. Imputación de faltantes en features</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#construccion-de-la-tabla-maestra-de-clasificacion">7. Construcción de la tabla maestra de clasificación</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#diagnostico-de-la-tabla-maestra">8. Diagnóstico de la tabla maestra</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#resumen-de-features-y-recomendaciones-para-el-modelo">9. Resumen de features y recomendaciones para el modelo</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#decisiones-tomadas-en-este-notebook">Decisiones tomadas en este notebook</a></li>
 </ul>
             </nav>
         </div>
@@ -397,53 +402,94 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="feature-engineering">
-<h1>Feature Engineering<a class="headerlink" href="#feature-engineering" title="Permalink to this heading">#</a></h1>
-<section id="imports">
-<h2>Imports<a class="headerlink" href="#imports" title="Permalink to this heading">#</a></h2>
+  <section class="tex2jax_ignore mathjax_ignore" id="feature-engineering-clasificacion-de-popularidad">
+<h1>Feature Engineering — Clasificación de Popularidad<a class="headerlink" href="#feature-engineering-clasificacion-de-popularidad" title="Permalink to this heading">#</a></h1>
+<section id="decision-de-modelo">
+<h2>Decisión de modelo<a class="headerlink" href="#decision-de-modelo" title="Permalink to this heading">#</a></h2>
+<p>Se elige <strong>clasificación</strong> sobre regresión por las siguientes razones:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Criterio</p></th>
+<th class="head"><p>Regresión</p></th>
+<th class="head"><p>Clasificación</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Observaciones</p></td>
+<td><p>168k pares, pero solo <strong>4,596 jugadores únicos</strong></p></td>
+<td><p><strong>98k juegos</strong> con metadata completa</p></td>
+</tr>
+<tr class="row-odd"><td><p>Sesgo de muestra</p></td>
+<td><p>Solo jugadores con perfil público + historial de logros</p></td>
+<td><p>Todos los juegos publicados en Steam</p></td>
+</tr>
+<tr class="row-even"><td><p>Features disponibles</p></td>
+<td><p>Incompletas: muchos jugadores sin precio/reviews</p></td>
+<td><p>Más completas por juego</p></td>
+</tr>
+<tr class="row-odd"><td><p>Target</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">n_logros_par</span></code> — sesgado por farming</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">is_popular</span></code> — corregible con buen umbral</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>Pregunta de negocio:</strong> <em>Dado un juego con sus características conocidas al momento de publicación (o poco después), ¿llegará al top 25% de juegos más comprados dentro de su categoría comparable?</em></p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">seaborn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sns</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
 <span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s1">&#39;ignore&#39;</span><span class="p">)</span>
 
-<span class="n">DATA</span> <span class="o">=</span> <span class="s1">&#39;Datos/&#39;</span>  
+<span class="n">DATA</span> <span class="o">=</span> <span class="s1">&#39;Datos/&#39;</span>
+
+<span class="n">DARK_BG</span> <span class="o">=</span> <span class="s1">&#39;#0e1117&#39;</span>
+<span class="n">CARD_BG</span> <span class="o">=</span> <span class="s1">&#39;#1a1f2e&#39;</span>
+<span class="n">ACCENT1</span> <span class="o">=</span> <span class="s1">&#39;#4f86f7&#39;</span>
+<span class="n">ACCENT2</span> <span class="o">=</span> <span class="s1">&#39;#7ee8a2&#39;</span>
+<span class="n">ACCENT3</span> <span class="o">=</span> <span class="s1">&#39;#ff6b6b&#39;</span>
+<span class="n">ACCENT4</span> <span class="o">=</span> <span class="s1">&#39;#ffd166&#39;</span>
+<span class="n">TEXT</span>    <span class="o">=</span> <span class="s1">&#39;#e0e6f0&#39;</span>
+<span class="n">MUTED</span>   <span class="o">=</span> <span class="s1">&#39;#8892a4&#39;</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="o">.</span><span class="n">update</span><span class="p">({</span>
+    <span class="s1">&#39;figure.facecolor&#39;</span><span class="p">:</span> <span class="n">DARK_BG</span><span class="p">,</span> <span class="s1">&#39;axes.facecolor&#39;</span><span class="p">:</span> <span class="n">CARD_BG</span><span class="p">,</span>
+    <span class="s1">&#39;axes.edgecolor&#39;</span><span class="p">:</span> <span class="n">MUTED</span><span class="p">,</span>     <span class="s1">&#39;axes.labelcolor&#39;</span><span class="p">:</span> <span class="n">TEXT</span><span class="p">,</span>
+    <span class="s1">&#39;xtick.color&#39;</span><span class="p">:</span> <span class="n">MUTED</span><span class="p">,</span>        <span class="s1">&#39;ytick.color&#39;</span><span class="p">:</span> <span class="n">MUTED</span><span class="p">,</span>
+    <span class="s1">&#39;text.color&#39;</span><span class="p">:</span> <span class="n">TEXT</span><span class="p">,</span>          <span class="s1">&#39;grid.color&#39;</span><span class="p">:</span> <span class="s1">&#39;#2d3348&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;grid.alpha&#39;</span><span class="p">:</span> <span class="mf">0.6</span><span class="p">,</span>           <span class="s1">&#39;font.family&#39;</span><span class="p">:</span> <span class="s1">&#39;DejaVu Sans&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;font.size&#39;</span><span class="p">:</span> <span class="mi">11</span><span class="p">,</span>
+<span class="p">})</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">title_ax</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">txt</span><span class="p">,</span> <span class="n">sub</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">txt</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">13</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">&#39;bold&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">TEXT</span><span class="p">,</span> <span class="n">pad</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">sub</span><span class="p">:</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">1.02</span><span class="p">,</span> <span class="n">sub</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">ax</span><span class="o">.</span><span class="n">transAxes</span><span class="p">,</span>
+                <span class="n">ha</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">MUTED</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </div>
-</section>
-<hr class="docutils" />
-<section id="cargar-csvs-exportados-por-los-edas">
-<h2>Cargar CSVs exportados por los EDAs<a class="headerlink" href="#cargar-csvs-exportados-por-los-edas" title="Permalink to this heading">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">history_pair</span>    <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">DATA</span> <span class="o">+</span> <span class="s1">&#39;history_per_pair.csv&#39;</span><span class="p">)</span>
-
-<span class="n">players</span>         <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">DATA</span> <span class="o">+</span> <span class="s1">&#39;players_clean.csv&#39;</span><span class="p">,</span> <span class="n">parse_dates</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;created&#39;</span><span class="p">])</span>
-<span class="n">friends</span>         <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">DATA</span> <span class="o">+</span> <span class="s1">&#39;friends_clean.csv&#39;</span><span class="p">)</span>
-<span class="n">purchased_users</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">DATA</span> <span class="o">+</span> <span class="s1">&#39;purchased_users.csv&#39;</span><span class="p">)</span>
-<span class="n">reviews_player</span>  <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">DATA</span> <span class="o">+</span> <span class="s1">&#39;reviews_per_player.csv&#39;</span><span class="p">)</span>
-
-<span class="n">games</span>           <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">DATA</span> <span class="o">+</span> <span class="s1">&#39;games_clean.csv&#39;</span><span class="p">,</span> <span class="n">parse_dates</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;release_date&#39;</span><span class="p">])</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">games</span>           <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">DATA</span> <span class="o">+</span> <span class="s1">&#39;games_clean.csv&#39;</span><span class="p">,</span> <span class="n">parse_dates</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;release_date&#39;</span><span class="p">])</span>
 <span class="n">ach_per_game</span>    <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">DATA</span> <span class="o">+</span> <span class="s1">&#39;achievements_per_game.csv&#39;</span><span class="p">)</span>
 <span class="n">prices_game</span>     <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">DATA</span> <span class="o">+</span> <span class="s1">&#39;prices_per_game.csv&#39;</span><span class="p">)</span>
 <span class="n">purchased_game</span>  <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">DATA</span> <span class="o">+</span> <span class="s1">&#39;purchased_per_game.csv&#39;</span><span class="p">)</span>
 <span class="n">reviews_game</span>    <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">DATA</span> <span class="o">+</span> <span class="s1">&#39;reviews_per_game.csv&#39;</span><span class="p">)</span>
+<span class="n">history_pair</span>    <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">DATA</span> <span class="o">+</span> <span class="s1">&#39;history_per_pair.csv&#39;</span><span class="p">)</span>
 
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;CSVs cargados:&#39;</span><span class="p">)</span>
 <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">df</span> <span class="ow">in</span> <span class="p">[</span>
-    <span class="p">(</span><span class="s1">&#39;history_per_pair&#39;</span><span class="p">,</span>   <span class="n">history_pair</span><span class="p">),</span>
-    <span class="p">(</span><span class="s1">&#39;players_clean&#39;</span><span class="p">,</span>      <span class="n">players</span><span class="p">),</span>
-    <span class="p">(</span><span class="s1">&#39;friends_clean&#39;</span><span class="p">,</span>      <span class="n">friends</span><span class="p">),</span>
-    <span class="p">(</span><span class="s1">&#39;purchased_users&#39;</span><span class="p">,</span>    <span class="n">purchased_users</span><span class="p">),</span>
-    <span class="p">(</span><span class="s1">&#39;reviews_per_player&#39;</span><span class="p">,</span> <span class="n">reviews_player</span><span class="p">),</span>
     <span class="p">(</span><span class="s1">&#39;games_clean&#39;</span><span class="p">,</span>        <span class="n">games</span><span class="p">),</span>
     <span class="p">(</span><span class="s1">&#39;ach_per_game&#39;</span><span class="p">,</span>       <span class="n">ach_per_game</span><span class="p">),</span>
     <span class="p">(</span><span class="s1">&#39;prices_per_game&#39;</span><span class="p">,</span>    <span class="n">prices_game</span><span class="p">),</span>
     <span class="p">(</span><span class="s1">&#39;purchased_per_game&#39;</span><span class="p">,</span> <span class="n">purchased_game</span><span class="p">),</span>
     <span class="p">(</span><span class="s1">&#39;reviews_per_game&#39;</span><span class="p">,</span>   <span class="n">reviews_game</span><span class="p">),</span>
+    <span class="p">(</span><span class="s1">&#39;history_per_pair&#39;</span><span class="p">,</span>   <span class="n">history_pair</span><span class="p">),</span>
 <span class="p">]:</span>
     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;  </span><span class="si">{</span><span class="n">name</span><span class="si">:</span><span class="s1">&lt;22</span><span class="si">}</span><span class="s1">: </span><span class="si">{</span><span class="n">df</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s1">&gt;8,</span><span class="si">}</span><span class="s1"> filas x </span><span class="si">{</span><span class="n">df</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s1"> cols&#39;</span><span class="p">)</span>
 </pre></div>
@@ -451,25 +497,49 @@ document.write(`
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CSVs cargados:
-  history_per_pair      :  253,610 filas x 3 cols
-  players_clean         :  377,014 filas x 5 cols
-  friends_clean         :  424,683 filas x 6 cols
-  purchased_users       :  102,548 filas x 5 cols
-  reviews_per_player    :  196,698 filas x 3 cols
   games_clean           :   98,248 filas x 10 cols
   ach_per_game          :   50,537 filas x 6 cols
   prices_per_game       :   97,713 filas x 11 cols
   purchased_per_game    :   40,988 filas x 5 cols
   reviews_per_game      :   51,910 filas x 9 cols
+  history_per_pair      :  253,610 filas x 3 cols
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">games_with_owners</span> <span class="o">=</span> <span class="n">purchased_game</span><span class="p">[</span><span class="n">purchased_game</span><span class="p">[</span><span class="s1">&#39;n_owners_public&#39;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">][</span><span class="s1">&#39;gameid&#39;</span><span class="p">]</span>
+
+<span class="n">valid_games</span> <span class="o">=</span> <span class="n">games</span><span class="p">[</span>
+    <span class="p">(</span><span class="o">~</span><span class="n">games</span><span class="p">[</span><span class="s1">&#39;is_playtest&#39;</span><span class="p">])</span> <span class="o">&amp;</span>
+    <span class="p">(</span><span class="n">games</span><span class="p">[</span><span class="s1">&#39;gameid&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">games_with_owners</span><span class="p">))</span> <span class="o">&amp;</span>
+    <span class="p">(</span><span class="n">games</span><span class="p">[</span><span class="s1">&#39;primary_genre&#39;</span><span class="p">]</span> <span class="o">!=</span> <span class="s1">&#39;Unknown&#39;</span><span class="p">)</span>
+<span class="p">][</span><span class="s1">&#39;gameid&#39;</span><span class="p">]</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Juegos totales en games_clean     : </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">games</span><span class="p">)</span><span class="si">:</span><span class="s1">&gt;8,</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;  Excluidos — playtests           : </span><span class="si">{</span><span class="n">games</span><span class="p">[</span><span class="s2">&quot;is_playtest&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="si">:</span><span class="s1">&gt;8,</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;  Excluidos — sin dueños públicos : </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">games</span><span class="p">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="nb">len</span><span class="p">(</span><span class="n">games_with_owners</span><span class="p">)</span><span class="si">:</span><span class="s1">&gt;8,</span><span class="si">}</span><span class="s1">  (aprox)&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;  Excluidos — género Unknown      : </span><span class="si">{</span><span class="p">(</span><span class="n">games</span><span class="p">[</span><span class="s2">&quot;primary_genre&quot;</span><span class="p">]</span><span class="o">==</span><span class="s2">&quot;Unknown&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="si">:</span><span class="s1">&gt;8,</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Universo válido final             : </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">valid_games</span><span class="p">)</span><span class="si">:</span><span class="s1">&gt;8,</span><span class="si">}</span><span class="s1">  (</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">valid_games</span><span class="p">)</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">games</span><span class="p">)</span><span class="o">*</span><span class="mi">100</span><span class="si">:</span><span class="s1">.1f</span><span class="si">}</span><span class="s1">% del total)&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Juegos totales en games_clean     :   98,248
+  Excluidos — playtests           :    5,294
+  Excluidos — sin dueños públicos :   57,327  (aprox)
+  Excluidos — género Unknown      :    5,549
+Universo válido final             :   37,060  (37.7% del total)
 </pre></div>
 </div>
 </div>
 </div>
 </section>
 <hr class="docutils" />
-<section id="features-derivadas-que-requieren-dos-fuentes">
-<h2>Features derivadas que requieren dos fuentes<a class="headerlink" href="#features-derivadas-que-requieren-dos-fuentes" title="Permalink to this heading">#</a></h2>
-<p>Estas son las únicas variables que se calculan aquí — no podían calcularse dentro de un solo EDA porque dependen de dos tablas distintas.</p>
+<section id="feature-avg-completion-rate-por-juego">
+<h2>1. Feature: avg_completion_rate por juego<a class="headerlink" href="#feature-avg-completion-rate-por-juego" title="Permalink to this heading">#</a></h2>
+<p>Se calcula cruzando <code class="docutils literal notranslate"><span class="pre">history_per_pair</span></code> con <code class="docutils literal notranslate"><span class="pre">achievements_per_game</span></code>, filtrando juegos spam y outliers para que el ratio sea representativo de engagement real.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ach_clean</span> <span class="o">=</span> <span class="n">ach_per_game</span><span class="p">[</span>
@@ -489,690 +559,679 @@ document.write(`
     <span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
 <span class="p">)</span>
 
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Pares con completion_rate : </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">history_cr</span><span class="p">)</span><span class="si">:</span><span class="s1">,</span><span class="si">}</span><span class="s1"> (de </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">history_pair</span><span class="p">)</span><span class="si">:</span><span class="s1">,</span><span class="si">}</span><span class="s1"> totales)&#39;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;completion_rate median    : </span><span class="si">{</span><span class="n">history_cr</span><span class="p">[</span><span class="s2">&quot;completion_rate&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">median</span><span class="p">()</span><span class="si">:</span><span class="s1">.3f</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Pares con completion_rate válido : </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">history_cr</span><span class="p">)</span><span class="si">:</span><span class="s1">,</span><span class="si">}</span><span class="s1"> (de </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">history_pair</span><span class="p">)</span><span class="si">:</span><span class="s1">,</span><span class="si">}</span><span class="s1"> totales)&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Juegos con avg_completion_rate  : </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">avg_cr</span><span class="p">)</span><span class="si">:</span><span class="s1">,</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;completion_rate mediana         : </span><span class="si">{</span><span class="n">history_cr</span><span class="p">[</span><span class="s2">&quot;completion_rate&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">median</span><span class="p">()</span><span class="si">:</span><span class="s1">.3f</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Pares con completion_rate válido : 168,552 (de 253,610 totales)
+Juegos con avg_completion_rate  : 11,138
+completion_rate mediana         : 0.222
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="feature-is-f2p">
+<h2>2. Feature: is_f2p<a class="headerlink" href="#feature-is-f2p" title="Permalink to this heading">#</a></h2>
+<p>Un juego es F2P si no tiene precio registrado pero sí tiene compradores públicos (alguien lo ‘adquirió’ aunque sea gratis).</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">F2P_MIN_OWNERS</span> <span class="o">=</span> <span class="mi">10</span> 
 
-<span class="n">F2P_MIN_OWNERS</span> <span class="o">=</span> <span class="mi">10</span>
-<span class="n">f2p</span> <span class="o">=</span> <span class="n">prices_game</span><span class="p">[[</span><span class="s1">&#39;gameid&#39;</span><span class="p">,</span><span class="s1">&#39;has_price&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span>
-    <span class="n">purchased_game</span><span class="p">[[</span><span class="s1">&#39;gameid&#39;</span><span class="p">,</span><span class="s1">&#39;n_owners_public&#39;</span><span class="p">]],</span> <span class="n">on</span><span class="o">=</span><span class="s1">&#39;gameid&#39;</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s1">&#39;outer&#39;</span>
+<span class="n">f2p</span> <span class="o">=</span> <span class="n">prices_game</span><span class="p">[[</span><span class="s1">&#39;gameid&#39;</span><span class="p">,</span> <span class="s1">&#39;has_price&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span>
+    <span class="n">purchased_game</span><span class="p">[[</span><span class="s1">&#39;gameid&#39;</span><span class="p">,</span> <span class="s1">&#39;n_owners_public&#39;</span><span class="p">]],</span> <span class="n">on</span><span class="o">=</span><span class="s1">&#39;gameid&#39;</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s1">&#39;outer&#39;</span>
 <span class="p">)</span>
 <span class="n">f2p</span><span class="p">[</span><span class="s1">&#39;has_price&#39;</span><span class="p">]</span>       <span class="o">=</span> <span class="n">f2p</span><span class="p">[</span><span class="s1">&#39;has_price&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
 <span class="n">f2p</span><span class="p">[</span><span class="s1">&#39;n_owners_public&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">f2p</span><span class="p">[</span><span class="s1">&#39;n_owners_public&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
 <span class="n">f2p</span><span class="p">[</span><span class="s1">&#39;is_f2p&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="o">~</span><span class="n">f2p</span><span class="p">[</span><span class="s1">&#39;has_price&#39;</span><span class="p">])</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">f2p</span><span class="p">[</span><span class="s1">&#39;n_owners_public&#39;</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="n">F2P_MIN_OWNERS</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;is_f2p=True               : </span><span class="si">{</span><span class="n">f2p</span><span class="p">[</span><span class="s2">&quot;is_f2p&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="si">:</span><span class="s1">,</span><span class="si">}</span><span class="s1"> juegos&#39;</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;is_f2p=True : </span><span class="si">{</span><span class="n">f2p</span><span class="p">[</span><span class="s2">&quot;is_f2p&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="si">:</span><span class="s1">,</span><span class="si">}</span><span class="s1"> juegos&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Pares con completion_rate : 168,552 (de 253,610 totales)
-completion_rate median    : 0.222
-is_f2p=True               : 6,712 juegos
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>is_f2p=True : 6,712 juegos
 </pre></div>
 </div>
 </div>
 </div>
 </section>
 <hr class="docutils" />
-<section id="tabla-de-features-de-usuario">
-<h2>Tabla de features de usuario<a class="headerlink" href="#tabla-de-features-de-usuario" title="Permalink to this heading">#</a></h2>
-<p>Una fila por <code class="docutils literal notranslate"><span class="pre">playerid</span></code>. Se usará en la tabla de regresion.</p>
+<section id="ensamble-de-game-features">
+<h2>3. Ensamble de game_features<a class="headerlink" href="#ensamble-de-game-features" title="Permalink to this heading">#</a></h2>
+<p>Se construye una tabla maestra con una fila por juego.</p>
+<p>IMPORTANTE: <code class="docutils literal notranslate"><span class="pre">n_owners_public</span></code>, <code class="docutils literal notranslate"><span class="pre">n_owners_all</span></code> y <code class="docutils literal notranslate"><span class="pre">penetration_pct</span></code> se incluyen solo para construir el target y se eliminan antes de exportar la tabla de features.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">user_features</span> <span class="o">=</span> <span class="p">(</span>
-    <span class="n">players</span><span class="p">[[</span><span class="s1">&#39;playerid&#39;</span><span class="p">,</span><span class="s1">&#39;country&#39;</span><span class="p">,</span><span class="s1">&#39;account_age_years&#39;</span><span class="p">,</span><span class="s1">&#39;is_private&#39;</span><span class="p">]]</span>
-    <span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">friends</span><span class="p">[[</span><span class="s1">&#39;playerid&#39;</span><span class="p">,</span><span class="s1">&#39;n_friends&#39;</span><span class="p">,</span><span class="s1">&#39;n_friends_log&#39;</span><span class="p">,</span><span class="s1">&#39;social_tier&#39;</span><span class="p">]],</span> <span class="n">on</span><span class="o">=</span><span class="s1">&#39;playerid&#39;</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s1">&#39;left&#39;</span><span class="p">)</span>
-    <span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">purchased_users</span><span class="p">[[</span><span class="s1">&#39;playerid&#39;</span><span class="p">,</span><span class="s1">&#39;lib_size&#39;</span><span class="p">,</span><span class="s1">&#39;user_type&#39;</span><span class="p">]],</span> <span class="n">on</span><span class="o">=</span><span class="s1">&#39;playerid&#39;</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s1">&#39;left&#39;</span><span class="p">)</span>
-    <span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">reviews_player</span><span class="p">[[</span><span class="s1">&#39;playerid&#39;</span><span class="p">,</span><span class="s1">&#39;n_reviews&#39;</span><span class="p">,</span><span class="s1">&#39;is_hyperactive_player&#39;</span><span class="p">]],</span> <span class="n">on</span><span class="o">=</span><span class="s1">&#39;playerid&#39;</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s1">&#39;left&#39;</span><span class="p">)</span>
-<span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">SNAPSHOT_DATE</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Timestamp</span><span class="p">(</span><span class="s1">&#39;2024-12-01&#39;</span><span class="p">)</span>  
 
-<span class="n">defaults</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s1">&#39;n_friends&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;n_friends_log&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;social_tier&#39;</span><span class="p">:</span> <span class="s1">&#39;solitario&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;lib_size&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;user_type&#39;</span><span class="p">:</span> <span class="s1">&#39;casual&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;n_reviews&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;is_hyperactive_player&#39;</span><span class="p">:</span> <span class="kc">False</span>
-<span class="p">}</span>
-<span class="k">for</span> <span class="n">col</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">defaults</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-    <span class="k">if</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">user_features</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
-        <span class="n">user_features</span><span class="p">[</span><span class="n">col</span><span class="p">]</span> <span class="o">=</span> <span class="n">user_features</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
-
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;user_features: </span><span class="si">{</span><span class="n">user_features</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
-<span class="n">miss</span> <span class="o">=</span> <span class="n">user_features</span><span class="o">.</span><span class="n">isnull</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Faltantes:&#39;</span><span class="p">,</span> <span class="n">miss</span><span class="p">[</span><span class="n">miss</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span> <span class="k">if</span> <span class="n">miss</span><span class="p">[</span><span class="n">miss</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">any</span><span class="p">()</span> <span class="k">else</span> <span class="s1">&#39;ninguno&#39;</span><span class="p">)</span>
-<span class="n">user_features</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>user_features: (377014, 11)
-Faltantes: ninguno
-</pre></div>
-</div>
-<div class="output text_html"><div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>playerid</th>
-      <th>country</th>
-      <th>account_age_years</th>
-      <th>is_private</th>
-      <th>n_friends</th>
-      <th>n_friends_log</th>
-      <th>social_tier</th>
-      <th>lib_size</th>
-      <th>user_type</th>
-      <th>n_reviews</th>
-      <th>is_hyperactive_player</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>76561198287452552</td>
-      <td>Brazil</td>
-      <td>10.03</td>
-      <td>False</td>
-      <td>0</td>
-      <td>0.000000</td>
-      <td>solitario</td>
-      <td>476.0</td>
-      <td>coleccionista</td>
-      <td>9.0</td>
-      <td>False</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>76561198040436563</td>
-      <td>Israel</td>
-      <td>14.93</td>
-      <td>False</td>
-      <td>316</td>
-      <td>5.758902</td>
-      <td>hub</td>
-      <td>836.0</td>
-      <td>coleccionista</td>
-      <td>31.0</td>
-      <td>True</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>76561198049686270</td>
-      <td>Unknown</td>
-      <td>14.46</td>
-      <td>False</td>
-      <td>718</td>
-      <td>6.577861</td>
-      <td>hub</td>
-      <td>0.0</td>
-      <td>casual</td>
-      <td>3.0</td>
-      <td>False</td>
-    </tr>
-  </tbody>
-</table>
-</div></div></div>
-</div>
-</section>
-<hr class="docutils" />
-<section id="tabla-de-features-de-juego">
-<h2>Tabla de features de juego<a class="headerlink" href="#tabla-de-features-de-juego" title="Permalink to this heading">#</a></h2>
-<p>Una fila por <code class="docutils literal notranslate"><span class="pre">gameid</span></code>. Se usará en ambas tablas maestras.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">game_features</span> <span class="o">=</span> <span class="p">(</span>
+<span class="n">game_features</span> <span class="o">=</span> <span class="p">(</span>
     <span class="n">games</span>
-    <span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">ach_per_game</span><span class="p">[[</span><span class="s1">&#39;gameid&#39;</span><span class="p">,</span><span class="s1">&#39;n_achievements&#39;</span><span class="p">,</span><span class="s1">&#39;is_spam_game&#39;</span><span class="p">,</span><span class="s1">&#39;spam_ratio&#39;</span><span class="p">,</span>
-                          <span class="s1">&#39;outlier_cat&#39;</span><span class="p">,</span><span class="s1">&#39;pct_generic&#39;</span><span class="p">]],</span>
+    <span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">ach_per_game</span><span class="p">[[</span><span class="s1">&#39;gameid&#39;</span><span class="p">,</span> <span class="s1">&#39;n_achievements&#39;</span><span class="p">,</span> <span class="s1">&#39;is_spam_game&#39;</span><span class="p">,</span> <span class="s1">&#39;spam_ratio&#39;</span><span class="p">,</span>
+                          <span class="s1">&#39;outlier_cat&#39;</span><span class="p">,</span> <span class="s1">&#39;pct_generic&#39;</span><span class="p">]],</span>
            <span class="n">on</span><span class="o">=</span><span class="s1">&#39;gameid&#39;</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s1">&#39;left&#39;</span><span class="p">)</span>
-    <span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">prices_game</span><span class="p">[[</span><span class="s1">&#39;gameid&#39;</span><span class="p">,</span><span class="s1">&#39;usd_latest&#39;</span><span class="p">,</span><span class="s1">&#39;usd_log&#39;</span><span class="p">,</span><span class="s1">&#39;price_tier&#39;</span><span class="p">,</span>
-                         <span class="s1">&#39;has_price&#39;</span><span class="p">,</span><span class="s1">&#39;no_eur_region&#39;</span><span class="p">]],</span>
+    <span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">prices_game</span><span class="p">[[</span><span class="s1">&#39;gameid&#39;</span><span class="p">,</span> <span class="s1">&#39;usd_latest&#39;</span><span class="p">,</span> <span class="s1">&#39;usd_log&#39;</span><span class="p">,</span> <span class="s1">&#39;price_tier&#39;</span><span class="p">,</span>
+                         <span class="s1">&#39;has_price&#39;</span><span class="p">,</span> <span class="s1">&#39;no_eur_region&#39;</span><span class="p">]],</span>
            <span class="n">on</span><span class="o">=</span><span class="s1">&#39;gameid&#39;</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s1">&#39;left&#39;</span><span class="p">)</span>
-    <span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">purchased_game</span><span class="p">[[</span><span class="s1">&#39;gameid&#39;</span><span class="p">,</span><span class="s1">&#39;n_owners_public&#39;</span><span class="p">,</span><span class="s1">&#39;n_owners_all&#39;</span><span class="p">,</span><span class="s1">&#39;penetration_pct&#39;</span><span class="p">]],</span>
+    <span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">purchased_game</span><span class="p">[[</span><span class="s1">&#39;gameid&#39;</span><span class="p">,</span> <span class="s1">&#39;n_owners_public&#39;</span><span class="p">,</span> <span class="s1">&#39;n_owners_all&#39;</span><span class="p">,</span> <span class="s1">&#39;penetration_pct&#39;</span><span class="p">]],</span>
            <span class="n">on</span><span class="o">=</span><span class="s1">&#39;gameid&#39;</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s1">&#39;left&#39;</span><span class="p">)</span>
-    <span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">reviews_game</span><span class="p">[[</span><span class="s1">&#39;gameid&#39;</span><span class="p">,</span><span class="s1">&#39;n_reviews&#39;</span><span class="p">,</span><span class="s1">&#39;n_reviews_log&#39;</span><span class="p">,</span><span class="s1">&#39;avg_helpful&#39;</span><span class="p">,</span>
-                          <span class="s1">&#39;avg_engagement&#39;</span><span class="p">,</span><span class="s1">&#39;pct_with_text&#39;</span><span class="p">,</span><span class="s1">&#39;avg_review_len&#39;</span><span class="p">]],</span>
+    <span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">reviews_game</span><span class="p">[[</span><span class="s1">&#39;gameid&#39;</span><span class="p">,</span> <span class="s1">&#39;n_reviews&#39;</span><span class="p">,</span> <span class="s1">&#39;n_reviews_log&#39;</span><span class="p">,</span> <span class="s1">&#39;avg_helpful&#39;</span><span class="p">,</span>
+                          <span class="s1">&#39;avg_engagement&#39;</span><span class="p">,</span> <span class="s1">&#39;pct_with_text&#39;</span><span class="p">,</span> <span class="s1">&#39;avg_review_len&#39;</span><span class="p">]],</span>
            <span class="n">on</span><span class="o">=</span><span class="s1">&#39;gameid&#39;</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s1">&#39;left&#39;</span><span class="p">)</span>
     <span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">avg_cr</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="s1">&#39;gameid&#39;</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s1">&#39;left&#39;</span><span class="p">)</span>
-    <span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">f2p</span><span class="p">[[</span><span class="s1">&#39;gameid&#39;</span><span class="p">,</span><span class="s1">&#39;is_f2p&#39;</span><span class="p">]],</span> <span class="n">on</span><span class="o">=</span><span class="s1">&#39;gameid&#39;</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s1">&#39;left&#39;</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">f2p</span><span class="p">[[</span><span class="s1">&#39;gameid&#39;</span><span class="p">,</span> <span class="s1">&#39;is_f2p&#39;</span><span class="p">]],</span> <span class="n">on</span><span class="o">=</span><span class="s1">&#39;gameid&#39;</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s1">&#39;left&#39;</span><span class="p">)</span>
 <span class="p">)</span>
 
-<span class="n">defaults_g</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s1">&#39;price_tier&#39;</span><span class="p">:</span> <span class="s1">&#39;free_or_unknown&#39;</span><span class="p">,</span> <span class="s1">&#39;has_price&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span> <span class="s1">&#39;is_f2p&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
-    <span class="s1">&#39;n_owners_public&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;is_spam_game&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span> <span class="s1">&#39;outlier_cat&#39;</span><span class="p">:</span> <span class="s1">&#39;normal&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;primary_genre&#39;</span><span class="p">:</span> <span class="s1">&#39;Unknown&#39;</span>
-<span class="p">}</span>
-<span class="k">for</span> <span class="n">col</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">defaults_g</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-    <span class="k">if</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">game_features</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
-        <span class="n">game_features</span><span class="p">[</span><span class="n">col</span><span class="p">]</span> <span class="o">=</span> <span class="n">game_features</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
+<span class="n">game_features</span><span class="p">[</span><span class="s1">&#39;days_since_release&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">SNAPSHOT_DATE</span> <span class="o">-</span> <span class="n">game_features</span><span class="p">[</span><span class="s1">&#39;release_date&#39;</span><span class="p">]</span>
+<span class="p">)</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">days</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">lower</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;game_features: </span><span class="si">{</span><span class="n">game_features</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;game_features shape: </span><span class="si">{</span><span class="n">game_features</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Faltantes por columna (top 15):&#39;</span><span class="p">)</span>
 <span class="n">miss</span> <span class="o">=</span> <span class="n">game_features</span><span class="o">.</span><span class="n">isnull</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Faltantes (top):&#39;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">miss</span><span class="p">[</span><span class="n">miss</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">10</span><span class="p">))</span>
-<span class="n">game_features</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">miss</span><span class="p">[</span><span class="n">miss</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">15</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>game_features: (98248, 32)
-Faltantes (top):
-n_players_with_history    87153
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>game_features shape: (98248, 33)
+Faltantes por columna (top 15):
 avg_completion_rate       87153
+n_players_with_history    87153
 n_owners_all              61077
 penetration_pct           61077
-pct_generic               47788
+n_owners_public           61077
+is_spam_game              47788
 n_achievements            47788
 spam_ratio                47788
+pct_generic               47788
+outlier_cat               47788
 avg_engagement            46499
-n_reviews                 46499
 pct_with_text             46499
+n_reviews_log             46499
+avg_helpful               46499
+n_reviews                 46499
 dtype: int64
 </pre></div>
 </div>
-<div class="output text_html"><div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>gameid</th>
-      <th>title</th>
-      <th>release_date</th>
-      <th>release_year</th>
-      <th>primary_genre</th>
-      <th>genres_count</th>
-      <th>developers_count</th>
-      <th>publishers_count</th>
-      <th>supported_languages_count</th>
-      <th>is_playtest</th>
-      <th>...</th>
-      <th>penetration_pct</th>
-      <th>n_reviews</th>
-      <th>n_reviews_log</th>
-      <th>avg_helpful</th>
-      <th>avg_engagement</th>
-      <th>pct_with_text</th>
-      <th>avg_review_len</th>
-      <th>avg_completion_rate</th>
-      <th>n_players_with_history</th>
-      <th>is_f2p</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>3281560</td>
-      <td>Horror Game To Play With Friends! Playtest</td>
-      <td>2024-10-21</td>
-      <td>2024</td>
-      <td>Unknown</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>True</td>
-      <td>...</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>False</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>3280930</td>
-      <td>Eternals' Path Playtest</td>
-      <td>2024-10-17</td>
-      <td>2024</td>
-      <td>Unknown</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>True</td>
-      <td>...</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>False</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>3280770</td>
-      <td>ANGST: A TALE OF SURVIVAL - Singleplayer Playtest</td>
-      <td>2024-10-13</td>
-      <td>2024</td>
-      <td>Unknown</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>True</td>
-      <td>...</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>False</td>
-    </tr>
-  </tbody>
-</table>
-<p>3 rows × 32 columns</p>
-</div></div></div>
+</div>
 </div>
 </section>
 <hr class="docutils" />
-<section id="tabla-maestra-regresion">
-<h2>Tabla maestra — Regresion<a class="headerlink" href="#tabla-maestra-regresion" title="Permalink to this heading">#</a></h2>
-<p><strong>Target:</strong> <code class="docutils literal notranslate"><span class="pre">n_logros_par</span></code> y <code class="docutils literal notranslate"><span class="pre">completion_rate</span></code></p>
+<section id="filtrar-al-universo-valido">
+<h2>4. Filtrar al universo válido<a class="headerlink" href="#filtrar-al-universo-valido" title="Permalink to this heading">#</a></h2>
+<p>Ahora restringimos a los juegos evaluables definidos en el paso 1.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">game_cols_reg</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;gameid&#39;</span><span class="p">,</span><span class="s1">&#39;primary_genre&#39;</span><span class="p">,</span><span class="s1">&#39;release_year&#39;</span><span class="p">,</span><span class="s1">&#39;n_achievements&#39;</span><span class="p">,</span>
-                 <span class="s1">&#39;is_spam_game&#39;</span><span class="p">,</span><span class="s1">&#39;usd_log&#39;</span><span class="p">,</span><span class="s1">&#39;price_tier&#39;</span><span class="p">,</span><span class="s1">&#39;has_price&#39;</span><span class="p">,</span><span class="s1">&#39;is_f2p&#39;</span><span class="p">,</span>
-                 <span class="s1">&#39;no_eur_region&#39;</span><span class="p">,</span><span class="s1">&#39;n_reviews_log&#39;</span><span class="p">,</span><span class="s1">&#39;avg_engagement&#39;</span><span class="p">,</span><span class="s1">&#39;is_playtest&#39;</span><span class="p">]</span>
-<span class="n">game_cols_reg</span> <span class="o">=</span> <span class="p">[</span><span class="n">c</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">game_cols_reg</span> <span class="k">if</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">game_features</span><span class="o">.</span><span class="n">columns</span><span class="p">]</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">game_features</span><span class="p">[</span><span class="n">game_features</span><span class="p">[</span><span class="s1">&#39;gameid&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">valid_games</span><span class="p">)]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
-<span class="n">tabla_regression</span> <span class="o">=</span> <span class="p">(</span>
-    <span class="n">history_cr</span><span class="p">[[</span><span class="s1">&#39;playerid&#39;</span><span class="p">,</span><span class="s1">&#39;gameid&#39;</span><span class="p">,</span><span class="s1">&#39;n_logros_par&#39;</span><span class="p">,</span><span class="s1">&#39;completion_rate&#39;</span><span class="p">]]</span>
-    <span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">user_features</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="s1">&#39;playerid&#39;</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s1">&#39;left&#39;</span><span class="p">)</span>
-    <span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">game_features</span><span class="p">[</span><span class="n">game_cols_reg</span><span class="p">],</span> <span class="n">on</span><span class="o">=</span><span class="s1">&#39;gameid&#39;</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s1">&#39;left&#39;</span><span class="p">)</span>
-<span class="p">)</span>
-
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;tabla_regression: </span><span class="si">{</span><span class="n">tabla_regression</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Jugadores unicos: </span><span class="si">{</span><span class="n">tabla_regression</span><span class="p">[</span><span class="s2">&quot;playerid&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">nunique</span><span class="p">()</span><span class="si">:</span><span class="s1">,</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Juegos unicos   : </span><span class="si">{</span><span class="n">tabla_regression</span><span class="p">[</span><span class="s2">&quot;gameid&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">nunique</span><span class="p">()</span><span class="si">:</span><span class="s1">,</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Faltantes totales: </span><span class="si">{</span><span class="n">tabla_regression</span><span class="o">.</span><span class="n">isnull</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="si">:</span><span class="s1">,</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">()</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Target n_logros_par:&#39;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">tabla_regression</span><span class="p">[</span><span class="s1">&#39;n_logros_par&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>
-<span class="n">tabla_regression</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Juegos en universo válido: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">)</span><span class="si">:</span><span class="s1">,</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Distribución de n_owners_public:&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;n_owners_public&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">describe</span><span class="p">(</span><span class="n">percentiles</span><span class="o">=</span><span class="p">[</span><span class="mf">.25</span><span class="p">,</span> <span class="mf">.5</span><span class="p">,</span> <span class="mf">.75</span><span class="p">,</span> <span class="mf">.90</span><span class="p">,</span> <span class="mf">.95</span><span class="p">,</span> <span class="mf">.99</span><span class="p">])</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>tabla_regression: (168552, 26)
-Jugadores unicos: 4,596
-Juegos unicos   : 11,138
-Faltantes totales: 109,610
-
-Target n_logros_par:
-count    168552.00
-mean         10.64
-std          31.95
-min           1.00
-25%           3.00
-50%           6.00
-75%          15.00
-max        4096.00
-Name: n_logros_par, dtype: float64
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Juegos en universo válido: 37,060
+Distribución de n_owners_public:
+count    37060.0
+mean       234.0
+std        683.0
+min          1.0
+25%         15.0
+50%         64.0
+75%        202.0
+90%        516.0
+95%        893.0
+99%       2876.0
+max      28434.0
+Name: n_owners_public, dtype: float64
 </pre></div>
 </div>
-<div class="output text_html"><div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>playerid</th>
-      <th>gameid</th>
-      <th>n_logros_par</th>
-      <th>completion_rate</th>
-      <th>country</th>
-      <th>account_age_years</th>
-      <th>is_private</th>
-      <th>n_friends</th>
-      <th>n_friends_log</th>
-      <th>social_tier</th>
-      <th>...</th>
-      <th>n_achievements</th>
-      <th>is_spam_game</th>
-      <th>usd_log</th>
-      <th>price_tier</th>
-      <th>has_price</th>
-      <th>is_f2p</th>
-      <th>no_eur_region</th>
-      <th>n_reviews_log</th>
-      <th>avg_engagement</th>
-      <th>is_playtest</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>76561197960272169</td>
-      <td>300</td>
-      <td>5</td>
-      <td>0.0926</td>
-      <td>Australia</td>
-      <td>22.51</td>
-      <td>False</td>
-      <td>1679.0</td>
-      <td>7.426549</td>
-      <td>hub</td>
-      <td>...</td>
-      <td>54.0</td>
-      <td>False</td>
-      <td>2.396986</td>
-      <td>mid</td>
-      <td>True</td>
-      <td>False</td>
-      <td>False</td>
-      <td>5.874931</td>
-      <td>8.107042</td>
-      <td>False</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>76561197960272169</td>
-      <td>620</td>
-      <td>7</td>
-      <td>0.1373</td>
-      <td>Australia</td>
-      <td>22.51</td>
-      <td>False</td>
-      <td>1679.0</td>
-      <td>7.426549</td>
-      <td>hub</td>
-      <td>...</td>
-      <td>51.0</td>
-      <td>False</td>
-      <td>2.396986</td>
-      <td>mid</td>
-      <td>True</td>
-      <td>False</td>
-      <td>False</td>
-      <td>8.043342</td>
-      <td>3.656491</td>
-      <td>False</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>76561197960272169</td>
-      <td>4000</td>
-      <td>15</td>
-      <td>0.5172</td>
-      <td>Australia</td>
-      <td>22.51</td>
-      <td>False</td>
-      <td>1679.0</td>
-      <td>7.426549</td>
-      <td>hub</td>
-      <td>...</td>
-      <td>29.0</td>
-      <td>False</td>
-      <td>2.396986</td>
-      <td>mid</td>
-      <td>True</td>
-      <td>False</td>
-      <td>False</td>
-      <td>8.963672</td>
-      <td>4.247152</td>
-      <td>False</td>
-    </tr>
-  </tbody>
-</table>
-<p>3 rows × 26 columns</p>
-</div></div></div>
+</div>
 </div>
 </section>
 <hr class="docutils" />
-<section id="tabla-maestra-clasificacion">
-<h2>Tabla maestra — Clasificacion<a class="headerlink" href="#tabla-maestra-clasificacion" title="Permalink to this heading">#</a></h2>
-<p><strong>Target:</strong> <code class="docutils literal notranslate"><span class="pre">is_popular</span></code> = top 25% por <code class="docutils literal notranslate"><span class="pre">n_owners_public</span></code></p>
+<section id="construccion-del-target-is-popular">
+<h2>5. Construcción del target: <code class="docutils literal notranslate"><span class="pre">is_popular</span></code><a class="headerlink" href="#construccion-del-target-is-popular" title="Permalink to this heading">#</a></h2>
+<section id="target-global-vs-estratificado-por-genero">
+<h3>Target global vs estratificado por género<a class="headerlink" href="#target-global-vs-estratificado-por-genero" title="Permalink to this heading">#</a></h3>
+<p>Se crean dos versiones del target:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">is_popular_global</span></code>: P75 del universo completo (comparable con el original)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">is_popular_genre</span></code>: P75 dentro de su género — más justo para modelar</p></li>
+</ul>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tabla_clasificacion</span> <span class="o">=</span> <span class="n">game_features</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">p75_global</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;n_owners_public&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">quantile</span><span class="p">(</span><span class="mf">0.75</span><span class="p">)</span>
+<span class="n">df</span><span class="p">[</span><span class="s1">&#39;is_popular_global&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;n_owners_public&#39;</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="n">p75_global</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
 
-<span class="n">threshold</span> <span class="o">=</span> <span class="n">tabla_clasificacion</span><span class="p">[</span><span class="s1">&#39;n_owners_public&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">quantile</span><span class="p">(</span><span class="mf">0.75</span><span class="p">)</span>
-<span class="n">tabla_clasificacion</span><span class="p">[</span><span class="s1">&#39;is_popular&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">tabla_clasificacion</span><span class="p">[</span><span class="s1">&#39;n_owners_public&#39;</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="n">threshold</span>
+<span class="n">df</span><span class="p">[</span><span class="s1">&#39;p75_genre&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;primary_genre&#39;</span><span class="p">)[</span><span class="s1">&#39;n_owners_public&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span>
+    <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">quantile</span><span class="p">(</span><span class="mf">0.75</span><span class="p">)</span>
+<span class="p">)</span>
+<span class="n">df</span><span class="p">[</span><span class="s1">&#39;is_popular_genre&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;n_owners_public&#39;</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;p75_genre&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Umbral P75 global           : </span><span class="si">{</span><span class="n">p75_global</span><span class="si">:</span><span class="s1">,.0f</span><span class="si">}</span><span class="s1"> n_owners_public&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;is_popular_global = 1       : </span><span class="si">{</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;is_popular_global&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="si">:</span><span class="s1">,</span><span class="si">}</span><span class="s1">  (</span><span class="si">{</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;is_popular_global&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">*</span><span class="mi">100</span><span class="si">:</span><span class="s1">.1f</span><span class="si">}</span><span class="s1">%)&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;is_popular_genre  = 1       : </span><span class="si">{</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;is_popular_genre&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="si">:</span><span class="s1">,</span><span class="si">}</span><span class="s1">  (</span><span class="si">{</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;is_popular_genre&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">*</span><span class="mi">100</span><span class="si">:</span><span class="s1">.1f</span><span class="si">}</span><span class="s1">%)&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;P75 por género (top 10 géneros por volumen):&#39;</span><span class="p">)</span>
+<span class="n">genre_p75</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;primary_genre&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">agg</span><span class="p">(</span>
+    <span class="n">n_juegos</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;gameid&#39;</span><span class="p">,</span> <span class="s1">&#39;count&#39;</span><span class="p">),</span>
+    <span class="n">p75_owners</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;n_owners_public&#39;</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">quantile</span><span class="p">(</span><span class="mf">0.75</span><span class="p">)),</span>
+    <span class="n">pct_popular</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;is_popular_genre&#39;</span><span class="p">,</span> <span class="s1">&#39;mean&#39;</span><span class="p">)</span>
+<span class="p">)</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s1">&#39;n_juegos&#39;</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">genre_p75</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Umbral P75 global           : 202 n_owners_public
+is_popular_global = 1       : 9,283  (25.0%)
+is_popular_genre  = 1       : 9,307  (25.1%)
+
+P75 por género (top 10 géneros por volumen):
+               n_juegos  p75_owners  pct_popular
+primary_genre                                   
+Action            14739       255.0          0.3
+Adventure          8602       179.0          0.3
+Casual             5860       159.0          0.3
+Indie              3530       159.0          0.3
+Simulation         1064       161.0          0.3
+RPG                 803       252.5          0.3
+Strategy            698       313.8          0.3
+Violent             324       135.0          0.3
+Free To Play        263       320.0          0.3
+Racing              261       277.0          0.3
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">22</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">patch</span><span class="o">.</span><span class="n">set_facecolor</span><span class="p">(</span><span class="n">DARK_BG</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s1">&#39;Análisis del Target — is_popular&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">&#39;bold&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">TEXT</span><span class="p">)</span>
+
+<span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log1p</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;n_owners_public&#39;</span><span class="p">]),</span> <span class="n">bins</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">ACCENT1</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="n">DARK_BG</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log1p</span><span class="p">(</span><span class="n">p75_global</span><span class="p">),</span> <span class="n">color</span><span class="o">=</span><span class="n">ACCENT3</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span>
+           <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;P75 global = </span><span class="si">{</span><span class="n">p75_global</span><span class="si">:</span><span class="s1">.0f</span><span class="si">}</span><span class="s1"> owners&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="n">CARD_BG</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="n">MUTED</span><span class="p">,</span> <span class="n">labelcolor</span><span class="o">=</span><span class="n">TEXT</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;log(n_owners_public + 1)&#39;</span><span class="p">);</span> <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Juegos&#39;</span><span class="p">)</span>
+<span class="n">title_ax</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="s1">&#39;  Distribución de Popularidad (log scale)&#39;</span><span class="p">)</span>
+
+<span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">top_genres</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;primary_genre&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span><span class="o">.</span><span class="n">index</span>
+<span class="n">genre_data</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;primary_genre&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">top_genres</span><span class="p">)]</span>
+<span class="n">genre_order</span> <span class="o">=</span> <span class="n">genre_data</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;primary_genre&#39;</span><span class="p">)[</span><span class="s1">&#39;n_owners_public&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">median</span><span class="p">()</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">index</span>
+<span class="n">medians</span> <span class="o">=</span> <span class="p">[</span><span class="n">genre_data</span><span class="p">[</span><span class="n">genre_data</span><span class="p">[</span><span class="s1">&#39;primary_genre&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">g</span><span class="p">][</span><span class="s1">&#39;n_owners_public&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">median</span><span class="p">()</span> <span class="k">for</span> <span class="n">g</span> <span class="ow">in</span> <span class="n">genre_order</span><span class="p">]</span>
+<span class="n">colors_g</span> <span class="o">=</span> <span class="p">[</span><span class="n">ACCENT2</span> <span class="k">if</span> <span class="n">v</span> <span class="o">&gt;</span> <span class="n">p75_global</span> <span class="k">else</span> <span class="n">ACCENT1</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">medians</span><span class="p">]</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">barh</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">genre_order</span><span class="p">)),</span> <span class="n">medians</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="n">colors_g</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_yticks</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">genre_order</span><span class="p">)))</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_yticklabels</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">genre_order</span><span class="p">)[::</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">9</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">p75_global</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">ACCENT3</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;P75 = </span><span class="si">{</span><span class="n">p75_global</span><span class="si">:</span><span class="s1">.0f</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="n">CARD_BG</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="n">MUTED</span><span class="p">,</span> <span class="n">labelcolor</span><span class="o">=</span><span class="n">TEXT</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Mediana n_owners_public&#39;</span><span class="p">)</span>
+<span class="n">title_ax</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="s1">&#39;  Mediana por Género (top 10)&#39;</span><span class="p">,</span> <span class="s1">&#39;Verde = mediana &gt; umbral global&#39;</span><span class="p">)</span>
+
+<span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+<span class="n">target_compare</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span>
+    <span class="s1">&#39;Global&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;is_popular_global&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span> <span class="o">*</span> <span class="mi">100</span><span class="p">,</span>
+               <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;is_popular_global&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">())</span> <span class="o">*</span> <span class="mi">100</span><span class="p">],</span>
+    <span class="s1">&#39;Por género&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;is_popular_genre&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span> <span class="o">*</span> <span class="mi">100</span><span class="p">,</span>
+                   <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;is_popular_genre&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">())</span> <span class="o">*</span> <span class="mi">100</span><span class="p">]</span>
+<span class="p">},</span> <span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Popular (1)&#39;</span><span class="p">,</span> <span class="s1">&#39;No popular (0)&#39;</span><span class="p">])</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="mf">0.2</span><span class="p">,</span> <span class="n">target_compare</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">width</span><span class="o">=</span><span class="mf">0.35</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">ACCENT2</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Popular (1)&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">x</span> <span class="o">+</span> <span class="mf">0.2</span><span class="p">,</span> <span class="n">target_compare</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">width</span><span class="o">=</span><span class="mf">0.35</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">ACCENT4</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;No popular (0)&#39;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">v1</span><span class="p">,</span> <span class="n">v2</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">target_compare</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">target_compare</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">1</span><span class="p">])):</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">i</span> <span class="o">-</span> <span class="mf">0.2</span><span class="p">,</span> <span class="n">v1</span> <span class="o">+</span> <span class="mf">0.5</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">v1</span><span class="si">:</span><span class="s1">.1f</span><span class="si">}</span><span class="s1">%&#39;</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">TEXT</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mf">0.2</span><span class="p">,</span> <span class="n">v2</span> <span class="o">+</span> <span class="mf">0.5</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">v2</span><span class="si">:</span><span class="s1">.1f</span><span class="si">}</span><span class="s1">%&#39;</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">TEXT</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xticklabels</span><span class="p">([</span><span class="s1">&#39;Global&#39;</span><span class="p">,</span> <span class="s1">&#39;Por género&#39;</span><span class="p">])</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">% d</span><span class="s1">e juegos&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="n">CARD_BG</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="n">MUTED</span><span class="p">,</span> <span class="n">labelcolor</span><span class="o">=</span><span class="n">TEXT</span><span class="p">)</span>
+<span class="n">title_ax</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="s1">&#39;  Balance de Clases — Global vs Por Género&#39;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/52b01e5291ba1ffdf71b3a5dfdd4f50403dfb9042001e574b9d08b019fa55949.png" src="_images/52b01e5291ba1ffdf71b3a5dfdd4f50403dfb9042001e574b9d08b019fa55949.png" />
+</div>
+</div>
+</section>
+</section>
+<hr class="docutils" />
+<section id="imputacion-de-faltantes-en-features">
+<h2>6. Imputación de faltantes en features<a class="headerlink" href="#imputacion-de-faltantes-en-features" title="Permalink to this heading">#</a></h2>
+<p>Estrategia por columna justificada:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Columna</p></th>
+<th class="head"><p>Estrategia</p></th>
+<th class="head"><p>Razón</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">n_achievements</span></code>, <code class="docutils literal notranslate"><span class="pre">pct_generic</span></code>, <code class="docutils literal notranslate"><span class="pre">spam_ratio</span></code></p></td>
+<td><p>0</p></td>
+<td><p>Juego sin logros registrados = 0 logros</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">is_spam_game</span></code></p></td>
+<td><p>False</p></td>
+<td><p>Sin evidencia de spam = no spam</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">outlier_cat</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">'sin_logros'</span></code></p></td>
+<td><p>Categoría nueva que no confunde con ‘normal’</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">usd_log</span></code>, <code class="docutils literal notranslate"><span class="pre">usd_latest</span></code></p></td>
+<td><p>0</p></td>
+<td><p>Sin precio = gratuito</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">price_tier</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">'free_or_unknown'</span></code></p></td>
+<td><p>Categoría descriptiva</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">has_price</span></code></p></td>
+<td><p>False</p></td>
+<td><p>Sin precio registrado</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">no_eur_region</span></code></p></td>
+<td><p>False</p></td>
+<td><p>Asumir disponible salvo evidencia contraria</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">is_f2p</span></code></p></td>
+<td><p>False</p></td>
+<td><p>Completado por lógica de precio arriba</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">n_reviews</span></code>, <code class="docutils literal notranslate"><span class="pre">avg_helpful</span></code>, <code class="docutils literal notranslate"><span class="pre">avg_engagement</span></code>, <code class="docutils literal notranslate"><span class="pre">pct_with_text</span></code>, <code class="docutils literal notranslate"><span class="pre">avg_review_len</span></code></p></td>
+<td><p>0 / 0.0</p></td>
+<td><p>Sin reseñas = sin actividad</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">n_reviews_log</span></code></p></td>
+<td><p>0</p></td>
+<td><p>log1p(0) = 0</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">avg_completion_rate</span></code></p></td>
+<td><p>NaN → se imputará con mediana del género</p></td>
+<td><p>Faltante real: no hay historial de jugadores</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">n_players_with_history</span></code></p></td>
+<td><p>0</p></td>
+<td><p>Sin jugadores con historial</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">days_since_release</span></code></p></td>
+<td><p>0</p></td>
+<td><p>Juego sin fecha = tratado como nuevo</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">imputaciones</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;n_achievements&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="s1">&#39;pct_generic&#39;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+    <span class="s1">&#39;spam_ratio&#39;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+    <span class="s1">&#39;is_spam_game&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="s1">&#39;usd_log&#39;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+    <span class="s1">&#39;usd_latest&#39;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+    <span class="s1">&#39;price_tier&#39;</span><span class="p">:</span> <span class="s1">&#39;free_or_unknown&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;has_price&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="s1">&#39;no_eur_region&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="s1">&#39;is_f2p&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="s1">&#39;n_reviews&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="s1">&#39;n_reviews_log&#39;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+    <span class="s1">&#39;avg_helpful&#39;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+    <span class="s1">&#39;avg_engagement&#39;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+    <span class="s1">&#39;pct_with_text&#39;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+    <span class="s1">&#39;avg_review_len&#39;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+    <span class="s1">&#39;n_players_with_history&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="s1">&#39;days_since_release&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="s1">&#39;primary_genre&#39;</span><span class="p">:</span> <span class="s1">&#39;Unknown&#39;</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="k">for</span> <span class="n">col</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">imputaciones</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="k">if</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+        <span class="n">n_antes</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">isna</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+        <span class="n">df</span><span class="p">[</span><span class="n">col</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">n_antes</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;  </span><span class="si">{</span><span class="n">col</span><span class="si">:</span><span class="s1">&lt;30</span><span class="si">}</span><span class="s1"> : </span><span class="si">{</span><span class="n">n_antes</span><span class="si">:</span><span class="s1">&gt;6,</span><span class="si">}</span><span class="s1"> imputados con </span><span class="si">{</span><span class="nb">repr</span><span class="p">(</span><span class="n">val</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="s1">&#39;outlier_cat&#39;</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+    <span class="n">n_antes</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;outlier_cat&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">isna</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+    <span class="n">df</span><span class="p">[</span><span class="s1">&#39;outlier_cat&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;outlier_cat&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="s1">&#39;sin_logros&#39;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;  </span><span class="si">{</span><span class="s2">&quot;outlier_cat&quot;</span><span class="si">:</span><span class="s1">&lt;30</span><span class="si">}</span><span class="s1"> : </span><span class="si">{</span><span class="n">n_antes</span><span class="si">:</span><span class="s1">&gt;6,</span><span class="si">}</span><span class="s1"> imputados con &quot;sin_logros&quot;&#39;</span><span class="p">)</span>
+
+<span class="n">n_antes</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;avg_completion_rate&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">isna</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+<span class="n">genre_median_cr</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;primary_genre&#39;</span><span class="p">)[</span><span class="s1">&#39;avg_completion_rate&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="s1">&#39;median&#39;</span><span class="p">)</span>
+<span class="n">global_median_cr</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;avg_completion_rate&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">median</span><span class="p">()</span>
+<span class="n">df</span><span class="p">[</span><span class="s1">&#39;avg_completion_rate&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;avg_completion_rate&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="n">genre_median_cr</span><span class="p">)</span>
+<span class="n">df</span><span class="p">[</span><span class="s1">&#39;avg_completion_rate&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;avg_completion_rate&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="n">global_median_cr</span><span class="p">)</span>  
+<span class="n">df</span><span class="p">[</span><span class="s1">&#39;completion_rate_imputed&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span> 
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;  </span><span class="si">{</span><span class="s2">&quot;avg_completion_rate&quot;</span><span class="si">:</span><span class="s1">&lt;30</span><span class="si">}</span><span class="s1"> : </span><span class="si">{</span><span class="n">n_antes</span><span class="si">:</span><span class="s1">&gt;6,</span><span class="si">}</span><span class="s1"> imputados con mediana del género&#39;</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">Faltantes restantes: </span><span class="si">{</span><span class="n">df</span><span class="o">.</span><span class="n">isnull</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  n_achievements                 : 13,582 imputados con 0
+  pct_generic                    : 13,582 imputados con 0.0
+  spam_ratio                     : 13,582 imputados con 0.0
+  is_spam_game                   : 13,582 imputados con False
+  usd_log                        :  3,995 imputados con 0.0
+  usd_latest                     :  3,995 imputados con 0.0
+  price_tier                     :     11 imputados con &#39;free_or_unknown&#39;
+  has_price                      :     11 imputados con False
+  no_eur_region                  :  3,995 imputados con False
+  n_reviews                      :  7,864 imputados con 0
+  n_reviews_log                  :  7,864 imputados con 0.0
+  avg_helpful                    :  7,864 imputados con 0.0
+  avg_engagement                 :  7,864 imputados con 0.0
+  pct_with_text                  :  7,864 imputados con 0.0
+  avg_review_len                 :  7,864 imputados con 0.0
+  n_players_with_history         : 25,992 imputados con 0
+  outlier_cat                    : 13,582 imputados con &quot;sin_logros&quot;
+  avg_completion_rate            : 25,992 imputados con mediana del género
+
+Faltantes restantes: 0
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="construccion-de-la-tabla-maestra-de-clasificacion">
+<h2>7. Construcción de la tabla maestra de clasificación<a class="headerlink" href="#construccion-de-la-tabla-maestra-de-clasificacion" title="Permalink to this heading">#</a></h2>
+<p>Se eliminan:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">n_owners_public</span></code>, <code class="docutils literal notranslate"><span class="pre">n_owners_all</span></code>, <code class="docutils literal notranslate"><span class="pre">penetration_pct</span></code> → leakage directo (son el target)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">p75_genre</span></code> → auxiliar de construcción</p></li>
+<li><p>Columnas de texto/ID no usables como features (<code class="docutils literal notranslate"><span class="pre">title</span></code>, <code class="docutils literal notranslate"><span class="pre">release_date</span></code>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">is_playtest</span></code> → ya filtrado (todos son False en este universo)</p></li>
+</ul>
+<p>El target recomendado es <code class="docutils literal notranslate"><span class="pre">is_popular_genre</span></code> — evalúa popularidad dentro de la competencia directa del juego.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">COLS_LEAKAGE</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;n_owners_public&#39;</span><span class="p">,</span> <span class="s1">&#39;n_owners_all&#39;</span><span class="p">,</span> <span class="s1">&#39;penetration_pct&#39;</span><span class="p">,</span> <span class="s1">&#39;p75_genre&#39;</span><span class="p">]</span>
+<span class="n">COLS_EXCLUIR</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;title&#39;</span><span class="p">,</span> <span class="s1">&#39;release_date&#39;</span><span class="p">,</span> <span class="s1">&#39;is_playtest&#39;</span><span class="p">]</span>
+<span class="n">COLS_TARGET</span>  <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;is_popular_global&#39;</span><span class="p">,</span> <span class="s1">&#39;is_popular_genre&#39;</span><span class="p">]</span>
+
+<span class="n">feature_cols</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="n">c</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span>
+    <span class="k">if</span> <span class="n">c</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">COLS_LEAKAGE</span> <span class="o">+</span> <span class="n">COLS_EXCLUIR</span> <span class="o">+</span> <span class="n">COLS_TARGET</span> <span class="o">+</span> <span class="p">[</span><span class="s1">&#39;gameid&#39;</span><span class="p">]</span>
+<span class="p">]</span>
+
+<span class="n">tabla_clasificacion</span> <span class="o">=</span> <span class="n">df</span><span class="p">[[</span><span class="s1">&#39;gameid&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="n">feature_cols</span> <span class="o">+</span> <span class="n">COLS_TARGET</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
 
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;tabla_clasificacion: </span><span class="si">{</span><span class="n">tabla_clasificacion</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Umbral is_popular (P75): </span><span class="si">{</span><span class="n">threshold</span><span class="si">:</span><span class="s1">.0f</span><span class="si">}</span><span class="s1"> n_owners_public&#39;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;is_popular=True  : </span><span class="si">{</span><span class="n">tabla_clasificacion</span><span class="p">[</span><span class="s2">&quot;is_popular&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="si">:</span><span class="s1">,</span><span class="si">}</span><span class="s1">  (</span><span class="si">{</span><span class="n">tabla_clasificacion</span><span class="p">[</span><span class="s2">&quot;is_popular&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">*</span><span class="mi">100</span><span class="si">:</span><span class="s1">.1f</span><span class="si">}</span><span class="s1">%)&#39;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Faltantes totales: </span><span class="si">{</span><span class="n">tabla_clasificacion</span><span class="o">.</span><span class="n">isnull</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="si">:</span><span class="s1">,</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
-<span class="n">tabla_clasificacion</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Features disponibles (</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">feature_cols</span><span class="p">)</span><span class="si">}</span><span class="s1">):&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">feature_cols</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Target principal (is_popular_genre):&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;  Positivos (popular)    : </span><span class="si">{</span><span class="n">tabla_clasificacion</span><span class="p">[</span><span class="s2">&quot;is_popular_genre&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="si">:</span><span class="s1">,</span><span class="si">}</span><span class="s1">  (</span><span class="si">{</span><span class="n">tabla_clasificacion</span><span class="p">[</span><span class="s2">&quot;is_popular_genre&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">*</span><span class="mi">100</span><span class="si">:</span><span class="s1">.1f</span><span class="si">}</span><span class="s1">%)&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;  Negativos (no popular) : </span><span class="si">{</span><span class="p">(</span><span class="n">tabla_clasificacion</span><span class="p">[</span><span class="s2">&quot;is_popular_genre&quot;</span><span class="p">]</span><span class="o">==</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="si">:</span><span class="s1">,</span><span class="si">}</span><span class="s1">  (</span><span class="si">{</span><span class="p">(</span><span class="n">tabla_clasificacion</span><span class="p">[</span><span class="s2">&quot;is_popular_genre&quot;</span><span class="p">]</span><span class="o">==</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">*</span><span class="mi">100</span><span class="si">:</span><span class="s1">.1f</span><span class="si">}</span><span class="s1">%)&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Faltantes restantes: </span><span class="si">{</span><span class="n">tabla_clasificacion</span><span class="o">.</span><span class="n">isnull</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>tabla_clasificacion: (98248, 33)
-Umbral is_popular (P75): 25 n_owners_public
-is_popular=True  : 24,626  (25.1%)
-Faltantes totales: 780,078
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>tabla_clasificacion: (37060, 30)
+Features disponibles (27):
+[&#39;release_year&#39;, &#39;primary_genre&#39;, &#39;genres_count&#39;, &#39;developers_count&#39;, &#39;publishers_count&#39;, &#39;supported_languages_count&#39;, &#39;n_achievements&#39;, &#39;is_spam_game&#39;, &#39;spam_ratio&#39;, &#39;outlier_cat&#39;, &#39;pct_generic&#39;, &#39;usd_latest&#39;, &#39;usd_log&#39;, &#39;price_tier&#39;, &#39;has_price&#39;, &#39;no_eur_region&#39;, &#39;n_reviews&#39;, &#39;n_reviews_log&#39;, &#39;avg_helpful&#39;, &#39;avg_engagement&#39;, &#39;pct_with_text&#39;, &#39;avg_review_len&#39;, &#39;avg_completion_rate&#39;, &#39;n_players_with_history&#39;, &#39;is_f2p&#39;, &#39;days_since_release&#39;, &#39;completion_rate_imputed&#39;]
+
+Target principal (is_popular_genre):
+  Positivos (popular)    : 9,307  (25.1%)
+  Negativos (no popular) : 27,753  (74.9%)
+Faltantes restantes: 0
 </pre></div>
 </div>
-<div class="output text_html"><div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>gameid</th>
-      <th>title</th>
-      <th>release_date</th>
-      <th>release_year</th>
-      <th>primary_genre</th>
-      <th>genres_count</th>
-      <th>developers_count</th>
-      <th>publishers_count</th>
-      <th>supported_languages_count</th>
-      <th>is_playtest</th>
-      <th>...</th>
-      <th>n_reviews</th>
-      <th>n_reviews_log</th>
-      <th>avg_helpful</th>
-      <th>avg_engagement</th>
-      <th>pct_with_text</th>
-      <th>avg_review_len</th>
-      <th>avg_completion_rate</th>
-      <th>n_players_with_history</th>
-      <th>is_f2p</th>
-      <th>is_popular</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>3281560</td>
-      <td>Horror Game To Play With Friends! Playtest</td>
-      <td>2024-10-21</td>
-      <td>2024</td>
-      <td>Unknown</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>True</td>
-      <td>...</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>False</td>
-      <td>False</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>3280930</td>
-      <td>Eternals' Path Playtest</td>
-      <td>2024-10-17</td>
-      <td>2024</td>
-      <td>Unknown</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>True</td>
-      <td>...</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>False</td>
-      <td>False</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>3280770</td>
-      <td>ANGST: A TALE OF SURVIVAL - Singleplayer Playtest</td>
-      <td>2024-10-13</td>
-      <td>2024</td>
-      <td>Unknown</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>True</td>
-      <td>...</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>False</td>
-      <td>False</td>
-    </tr>
-  </tbody>
-</table>
-<p>3 rows × 33 columns</p>
-</div></div></div>
+</div>
 </div>
 </section>
 <hr class="docutils" />
-<section id="exportar">
-<h2>Exportar<a class="headerlink" href="#exportar" title="Permalink to this heading">#</a></h2>
+<section id="diagnostico-de-la-tabla-maestra">
+<h2>8. Diagnóstico de la tabla maestra<a class="headerlink" href="#diagnostico-de-la-tabla-maestra" title="Permalink to this heading">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tabla_regression</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">DATA</span> <span class="o">+</span> <span class="s1">&#39;tabla_regression.csv&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-<span class="n">tabla_clasificacion</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">DATA</span> <span class="o">+</span> <span class="s1">&#39;tabla_clasificacion.csv&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">22</span><span class="p">,</span> <span class="mi">12</span><span class="p">))</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">patch</span><span class="o">.</span><span class="n">set_facecolor</span><span class="p">(</span><span class="n">DARK_BG</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s1">&#39;Diagnóstico de la Tabla Maestra — Clasificación&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">&#39;bold&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">TEXT</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mf">0.99</span><span class="p">)</span>
 
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Exportadas:&#39;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;  tabla_regression.csv    : </span><span class="si">{</span><span class="n">tabla_regression</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s1">,</span><span class="si">}</span><span class="s1"> x </span><span class="si">{</span><span class="n">tabla_regression</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="n">TARGET</span> <span class="o">=</span> <span class="s1">&#39;is_popular_genre&#39;</span>
+
+<span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+<span class="n">vc</span> <span class="o">=</span> <span class="n">tabla_clasificacion</span><span class="p">[</span><span class="n">TARGET</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">bar</span><span class="p">([</span><span class="s1">&#39;No popular (0)&#39;</span><span class="p">,</span> <span class="s1">&#39;Popular (1)&#39;</span><span class="p">],</span> <span class="p">[</span><span class="n">vc</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">vc</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">)],</span>
+       <span class="n">color</span><span class="o">=</span><span class="p">[</span><span class="n">ACCENT4</span><span class="p">,</span> <span class="n">ACCENT2</span><span class="p">])</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="n">val</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">zip</span><span class="p">([</span><span class="s1">&#39;No popular&#39;</span><span class="p">,</span> <span class="s1">&#39;Popular&#39;</span><span class="p">],</span> <span class="p">[</span><span class="n">vc</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">vc</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">)])):</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">val</span> <span class="o">+</span> <span class="mi">50</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">val</span><span class="si">:</span><span class="s1">,</span><span class="si">}</span><span class="se">\n</span><span class="s1">(</span><span class="si">{</span><span class="n">val</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">tabla_clasificacion</span><span class="p">)</span><span class="o">*</span><span class="mi">100</span><span class="si">:</span><span class="s1">.1f</span><span class="si">}</span><span class="s1">%)&#39;</span><span class="p">,</span>
+            <span class="n">ha</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">11</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">TEXT</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">&#39;bold&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Juegos&#39;</span><span class="p">)</span>
+<span class="n">title_ax</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="s1">&#39;  Balance de Clases (target final)&#39;</span><span class="p">)</span>
+
+<span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+<span class="n">top10g</span> <span class="o">=</span> <span class="n">tabla_clasificacion</span><span class="p">[</span><span class="s1">&#39;primary_genre&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span><span class="o">.</span><span class="n">index</span>
+<span class="n">pop_by_genre</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">tabla_clasificacion</span><span class="p">[</span><span class="n">tabla_clasificacion</span><span class="p">[</span><span class="s1">&#39;primary_genre&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">top10g</span><span class="p">)]</span>
+    <span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;primary_genre&#39;</span><span class="p">)[</span><span class="n">TARGET</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span> <span class="o">*</span> <span class="mi">100</span>
+<span class="p">)</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">ascending</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">barh</span><span class="p">(</span><span class="n">pop_by_genre</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">pop_by_genre</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">ACCENT1</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="mi">25</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">ACCENT3</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;25</span><span class="si">% e</span><span class="s1">sperado&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="n">CARD_BG</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="n">MUTED</span><span class="p">,</span> <span class="n">labelcolor</span><span class="o">=</span><span class="n">TEXT</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;% juegos populares dentro del género&#39;</span><span class="p">)</span>
+<span class="n">title_ax</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="s1">&#39;  % Popular por Género (top 10)&#39;</span><span class="p">,</span> <span class="s1">&#39;Debería ≈ 25% por construcción&#39;</span><span class="p">)</span>
+
+<span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
+<span class="n">num_cols</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;release_year&#39;</span><span class="p">,</span> <span class="s1">&#39;genres_count&#39;</span><span class="p">,</span> <span class="s1">&#39;supported_languages_count&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;n_achievements&#39;</span><span class="p">,</span> <span class="s1">&#39;usd_log&#39;</span><span class="p">,</span> <span class="s1">&#39;n_reviews_log&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;avg_engagement&#39;</span><span class="p">,</span> <span class="s1">&#39;avg_completion_rate&#39;</span><span class="p">,</span> <span class="s1">&#39;days_since_release&#39;</span><span class="p">]</span>
+<span class="n">num_cols</span> <span class="o">=</span> <span class="p">[</span><span class="n">c</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">num_cols</span> <span class="k">if</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">tabla_clasificacion</span><span class="o">.</span><span class="n">columns</span><span class="p">]</span>
+<span class="n">corrs</span> <span class="o">=</span> <span class="n">tabla_clasificacion</span><span class="p">[</span><span class="n">num_cols</span> <span class="o">+</span> <span class="p">[</span><span class="n">TARGET</span><span class="p">]]</span><span class="o">.</span><span class="n">corr</span><span class="p">()[</span><span class="n">TARGET</span><span class="p">]</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">TARGET</span><span class="p">)</span><span class="o">.</span><span class="n">sort_values</span><span class="p">()</span>
+<span class="n">colors_c</span> <span class="o">=</span> <span class="p">[</span><span class="n">ACCENT3</span> <span class="k">if</span> <span class="n">v</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="n">ACCENT2</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">corrs</span><span class="o">.</span><span class="n">values</span><span class="p">]</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">barh</span><span class="p">(</span><span class="n">corrs</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">corrs</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">colors_c</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">MUTED</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Correlación con is_popular_genre&#39;</span><span class="p">)</span>
+<span class="n">title_ax</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="s1">&#39;  Correlación Features vs Target&#39;</span><span class="p">)</span>
+
+<span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+<span class="k">for</span> <span class="n">val</span><span class="p">,</span> <span class="n">color</span><span class="p">,</span> <span class="n">label</span> <span class="ow">in</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,</span> <span class="n">ACCENT4</span><span class="p">,</span> <span class="s1">&#39;No popular&#39;</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">ACCENT2</span><span class="p">,</span> <span class="s1">&#39;Popular&#39;</span><span class="p">)]:</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">tabla_clasificacion</span><span class="p">[</span><span class="n">tabla_clasificacion</span><span class="p">[</span><span class="n">TARGET</span><span class="p">]</span> <span class="o">==</span> <span class="n">val</span><span class="p">][</span><span class="s1">&#39;n_reviews_log&#39;</span><span class="p">]</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.65</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="n">DARK_BG</span><span class="p">,</span>
+            <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">label</span><span class="si">}</span><span class="s1"> (n=</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span><span class="si">:</span><span class="s1">,</span><span class="si">}</span><span class="s1">)&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="n">CARD_BG</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="n">MUTED</span><span class="p">,</span> <span class="n">labelcolor</span><span class="o">=</span><span class="n">TEXT</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;log(n_reviews + 1)&#39;</span><span class="p">);</span> <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Juegos&#39;</span><span class="p">)</span>
+<span class="n">title_ax</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="s1">&#39;  n_reviews_log por Clase&#39;</span><span class="p">)</span>
+
+<span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+<span class="n">pt_pop</span> <span class="o">=</span> <span class="n">tabla_clasificacion</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;price_tier&#39;</span><span class="p">)[</span><span class="n">TARGET</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span> <span class="o">*</span> <span class="mi">100</span>
+<span class="n">pt_n</span>   <span class="o">=</span> <span class="n">tabla_clasificacion</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;price_tier&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">size</span><span class="p">()</span>
+<span class="n">pt_order</span> <span class="o">=</span> <span class="n">pt_pop</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">ascending</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">bars</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">barh</span><span class="p">(</span><span class="n">pt_order</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">pt_order</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">ACCENT1</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">bar</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">bars</span><span class="p">,</span> <span class="n">pt_order</span><span class="o">.</span><span class="n">values</span><span class="p">):</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">val</span> <span class="o">+</span> <span class="mf">0.3</span><span class="p">,</span> <span class="n">bar</span><span class="o">.</span><span class="n">get_y</span><span class="p">()</span> <span class="o">+</span> <span class="n">bar</span><span class="o">.</span><span class="n">get_height</span><span class="p">()</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span>
+            <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">val</span><span class="si">:</span><span class="s1">.1f</span><span class="si">}</span><span class="s1">%&#39;</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">TEXT</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="mi">25</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">ACCENT3</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;25% línea base&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="n">CARD_BG</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="n">MUTED</span><span class="p">,</span> <span class="n">labelcolor</span><span class="o">=</span><span class="n">TEXT</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;% popular dentro del price_tier&#39;</span><span class="p">)</span>
+<span class="n">title_ax</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="s1">&#39;  Popularidad por Price Tier&#39;</span><span class="p">)</span>
+
+<span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
+<span class="n">miss_final</span> <span class="o">=</span> <span class="n">tabla_clasificacion</span><span class="o">.</span><span class="n">isnull</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+<span class="n">miss_final</span> <span class="o">=</span> <span class="n">miss_final</span><span class="p">[</span><span class="n">miss_final</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">]</span>
+<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">miss_final</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">barh</span><span class="p">(</span><span class="n">miss_final</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">miss_final</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">ACCENT3</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Faltantes&#39;</span><span class="p">)</span>
+    <span class="n">title_ax</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="s1">&#39;  Faltantes Restantes&#39;</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="s1">&#39;✓  Sin faltantes&#39;</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">,</span>
+            <span class="n">transform</span><span class="o">=</span><span class="n">ax</span><span class="o">.</span><span class="n">transAxes</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">ACCENT2</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">&#39;bold&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;off&#39;</span><span class="p">)</span>
+    <span class="n">title_ax</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="s1">&#39;  Faltantes Restantes&#39;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">(</span><span class="n">rect</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mf">0.97</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/62adbacb8c3ac968128f5112b1f12e20ffc78d99a31f9154c1ca1fab951d7ccc.png" src="_images/62adbacb8c3ac968128f5112b1f12e20ffc78d99a31f9154c1ca1fab951d7ccc.png" />
+</div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="resumen-de-features-y-recomendaciones-para-el-modelo">
+<h2>9. Resumen de features y recomendaciones para el modelo<a class="headerlink" href="#resumen-de-features-y-recomendaciones-para-el-modelo" title="Permalink to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;═&#39;</span> <span class="o">*</span> <span class="mi">65</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;  RESUMEN — Tabla Maestra de Clasificación&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;═&#39;</span> <span class="o">*</span> <span class="mi">65</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;  Juegos totales            : </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">tabla_clasificacion</span><span class="p">)</span><span class="si">:</span><span class="s1">&gt;8,</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;  Features                  : </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">feature_cols</span><span class="p">)</span><span class="si">:</span><span class="s1">&gt;8</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;  Target: is_popular_genre&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;    Populares (1)           : </span><span class="si">{</span><span class="n">tabla_clasificacion</span><span class="p">[</span><span class="s2">&quot;is_popular_genre&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="si">:</span><span class="s1">&gt;8,</span><span class="si">}</span><span class="s1">  (</span><span class="si">{</span><span class="n">tabla_clasificacion</span><span class="p">[</span><span class="s2">&quot;is_popular_genre&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">*</span><span class="mi">100</span><span class="si">:</span><span class="s1">.1f</span><span class="si">}</span><span class="s1">%)&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;    No populares (0)        : </span><span class="si">{</span><span class="p">(</span><span class="n">tabla_clasificacion</span><span class="p">[</span><span class="s2">&quot;is_popular_genre&quot;</span><span class="p">]</span><span class="o">==</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="si">:</span><span class="s1">&gt;8,</span><span class="si">}</span><span class="s1">  (</span><span class="si">{</span><span class="p">(</span><span class="n">tabla_clasificacion</span><span class="p">[</span><span class="s2">&quot;is_popular_genre&quot;</span><span class="p">]</span><span class="o">==</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">*</span><span class="mi">100</span><span class="si">:</span><span class="s1">.1f</span><span class="si">}</span><span class="s1">%)&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;  Faltantes totales         : </span><span class="si">{</span><span class="n">tabla_clasificacion</span><span class="o">.</span><span class="n">isnull</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="si">:</span><span class="s1">&gt;8,</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;═&#39;</span> <span class="o">*</span> <span class="mi">65</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;FEATURES CATEGÓRICAS (requieren encoding):&#39;</span><span class="p">)</span>
+<span class="n">cat_cols</span> <span class="o">=</span> <span class="n">tabla_clasificacion</span><span class="p">[</span><span class="n">feature_cols</span><span class="p">]</span><span class="o">.</span><span class="n">select_dtypes</span><span class="p">(</span><span class="n">include</span><span class="o">=</span><span class="s1">&#39;object&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+<span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">cat_cols</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;  </span><span class="si">{</span><span class="n">c</span><span class="si">:</span><span class="s1">&lt;30</span><span class="si">}</span><span class="s1"> : </span><span class="si">{</span><span class="n">tabla_clasificacion</span><span class="p">[</span><span class="n">c</span><span class="p">]</span><span class="o">.</span><span class="n">nunique</span><span class="p">()</span><span class="si">}</span><span class="s1"> valores únicos&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;FEATURES NUMÉRICAS:&#39;</span><span class="p">)</span>
+<span class="n">num_cols_all</span> <span class="o">=</span> <span class="n">tabla_clasificacion</span><span class="p">[</span><span class="n">feature_cols</span><span class="p">]</span><span class="o">.</span><span class="n">select_dtypes</span><span class="p">(</span><span class="n">include</span><span class="o">=</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">number</span><span class="p">])</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+<span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">num_cols_all</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;  </span><span class="si">{</span><span class="n">c</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;RECOMENDACIONES PARA EL MODELO:&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;  1. Usar is_popular_genre como target (más balanceado y justo por categoría)&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;  2. Probar XGBoost / LightGBM — manejan bien categóricas y valores cero&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;  3. Encodear primary_genre con target encoding (alta cardinalidad relativa)&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;  4. price_tier y outlier_cat con one-hot encoding&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;  5. Considerar eliminar completion_rate_imputed si el modelo lo ignora&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;  6. Validar con stratified k-fold por primary_genre&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>═════════════════════════════════════════════════════════════════
+  RESUMEN — Tabla Maestra de Clasificación
+═════════════════════════════════════════════════════════════════
+  Juegos totales            :   37,060
+  Features                  :       27
+  Target: is_popular_genre
+    Populares (1)           :    9,307  (25.1%)
+    No populares (0)        :   27,753  (74.9%)
+  Faltantes totales         :        0
+═════════════════════════════════════════════════════════════════
+
+FEATURES CATEGÓRICAS (requieren encoding):
+  primary_genre                  : 27 valores únicos
+  outlier_cat                    : 4 valores únicos
+  price_tier                     : 7 valores únicos
+
+FEATURES NUMÉRICAS:
+  release_year
+  genres_count
+  developers_count
+  publishers_count
+  supported_languages_count
+  n_achievements
+  spam_ratio
+  pct_generic
+  usd_latest
+  usd_log
+  n_reviews
+  n_reviews_log
+  avg_helpful
+  avg_engagement
+  pct_with_text
+  avg_review_len
+  avg_completion_rate
+  n_players_with_history
+  days_since_release
+
+RECOMENDACIONES PARA EL MODELO:
+  1. Usar is_popular_genre como target (más balanceado y justo por categoría)
+  2. Probar XGBoost / LightGBM — manejan bien categóricas y valores cero
+  3. Encodear primary_genre con target encoding (alta cardinalidad relativa)
+  4. price_tier y outlier_cat con one-hot encoding
+  5. Considerar eliminar completion_rate_imputed si el modelo lo ignora
+  6. Validar con stratified k-fold por primary_genre
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tabla_clasificacion</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">DATA</span> <span class="o">+</span> <span class="s1">&#39;tabla_clasificacion.csv&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Exportado:&#39;</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;  tabla_clasificacion.csv : </span><span class="si">{</span><span class="n">tabla_clasificacion</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s1">,</span><span class="si">}</span><span class="s1"> x </span><span class="si">{</span><span class="n">tabla_clasificacion</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">()</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Columnas tabla_regression:&#39;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">tabla_regression</span><span class="o">.</span><span class="n">columns</span><span class="p">))</span>
-<span class="nb">print</span><span class="p">()</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Columnas tabla_clasificacion:&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Columnas:&#39;</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">tabla_clasificacion</span><span class="o">.</span><span class="n">columns</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Exportadas:
-  tabla_regression.csv    : 168,552 x 26
-  tabla_clasificacion.csv : 98,248 x 33
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Exportado:
+  tabla_clasificacion.csv : 37,060 x 30
 
-Columnas tabla_regression:
-[&#39;playerid&#39;, &#39;gameid&#39;, &#39;n_logros_par&#39;, &#39;completion_rate&#39;, &#39;country&#39;, &#39;account_age_years&#39;, &#39;is_private&#39;, &#39;n_friends&#39;, &#39;n_friends_log&#39;, &#39;social_tier&#39;, &#39;lib_size&#39;, &#39;user_type&#39;, &#39;n_reviews&#39;, &#39;is_hyperactive_player&#39;, &#39;primary_genre&#39;, &#39;release_year&#39;, &#39;n_achievements&#39;, &#39;is_spam_game&#39;, &#39;usd_log&#39;, &#39;price_tier&#39;, &#39;has_price&#39;, &#39;is_f2p&#39;, &#39;no_eur_region&#39;, &#39;n_reviews_log&#39;, &#39;avg_engagement&#39;, &#39;is_playtest&#39;]
-
-Columnas tabla_clasificacion:
-[&#39;gameid&#39;, &#39;title&#39;, &#39;release_date&#39;, &#39;release_year&#39;, &#39;primary_genre&#39;, &#39;genres_count&#39;, &#39;developers_count&#39;, &#39;publishers_count&#39;, &#39;supported_languages_count&#39;, &#39;is_playtest&#39;, &#39;n_achievements&#39;, &#39;is_spam_game&#39;, &#39;spam_ratio&#39;, &#39;outlier_cat&#39;, &#39;pct_generic&#39;, &#39;usd_latest&#39;, &#39;usd_log&#39;, &#39;price_tier&#39;, &#39;has_price&#39;, &#39;no_eur_region&#39;, &#39;n_owners_public&#39;, &#39;n_owners_all&#39;, &#39;penetration_pct&#39;, &#39;n_reviews&#39;, &#39;n_reviews_log&#39;, &#39;avg_helpful&#39;, &#39;avg_engagement&#39;, &#39;pct_with_text&#39;, &#39;avg_review_len&#39;, &#39;avg_completion_rate&#39;, &#39;n_players_with_history&#39;, &#39;is_f2p&#39;, &#39;is_popular&#39;]
+Columnas:
+[&#39;gameid&#39;, &#39;release_year&#39;, &#39;primary_genre&#39;, &#39;genres_count&#39;, &#39;developers_count&#39;, &#39;publishers_count&#39;, &#39;supported_languages_count&#39;, &#39;n_achievements&#39;, &#39;is_spam_game&#39;, &#39;spam_ratio&#39;, &#39;outlier_cat&#39;, &#39;pct_generic&#39;, &#39;usd_latest&#39;, &#39;usd_log&#39;, &#39;price_tier&#39;, &#39;has_price&#39;, &#39;no_eur_region&#39;, &#39;n_reviews&#39;, &#39;n_reviews_log&#39;, &#39;avg_helpful&#39;, &#39;avg_engagement&#39;, &#39;pct_with_text&#39;, &#39;avg_review_len&#39;, &#39;avg_completion_rate&#39;, &#39;n_players_with_history&#39;, &#39;is_f2p&#39;, &#39;days_since_release&#39;, &#39;completion_rate_imputed&#39;, &#39;is_popular_global&#39;, &#39;is_popular_genre&#39;]
 </pre></div>
 </div>
 </div>
 </div>
+</section>
 <hr class="docutils" />
-<section id="decisiones-tomadas-aqui">
-<h3>Decisiones tomadas aqui<a class="headerlink" href="#decisiones-tomadas-aqui" title="Permalink to this heading">#</a></h3>
+<section id="decisiones-tomadas-en-este-notebook">
+<h2>Decisiones tomadas en este notebook<a class="headerlink" href="#decisiones-tomadas-en-este-notebook" title="Permalink to this heading">#</a></h2>
 <div class="pst-scrollable-table-container"><table class="table">
 <thead>
-<tr class="row-odd"><th class="head"><p>Decision</p></th>
-<th class="head"><p>Justificacion</p></th>
+<tr class="row-odd"><th class="head"><p>Decisión</p></th>
+<th class="head"><p>Justificación</p></th>
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">completion_rate</span></code> solo sobre juegos <code class="docutils literal notranslate"><span class="pre">outlier_cat='normal'</span></code> y <code class="docutils literal notranslate"><span class="pre">is_spam_game=False</span></code></p></td>
-<td><p>Los juegos spam distorsionan el ratio — ver <code class="docutils literal notranslate"><span class="pre">eda_achievements</span></code>.</p></td>
+<tr class="row-even"><td><p><strong>Clasificación sobre regresión</strong></p></td>
+<td><p>El dataset de regresión solo tiene 4,596 jugadores únicos de 424k — muestra pequeña y sesgada. La clasificación trabaja con todos los juegos.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">is_f2p</span></code> = sin precio + &gt;= 10 owners publicos</p></td>
-<td><p>Umbral conservador, ajustable con <code class="docutils literal notranslate"><span class="pre">F2P_MIN_OWNERS</span></code>.</p></td>
+<tr class="row-odd"><td><p><strong>Filtro de universo válido antes del target</strong></p></td>
+<td><p>El P75 original sobre 98k juegos resultaba en solo 25 dueños. Filtrar playtests y juegos sin actividad eleva el umbral a un valor significativo.</p></td>
 </tr>
-<tr class="row-even"><td><p>Target <code class="docutils literal notranslate"><span class="pre">is_popular</span></code> = P75 de <code class="docutils literal notranslate"><span class="pre">n_owners_public</span></code></p></td>
-<td><p>Split 75/25. Ajustar si la distribucion completa lo justifica.</p></td>
+<tr class="row-even"><td><p><strong>Target estratificado por género</strong></p></td>
+<td><p>Géneros con distribuciones muy distintas (Indie masivo vs nicho de estrategia) hacen injusta la comparación global. El modelo aprende dentro de la competencia directa.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">n_owners_public</span></code> sobre <code class="docutils literal notranslate"><span class="pre">n_owners_all</span></code></p></td>
-<td><p>Los privados inflan n_owners 10-24% — ver <code class="docutils literal notranslate"><span class="pre">eda_purchased_games</span></code>.</p></td>
+<tr class="row-odd"><td><p><strong>Eliminación de leakage</strong></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">n_owners_public</span></code>, <code class="docutils literal notranslate"><span class="pre">n_owners_all</span></code>, <code class="docutils literal notranslate"><span class="pre">penetration_pct</span></code> no pueden ser features — son el target o están directamente correlacionadas con él.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong><code class="docutils literal notranslate"><span class="pre">days_since_release</span></code></strong></p></td>
+<td><p>Feature nueva que captura exposición acumulada del juego. Un juego de 2015 tuvo más tiempo de acumular compradores que uno de 2024.</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Imputación de <code class="docutils literal notranslate"><span class="pre">avg_completion_rate</span></code> con mediana del género</strong></p></td>
+<td><p>Los juegos sin historial de logros no deben recibir 0 (que distorsionaría hacia abajo) sino el engagement promedio de juegos similares.</p></td>
+</tr>
+<tr class="row-even"><td><p><strong><code class="docutils literal notranslate"><span class="pre">outlier_cat</span> <span class="pre">=</span> <span class="pre">'sin_logros'</span></code> en lugar de ‘normal’</strong></p></td>
+<td><p>Evita confundir juegos sin logros registrados con juegos que tienen logros en rango normal. Son categorías distintas.</p></td>
 </tr>
 </tbody>
 </table>
 </div>
-</section>
 </section>
 </section>
 
@@ -1215,6 +1274,15 @@ Columnas tabla_clasificacion:
         <p class="prev-next-title">EDA: <code class="docutils literal notranslate"><span class="pre">reviews</span></code></p>
       </div>
     </a>
+    <a class="right-next"
+       href="benchmark_vs_stack.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Benchmarking y Stacking</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
 </div>
                 </footer>
               
@@ -1231,17 +1299,20 @@ Columnas tabla_clasificacion:
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#imports">Imports</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cargar-csvs-exportados-por-los-edas">Cargar CSVs exportados por los EDAs</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#features-derivadas-que-requieren-dos-fuentes">Features derivadas que requieren dos fuentes</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tabla-de-features-de-usuario">Tabla de features de usuario</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tabla-de-features-de-juego">Tabla de features de juego</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tabla-maestra-regresion">Tabla maestra — Regresion</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tabla-maestra-clasificacion">Tabla maestra — Clasificacion</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exportar">Exportar</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#decisiones-tomadas-aqui">Decisiones tomadas aqui</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#decision-de-modelo">Decisión de modelo</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#feature-avg-completion-rate-por-juego">1. Feature: avg_completion_rate por juego</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#feature-is-f2p">2. Feature: is_f2p</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ensamble-de-game-features">3. Ensamble de game_features</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#filtrar-al-universo-valido">4. Filtrar al universo válido</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#construccion-del-target-is-popular">5. Construcción del target: <code class="docutils literal notranslate"><span class="pre">is_popular</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#target-global-vs-estratificado-por-genero">Target global vs estratificado por género</a></li>
 </ul>
 </li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#imputacion-de-faltantes-en-features">6. Imputación de faltantes en features</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#construccion-de-la-tabla-maestra-de-clasificacion">7. Construcción de la tabla maestra de clasificación</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#diagnostico-de-la-tabla-maestra">8. Diagnóstico de la tabla maestra</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#resumen-de-features-y-recomendaciones-para-el-modelo">9. Resumen de features y recomendaciones para el modelo</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#decisiones-tomadas-en-este-notebook">Decisiones tomadas en este notebook</a></li>
 </ul>
   </nav></div>
 
