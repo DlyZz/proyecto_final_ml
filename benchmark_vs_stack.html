@@ -376,28 +376,23 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#imports">1. Imports</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#carga-y-split-train-test">2. Carga y split train / test</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#preprocesador-compartido">3. Preprocesador compartido</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#benchmark-1-dummy-classifier">4. Benchmark 1 — Dummy Classifier</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#benchmark-2-logistic-regression-l2-sin-tuning">5. Benchmark 2 — Logistic Regression L2 (sin tuning)</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#benchmark-3-decision-tree-sin-podar">6. Benchmark 3 — Decision Tree (sin podar)</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#stack-ensamble-de-dos-niveles">7. Stack — Ensamble de dos niveles</a><ul class="nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#preprocesador-compartido">Preprocesador compartido</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#benchmark-1-dummy-classifier">Benchmark 1 — Dummy Classifier</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#benchmark-2-logistic-regression-l2-sin-tuning">Benchmark 2 — Logistic Regression L2 (sin tuning)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#benchmark-3-decision-tree-sin-podar">Benchmark 3 — Decision Tree (sin podar)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#stack-ensamble-de-dos-niveles">Stack — Ensamble de dos niveles</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#arquitectura">Arquitectura</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#verificacion-de-overfitting-en-los-modelos">Verificación de overfitting en los modelos</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#comparacion-final-benchmarks-vs-stack">8. Comparación final — Benchmarks vs Stack</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tabla-de-metricas">8.1 Tabla de métricas</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#comparacion-final-benchmarks-vs-stack">Comparación final — Benchmarks vs Stack</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tabla-de-metricas">Tabla de métricas</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tabla-comparativa-de-metricas">Tabla comparativa de métricas</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#dashboard-de-comparacion">8.2 Dashboard de comparación</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#dashboard-de-comparacion">Dashboard de comparación</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#test-de-delong-significancia-estadistica-de-la-mejora">8.3 Test de DeLong — Significancia estadística de la mejora</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#resumen-ejecutivo">9. Resumen ejecutivo</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Resumen ejecutivo</a></li>
-</ul>
-</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#test-de-delong-significancia-estadistica-de-la-mejora">Test de DeLong — Significancia estadística de la mejora</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#resumen-ejecutivo">Resumen ejecutivo</a></li>
 </ul>
             </nav>
         </div>
@@ -413,9 +408,6 @@ document.write(`
 <h1>Benchmarking y Stacking<a class="headerlink" href="#benchmarking-y-stacking" title="Permalink to this heading">#</a></h1>
 <p>Objetivo: demostrar que el ensamble de modelos (stacking) supera a tres clasificadores
 base en la tarea de predecir si un juego será popular dentro de su género en Steam.</p>
-<hr class="docutils" />
-<section id="imports">
-<h2>1. Imports<a class="headerlink" href="#imports" title="Permalink to this heading">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
@@ -486,10 +478,6 @@ base en la tarea de predecir si un juego será popular dentro de su género en S
 </div>
 </div>
 </div>
-</section>
-<hr class="docutils" />
-<section id="carga-y-split-train-test">
-<h2>2. Carga y split train / test<a class="headerlink" href="#carga-y-split-train-test" title="Permalink to this heading">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">DATA</span> <span class="o">=</span> <span class="s1">&#39;Datos/&#39;</span>
@@ -558,10 +546,9 @@ Features: 26
 <li><p>26 features construidas en el notebook de feature engineering</p></li>
 <li><p>El desbalance 75/25 es manejable — no requiere SMOTE, se controla con <code class="docutils literal notranslate"><span class="pre">class_weight='balanced'</span></code> en cada modelo</p></li>
 </ul>
-</section>
 <hr class="docutils" />
 <section id="preprocesador-compartido">
-<h2>3. Preprocesador compartido<a class="headerlink" href="#preprocesador-compartido" title="Permalink to this heading">#</a></h2>
+<h2>Preprocesador compartido<a class="headerlink" href="#preprocesador-compartido" title="Permalink to this heading">#</a></h2>
 <p>El mismo preprocesador se reutiliza en todos los pipelines — benchmarks y stack — para que la comparación sea justa.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -622,7 +609,7 @@ scale_pos_weight para XGBoost: 2.98
 </section>
 <hr class="docutils" />
 <section id="benchmark-1-dummy-classifier">
-<h2>4. Benchmark 1 — Dummy Classifier<a class="headerlink" href="#benchmark-1-dummy-classifier" title="Permalink to this heading">#</a></h2>
+<h2>Benchmark 1 — Dummy Classifier<a class="headerlink" href="#benchmark-1-dummy-classifier" title="Permalink to this heading">#</a></h2>
 <p>¿Qué es? Predice siempre la clase más frecuente (o de forma estratificada).<br />
 ¿Por qué es el primer benchmark? Es el piso mínimo, cualquier modelo real debe superarlo.<br />
 Si un modelo no le gana al Dummy, no aprendió nada útil.</p>
@@ -679,7 +666,7 @@ weighted avg       0.63      0.63      0.63      7412
 </section>
 <hr class="docutils" />
 <section id="benchmark-2-logistic-regression-l2-sin-tuning">
-<h2>5. Benchmark 2 — Logistic Regression L2 (sin tuning)<a class="headerlink" href="#benchmark-2-logistic-regression-l2-sin-tuning" title="Permalink to this heading">#</a></h2>
+<h2>Benchmark 2 — Logistic Regression L2 (sin tuning)<a class="headerlink" href="#benchmark-2-logistic-regression-l2-sin-tuning" title="Permalink to this heading">#</a></h2>
 <p>¿Qué es? Un modelo lineal con regularización Ridge.<br />
 ¿Por qué es benchmark? Es el modelo lineal más estándar para clasificación —
 rápido, interpretable, y razonablemente fuerte en datos tabulares.<br />
@@ -703,7 +690,6 @@ Se entrena sin GridSearch para reflejar el esfuerzo mínimo de un analista.</p>
     <span class="s1">&#39;accuracy&#39;</span><span class="p">:</span>  <span class="n">accuracy_score</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_pred_lr</span><span class="p">),</span>
 <span class="p">}</span>
 
-<span class="c1"># CV para reportar varianza</span>
 <span class="n">cv_lr</span> <span class="o">=</span> <span class="n">cross_validate</span><span class="p">(</span><span class="n">lr_bench</span><span class="p">,</span> <span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">cv</span><span class="o">=</span><span class="n">CV</span><span class="p">,</span>
                         <span class="n">scoring</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;roc_auc&#39;</span><span class="p">,</span><span class="s1">&#39;f1&#39;</span><span class="p">],</span> <span class="n">n_jobs</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
 
@@ -747,7 +733,7 @@ weighted avg       0.88      0.86      0.87      7412
 </section>
 <hr class="docutils" />
 <section id="benchmark-3-decision-tree-sin-podar">
-<h2>6. Benchmark 3 — Decision Tree (sin podar)<a class="headerlink" href="#benchmark-3-decision-tree-sin-podar" title="Permalink to this heading">#</a></h2>
+<h2>Benchmark 3 — Decision Tree (sin podar)<a class="headerlink" href="#benchmark-3-decision-tree-sin-podar" title="Permalink to this heading">#</a></h2>
 <p>¿Qué es? Un árbol de decisión con profundidad libre (sin regularización).<br />
 ¿Por qué es benchmark? Representa el extremo del sobreajuste — muy bueno en train,
 malo en test. Contrasta con el stack para mostrar el valor de la regularización
@@ -771,7 +757,6 @@ y el ensamble.</p>
     <span class="s1">&#39;accuracy&#39;</span><span class="p">:</span>  <span class="n">accuracy_score</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_pred_dt</span><span class="p">),</span>
 <span class="p">}</span>
 
-<span class="c1"># Comprobar overfitting comparando train vs test</span>
 <span class="n">y_proba_dt_train</span> <span class="o">=</span> <span class="n">dt_bench</span><span class="o">.</span><span class="n">predict_proba</span><span class="p">(</span><span class="n">X_train</span><span class="p">)[:,</span> <span class="mi">1</span><span class="p">]</span>
 <span class="n">auc_train_dt</span> <span class="o">=</span> <span class="n">roc_auc_score</span><span class="p">(</span><span class="n">y_train</span><span class="p">,</span> <span class="n">y_proba_dt_train</span><span class="p">)</span>
 
@@ -821,12 +806,12 @@ weighted avg       0.86      0.86      0.86      7412
 <li><p><strong>CV AUC = 0.816 ± 0.006</strong> — varianza 3× mayor que LR, modelo inestable entre folds</p></li>
 </ul>
 <blockquote>
-<div><p>🔴 <strong>Este resultado es pedagógicamente valioso.</strong> Demuestra empíricamente que más complejidad sin regularización = peor generalización. El stack resuelve exactamente este problema combinando múltiples modelos regularizados bajo un meta-learner.</p>
+<div><p>Este resultado demuestra empíricamente que más complejidad sin regularización = peor generalización. El stack resuelve exactamente este problema combinando múltiples modelos regularizados bajo un meta-learner.</p>
 </div></blockquote>
 </section>
 <hr class="docutils" />
 <section id="stack-ensamble-de-dos-niveles">
-<h2>7. Stack — Ensamble de dos niveles<a class="headerlink" href="#stack-ensamble-de-dos-niveles" title="Permalink to this heading">#</a></h2>
+<h2>Stack — Ensamble de dos niveles<a class="headerlink" href="#stack-ensamble-de-dos-niveles" title="Permalink to this heading">#</a></h2>
 <section id="arquitectura">
 <h3>Arquitectura<a class="headerlink" href="#arquitectura" title="Permalink to this heading">#</a></h3>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Nivel 0 — Base Learners (modelos del curso)
@@ -846,11 +831,9 @@ predicciones fuera de muestra del Nivel 0, evitando data leakage entre niveles.
 más señal para tomar su decisión.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Hiperparámetros fijos (sin tuning) </span>
-
-<span class="n">best_k</span> <span class="o">=</span> <span class="mi">15</span>        <span class="c1"># valor estándar para datasets de este tamaño</span>
-<span class="n">best_w</span> <span class="o">=</span> <span class="s1">&#39;distance&#39;</span>  <span class="c1"># distancia siempre mejor que uniforme en datos ruidosos</span>
-<span class="n">best_C</span> <span class="o">=</span> <span class="mf">1.0</span>       <span class="c1"># regularización por defecto de LR</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">best_k</span> <span class="o">=</span> <span class="mi">15</span>       
+<span class="n">best_w</span> <span class="o">=</span> <span class="s1">&#39;distance&#39;</span>  
+<span class="n">best_C</span> <span class="o">=</span> <span class="mf">1.0</span>      
 
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;  k-NN → k=</span><span class="si">{</span><span class="n">best_k</span><span class="si">}</span><span class="s1">, weights=</span><span class="si">{</span><span class="n">best_w</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;  LR   → C=</span><span class="si">{</span><span class="n">best_C</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
@@ -1187,9 +1170,9 @@ Porque aporta valor real: el stack <em>con</em> k-NN obtiene AUC test = 0.9529 v
 </section>
 <hr class="docutils" />
 <section id="comparacion-final-benchmarks-vs-stack">
-<h2>8. Comparación final — Benchmarks vs Stack<a class="headerlink" href="#comparacion-final-benchmarks-vs-stack" title="Permalink to this heading">#</a></h2>
+<h2>Comparación final — Benchmarks vs Stack<a class="headerlink" href="#comparacion-final-benchmarks-vs-stack" title="Permalink to this heading">#</a></h2>
 <section id="tabla-de-metricas">
-<h3>8.1 Tabla de métricas<a class="headerlink" href="#tabla-de-metricas" title="Permalink to this heading">#</a></h3>
+<h3>Tabla de métricas<a class="headerlink" href="#tabla-de-metricas" title="Permalink to this heading">#</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ALL_RESULTS</span> <span class="o">=</span> <span class="p">{</span>
@@ -1299,7 +1282,7 @@ Stack (propuesto)           0.9530  0.7779     0.6885  0.8941    0.8718
 </div></blockquote>
 </section>
 <section id="dashboard-de-comparacion">
-<h3>8.2 Dashboard de comparación<a class="headerlink" href="#dashboard-de-comparacion" title="Permalink to this heading">#</a></h3>
+<h3>Dashboard de comparación<a class="headerlink" href="#dashboard-de-comparacion" title="Permalink to this heading">#</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">PALETTE</span> <span class="o">=</span> <span class="p">{</span>
@@ -1415,7 +1398,7 @@ Stack (propuesto)           0.9530  0.7779     0.6885  0.8941    0.8718
 </section>
 <hr class="docutils" />
 <section id="test-de-delong-significancia-estadistica-de-la-mejora">
-<h2>8.3 Test de DeLong — Significancia estadística de la mejora<a class="headerlink" href="#test-de-delong-significancia-estadistica-de-la-mejora" title="Permalink to this heading">#</a></h2>
+<h2>Test de DeLong — Significancia estadística de la mejora<a class="headerlink" href="#test-de-delong-significancia-estadistica-de-la-mejora" title="Permalink to this heading">#</a></h2>
 <p>El test de DeLong (1988) comprueba si la diferencia de AUC entre dos modelos
 es estadísticamente significativa o podría deberse al azar.</p>
 <ul class="simple">
@@ -1513,7 +1496,7 @@ es estadísticamente significativa al nivel α=0.05.
 </section>
 <hr class="docutils" />
 <section id="resumen-ejecutivo">
-<h2>9. Resumen ejecutivo<a class="headerlink" href="#resumen-ejecutivo" title="Permalink to this heading">#</a></h2>
+<h2>Resumen ejecutivo<a class="headerlink" href="#resumen-ejecutivo" title="Permalink to this heading">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;═&#39;</span> <span class="o">*</span> <span class="mi">68</span><span class="p">)</span>
@@ -1568,8 +1551,6 @@ es estadísticamente significativa al nivel α=0.05.
 </div>
 </div>
 </div>
-<section id="id1">
-<h3>Resumen ejecutivo<a class="headerlink" href="#id1" title="Permalink to this heading">#</a></h3>
 <p><strong>Respuesta a la pregunta de negocio:</strong></p>
 <blockquote>
 <div><p><em>¿Puede predecirse si un juego será popular dentro de su género usando características conocidas al momento de publicación?</em>
@@ -1582,7 +1563,6 @@ es estadísticamente significativa al nivel α=0.05.
 <li><p><strong>El gap del stack es un artefacto de k-NN, no overfitting real</strong> — demostrado empíricamente: stack sin k-NN tiene gap=0.000 y AUC test=0.9487. k-NN se mantiene porque aporta +0.004 pp AUC al capturar similitud local entre juegos.</p></li>
 <li><p><strong>El stack es el mejor modelo en las 5 métricas</strong> — AUC=0.953, F1=0.778, Precision=0.689, Recall=0.893, Accuracy=0.872 — con mejoras estadísticamente significativas sobre Dummy y Decision Tree.</p></li>
 </ol>
-</section>
 </section>
 </section>
 
@@ -1641,28 +1621,23 @@ es estadísticamente significativa al nivel α=0.05.
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#imports">1. Imports</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#carga-y-split-train-test">2. Carga y split train / test</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#preprocesador-compartido">3. Preprocesador compartido</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#benchmark-1-dummy-classifier">4. Benchmark 1 — Dummy Classifier</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#benchmark-2-logistic-regression-l2-sin-tuning">5. Benchmark 2 — Logistic Regression L2 (sin tuning)</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#benchmark-3-decision-tree-sin-podar">6. Benchmark 3 — Decision Tree (sin podar)</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#stack-ensamble-de-dos-niveles">7. Stack — Ensamble de dos niveles</a><ul class="nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#preprocesador-compartido">Preprocesador compartido</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#benchmark-1-dummy-classifier">Benchmark 1 — Dummy Classifier</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#benchmark-2-logistic-regression-l2-sin-tuning">Benchmark 2 — Logistic Regression L2 (sin tuning)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#benchmark-3-decision-tree-sin-podar">Benchmark 3 — Decision Tree (sin podar)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#stack-ensamble-de-dos-niveles">Stack — Ensamble de dos niveles</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#arquitectura">Arquitectura</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#verificacion-de-overfitting-en-los-modelos">Verificación de overfitting en los modelos</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#comparacion-final-benchmarks-vs-stack">8. Comparación final — Benchmarks vs Stack</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tabla-de-metricas">8.1 Tabla de métricas</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#comparacion-final-benchmarks-vs-stack">Comparación final — Benchmarks vs Stack</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tabla-de-metricas">Tabla de métricas</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tabla-comparativa-de-metricas">Tabla comparativa de métricas</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#dashboard-de-comparacion">8.2 Dashboard de comparación</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#dashboard-de-comparacion">Dashboard de comparación</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#test-de-delong-significancia-estadistica-de-la-mejora">8.3 Test de DeLong — Significancia estadística de la mejora</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#resumen-ejecutivo">9. Resumen ejecutivo</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Resumen ejecutivo</a></li>
-</ul>
-</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#test-de-delong-significancia-estadistica-de-la-mejora">Test de DeLong — Significancia estadística de la mejora</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#resumen-ejecutivo">Resumen ejecutivo</a></li>
 </ul>
   </nav></div>
 
