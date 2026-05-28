@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
-    <title>Steam Dataset — Feature Engineering &#8212; Proyecto Final Machine Learning</title>
+    <title>Feature Engineering &#8212; Proyecto Final Machine Learning</title>
   
   
   
@@ -65,7 +65,7 @@ const thebe_selector_output = ".output, .cell_output"
     <script>DOCUMENTATION_OPTIONS.pagename = 'eda_feature_engineering';</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="prev" title="Steam Dataset EDA: reviews" href="eda_reviews.html" />
+    <link rel="prev" title="EDA: reviews" href="eda_reviews.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -168,18 +168,18 @@ const thebe_selector_output = ".output, .cell_output"
         <ul class="nav bd-sidenav bd-sidenav__home-link">
             <li class="toctree-l1">
                 <a class="reference internal" href="intro.html">
-                    Análisis de la Plataforma Steam — Proyecto de Machine Learning
+                    Introducción
                 </a>
             </li>
         </ul>
         <ul class="current nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="eda_achievements.html">🏆 Steam Dataset — EDA: <code class="docutils literal notranslate"><span class="pre">achievements</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="eda_friends.html">Steam Dataset — EDA: <code class="docutils literal notranslate"><span class="pre">friends</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="eda_games.html">Steam Dataset EDA: <code class="docutils literal notranslate"><span class="pre">games</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="eda_history.html">Steam Dataset — EDA: <code class="docutils literal notranslate"><span class="pre">history</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="eda_players.html">Steam Dataset EDA: <code class="docutils literal notranslate"><span class="pre">players</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="eda_reviews.html">Steam Dataset  EDA: <code class="docutils literal notranslate"><span class="pre">reviews</span></code></a></li>
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">Steam Dataset — Feature Engineering</a></li>
+<li class="toctree-l1"><a class="reference internal" href="eda_achievements.html">EDA: <code class="docutils literal notranslate"><span class="pre">achievements</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="eda_friends.html">EDA: <code class="docutils literal notranslate"><span class="pre">friends</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="eda_games.html">EDA: <code class="docutils literal notranslate"><span class="pre">games</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="eda_history.html">EDA: <code class="docutils literal notranslate"><span class="pre">history</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="eda_players.html">EDA: <code class="docutils literal notranslate"><span class="pre">players</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="eda_reviews.html">EDA: <code class="docutils literal notranslate"><span class="pre">reviews</span></code></a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Feature Engineering</a></li>
 </ul>
 
     </div>
@@ -365,7 +365,7 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>Steam Dataset — Feature Engineering</h1>
+    <h1>Feature Engineering</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -381,11 +381,9 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tabla-de-features-de-usuario">Tabla de features de usuario</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tabla-de-features-de-juego">Tabla de features de juego</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tabla-maestra-regresion">Tabla maestra — Regresion</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tabla-maestra-clasificacion">6. Tabla maestra — Clasificacion</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exportar">7. Exportar</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#decisiones-y-advertencias">8. Decisiones y advertencias</a><ul class="nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tabla-maestra-clasificacion">Tabla maestra — Clasificacion</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exportar">Exportar</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#decisiones-tomadas-aqui">Decisiones tomadas aqui</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#advertencias">Advertencias</a></li>
 </ul>
 </li>
 </ul>
@@ -399,8 +397,8 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="steam-dataset-feature-engineering">
-<h1>Steam Dataset — Feature Engineering<a class="headerlink" href="#steam-dataset-feature-engineering" title="Permalink to this heading">#</a></h1>
+  <section class="tex2jax_ignore mathjax_ignore" id="feature-engineering">
+<h1>Feature Engineering<a class="headerlink" href="#feature-engineering" title="Permalink to this heading">#</a></h1>
 <section id="imports">
 <h2>Imports<a class="headerlink" href="#imports" title="Permalink to this heading">#</a></h2>
 <div class="cell docutils container">
@@ -411,12 +409,6 @@ document.write(`
 <span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s1">&#39;ignore&#39;</span><span class="p">)</span>
 
 <span class="n">DATA</span> <span class="o">=</span> <span class="s1">&#39;Datos/&#39;</span>  
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Imports OK&#39;</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Imports OK
 </pre></div>
 </div>
 </div>
@@ -977,7 +969,7 @@ Name: n_logros_par, dtype: float64
 </section>
 <hr class="docutils" />
 <section id="tabla-maestra-clasificacion">
-<h2>6. Tabla maestra — Clasificacion<a class="headerlink" href="#tabla-maestra-clasificacion" title="Permalink to this heading">#</a></h2>
+<h2>Tabla maestra — Clasificacion<a class="headerlink" href="#tabla-maestra-clasificacion" title="Permalink to this heading">#</a></h2>
 <p><strong>Target:</strong> <code class="docutils literal notranslate"><span class="pre">is_popular</span></code> = top 25% por <code class="docutils literal notranslate"><span class="pre">n_owners_public</span></code></p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1123,7 +1115,7 @@ Faltantes totales: 780,078
 </section>
 <hr class="docutils" />
 <section id="exportar">
-<h2>7. Exportar<a class="headerlink" href="#exportar" title="Permalink to this heading">#</a></h2>
+<h2>Exportar<a class="headerlink" href="#exportar" title="Permalink to this heading">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tabla_regression</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">DATA</span> <span class="o">+</span> <span class="s1">&#39;tabla_regression.csv&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
@@ -1155,10 +1147,7 @@ Columnas tabla_clasificacion:
 </div>
 </div>
 </div>
-</section>
 <hr class="docutils" />
-<section id="decisiones-y-advertencias">
-<h2>8. Decisiones y advertencias<a class="headerlink" href="#decisiones-y-advertencias" title="Permalink to this heading">#</a></h2>
 <section id="decisiones-tomadas-aqui">
 <h3>Decisiones tomadas aqui<a class="headerlink" href="#decisiones-tomadas-aqui" title="Permalink to this heading">#</a></h3>
 <div class="pst-scrollable-table-container"><table class="table">
@@ -1179,31 +1168,6 @@ Columnas tabla_clasificacion:
 </tr>
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">n_owners_public</span></code> sobre <code class="docutils literal notranslate"><span class="pre">n_owners_all</span></code></p></td>
 <td><p>Los privados inflan n_owners 10-24% — ver <code class="docutils literal notranslate"><span class="pre">eda_purchased_games</span></code>.</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-</section>
-<section id="advertencias">
-<h3>Advertencias<a class="headerlink" href="#advertencias" title="Permalink to this heading">#</a></h3>
-<div class="pst-scrollable-table-container"><table class="table">
-<thead>
-<tr class="row-odd"><th class="head"><p>Advertencia</p></th>
-<th class="head"><p>Impacto</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p>Muestra pequena en <code class="docutils literal notranslate"><span class="pre">history</span></code></p></td>
-<td><p>Tabla de regresion con pocas filas. Repetir con dataset completo.</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">prices</span></code> cubre solo nov-dic 2024</p></td>
-<td><p>El precio actual puede no reflejar el precio al momento de compra.</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">avg_completion_rate</span></code> con pocos jugadores</p></td>
-<td><p>Estimacion ruidosa. Mejora con dataset completo.</p></td>
-</tr>
-<tr class="row-odd"><td><p>CS2 (gameid=730) en 93% de bibliotecas</p></td>
-<td><p>Poca varianza como feature. Evaluar si excluir en clasificacion.</p></td>
 </tr>
 </tbody>
 </table>
@@ -1248,7 +1212,7 @@ Columnas tabla_clasificacion:
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Steam Dataset  EDA: <code class="docutils literal notranslate"><span class="pre">reviews</span></code></p>
+        <p class="prev-next-title">EDA: <code class="docutils literal notranslate"><span class="pre">reviews</span></code></p>
       </div>
     </a>
 </div>
@@ -1273,11 +1237,9 @@ Columnas tabla_clasificacion:
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tabla-de-features-de-usuario">Tabla de features de usuario</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tabla-de-features-de-juego">Tabla de features de juego</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tabla-maestra-regresion">Tabla maestra — Regresion</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tabla-maestra-clasificacion">6. Tabla maestra — Clasificacion</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exportar">7. Exportar</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#decisiones-y-advertencias">8. Decisiones y advertencias</a><ul class="nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tabla-maestra-clasificacion">Tabla maestra — Clasificacion</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exportar">Exportar</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#decisiones-tomadas-aqui">Decisiones tomadas aqui</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#advertencias">Advertencias</a></li>
 </ul>
 </li>
 </ul>

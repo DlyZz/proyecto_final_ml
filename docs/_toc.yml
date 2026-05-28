@@ -12,3 +12,4 @@ chapters:
 - file: eda_purcahsed_games.ipynb
 - file: eda_reviews.ipynb
 - file: eda_feature_engineering.ipynb
+- file: benchmark_vs_stack.ipynb

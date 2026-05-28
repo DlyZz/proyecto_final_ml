@@ -1,8 +1,8 @@
-# Análisis de la Plataforma Steam — Proyecto de Machine Learning
+# Introducción
 
 ## Contexto
 
-Steam es la plataforma de distribución de videojuegos PC más grande del mundo. Este proyecto analiza datos reales recolectados de Steam, PlayStation y Xbox, trabajando exclusivamente con el subconjunto de Steam, que comprende nueve archivos con información de ~424k usuarios, ~97k juegos, precios en 5 monedas, historial de logros desbloqueados, reseñas, listas de amigos y bibliotecas de juegos comprados.
+Steam es la plataforma de distribución de videojuegos PC más grande del mundo. Este proyecto analiza datos reales recolectados de esta plataforma, que comprende nueve archivos con información de ~424k usuarios, ~97k juegos, precios en 5 monedas, historial de logros desbloqueados, reseñas, listas de amigos y bibliotecas de juegos comprados.
 
 El dataset cubre un período de actividad desde 2008 hasta 2024, con snapshots de precios concentrados en noviembre–diciembre 2024.
 
@@ -10,7 +10,7 @@ El dataset cubre un período de actividad desde 2008 hasta 2024, con snapshots d
 
 ## Estructura del proyecto
 
-El análisis se organiza en tres etapas:
+El análisis se organiza en dos etapas:
 
 **1. Exploración (EDA)** — un notebook por cada archivo fuente, donde se documentan la calidad de los datos, patrones relevantes, decisiones de limpieza y variables derivadas. Cada EDA exporta su dataframe limpio como CSV.
 

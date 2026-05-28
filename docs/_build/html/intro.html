@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
-    <title>Análisis de la Plataforma Steam — Proyecto de Machine Learning &#8212; Proyecto Final Machine Learning</title>
+    <title>Introducción &#8212; Proyecto Final Machine Learning</title>
   
   
   
@@ -65,7 +65,7 @@ const thebe_selector_output = ".output, .cell_output"
     <script>DOCUMENTATION_OPTIONS.pagename = 'intro';</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="🏆 Steam Dataset — EDA: achievements" href="eda_achievements.html" />
+    <link rel="next" title="EDA: achievements" href="eda_achievements.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -170,18 +170,18 @@ const thebe_selector_output = ".output, .cell_output"
         <ul class="nav bd-sidenav bd-sidenav__home-link">
             <li class="toctree-l1 current active">
                 <a class="reference internal" href="#">
-                    Análisis de la Plataforma Steam — Proyecto de Machine Learning
+                    Introducción
                 </a>
             </li>
         </ul>
         <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="eda_achievements.html">🏆 Steam Dataset — EDA: <code class="docutils literal notranslate"><span class="pre">achievements</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="eda_friends.html">Steam Dataset — EDA: <code class="docutils literal notranslate"><span class="pre">friends</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="eda_games.html">Steam Dataset EDA: <code class="docutils literal notranslate"><span class="pre">games</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="eda_history.html">Steam Dataset — EDA: <code class="docutils literal notranslate"><span class="pre">history</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="eda_players.html">Steam Dataset EDA: <code class="docutils literal notranslate"><span class="pre">players</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="eda_reviews.html">Steam Dataset  EDA: <code class="docutils literal notranslate"><span class="pre">reviews</span></code></a></li>
-<li class="toctree-l1"><a class="reference internal" href="eda_feature_engineering.html">Steam Dataset — Feature Engineering</a></li>
+<li class="toctree-l1"><a class="reference internal" href="eda_achievements.html">EDA: <code class="docutils literal notranslate"><span class="pre">achievements</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="eda_friends.html">EDA: <code class="docutils literal notranslate"><span class="pre">friends</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="eda_games.html">EDA: <code class="docutils literal notranslate"><span class="pre">games</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="eda_history.html">EDA: <code class="docutils literal notranslate"><span class="pre">history</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="eda_players.html">EDA: <code class="docutils literal notranslate"><span class="pre">players</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="eda_reviews.html">EDA: <code class="docutils literal notranslate"><span class="pre">reviews</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="eda_feature_engineering.html">Feature Engineering</a></li>
 </ul>
 
     </div>
@@ -367,7 +367,7 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>Análisis de la Plataforma Steam — Proyecto de Machine Learning</h1>
+    <h1>Introducción</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -397,17 +397,17 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="analisis-de-la-plataforma-steam-proyecto-de-machine-learning">
-<h1>Análisis de la Plataforma Steam — Proyecto de Machine Learning<a class="headerlink" href="#analisis-de-la-plataforma-steam-proyecto-de-machine-learning" title="Permalink to this heading">#</a></h1>
+  <section class="tex2jax_ignore mathjax_ignore" id="introduccion">
+<h1>Introducción<a class="headerlink" href="#introduccion" title="Permalink to this heading">#</a></h1>
 <section id="contexto">
 <h2>Contexto<a class="headerlink" href="#contexto" title="Permalink to this heading">#</a></h2>
-<p>Steam es la plataforma de distribución de videojuegos PC más grande del mundo. Este proyecto analiza datos reales recolectados de Steam, PlayStation y Xbox, trabajando exclusivamente con el subconjunto de Steam, que comprende nueve archivos con información de ~424k usuarios, ~97k juegos, precios en 5 monedas, historial de logros desbloqueados, reseñas, listas de amigos y bibliotecas de juegos comprados.</p>
+<p>Steam es la plataforma de distribución de videojuegos PC más grande del mundo. Este proyecto analiza datos reales recolectados de esta plataforma, que comprende nueve archivos con información de ~424k usuarios, ~97k juegos, precios en 5 monedas, historial de logros desbloqueados, reseñas, listas de amigos y bibliotecas de juegos comprados.</p>
 <p>El dataset cubre un período de actividad desde 2008 hasta 2024, con snapshots de precios concentrados en noviembre–diciembre 2024.</p>
 </section>
 <hr class="docutils" />
 <section id="estructura-del-proyecto">
 <h2>Estructura del proyecto<a class="headerlink" href="#estructura-del-proyecto" title="Permalink to this heading">#</a></h2>
-<p>El análisis se organiza en tres etapas:</p>
+<p>El análisis se organiza en dos etapas:</p>
 <p><strong>1. Exploración (EDA)</strong> — un notebook por cada archivo fuente, donde se documentan la calidad de los datos, patrones relevantes, decisiones de limpieza y variables derivadas. Cada EDA exporta su dataframe limpio como CSV.</p>
 <p><strong>2. Feature Engineering</strong> — un notebook que carga los CSVs de los EDAs y construye mediante joins las dos tablas maestras que alimentan los modelos.</p>
 </section>
@@ -569,7 +569,7 @@ document.write(`
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">🏆 Steam Dataset — EDA: <code class="docutils literal notranslate"><span class="pre">achievements</span></code></p>
+        <p class="prev-next-title">EDA: <code class="docutils literal notranslate"><span class="pre">achievements</span></code></p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
